@@ -45,7 +45,7 @@ const Login = () => {
     axios.post(URL, data)
       .then(res => {
         localStorage.setItem('token', res.data.token)
-        navigate('/home')
+        navigate('/inventario')
 
       })
       .catch(err => {

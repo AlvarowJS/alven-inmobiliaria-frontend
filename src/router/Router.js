@@ -49,7 +49,7 @@ const Router = () => {
     // return '/login'
     const user = getkey()
     if(user != null){
-      return '/home'
+      return '/inventario'
     }
     else{
       return '/login'
