@@ -56,223 +56,266 @@ const BasicosForm = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag='h4'>Registrar Dirección</CardTitle>
+        <CardTitle tag='h4'>Registrar Básicos </CardTitle>
       </CardHeader>
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <div className='mb-1'>
-            <Label className='form-label' for='numero_ofna'>
-              id
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='numero_ofna'
-              name='numero_ofna'
-              render={({ field }) => <Input placeholder='numero_ofna' invalid={errors.numero_ofna && true} {...field} />}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='fecha_alta'>
-              Fecha Alta
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='fecha_alta'
-              name='fecha_alta'
-              render={({ field }) => <Input type='date' placeholder='fecha alta' invalid={errors.fecha_alta && true} {...field} />}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='tipo_operacion'>
-              Tipo Operación
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='tipo_operacion'
-              name='tipo_operacion'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='ingrese el tipo de operación'
-                  invalid={errors.tipo_operacion && true}
-                  {...field}
+          <Row>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='superficie_terreno'>
+                  Superficie de Terreno
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='superficie_terreno'
+                  name='superficie_terreno'
+                  render={({ field }) => <Input invalid={errors.superficie_terreno && true} {...field} />}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='tipo_propiedad'>
-              Tipo de Propiedad
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='tipo_propiedad'
-              name='tipo_propiedad'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder=''
-                  invalid={errors.tipo_propiedad && true}
-                  {...field}
+              </div>
+            </Col>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='niveles_construidos'>
+                  Niveles Construidos
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='niveles_construidos'
+                  name='niveles_construidos'
+                  render={({ field }) => <Input invalid={errors.niveles_construidos && true} {...field} />}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='tipo_contrato'>
-              Tipo Contrato
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='tipo_contrato'
-              name='tipo_contrato'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder=''
-                  invalid={errors.tipo_contrato && true}
-                  {...field}
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='superficie_construccion'>
+                  Superficie de construcción
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='superficie_construccion'
+                  name='superficie_construccion'
+                  render={({ field }) => <Input type='text' placeholder='' invalid={errors.superficie_construccion && true} {...field} />}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='asesor_exclusivo'>
-              Asesor Exclusivo
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='asesor_exclusivo'
-              name='asesor_exclusivo'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder=''
-                  invalid={errors.asesor_exclusivo && true}
-                  {...field}
+              </div>
+            </Col>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='cuota_mantenimiento'>
+                  Cuota Mantenimiento
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='cuota_mantenimiento'
+                  name='cuota_mantenimiento'
+                  render={({ field }) => <Input type='text' placeholder='' invalid={errors.cuota_mantenimiento && true} {...field} />}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='porcentaje'>
-              Porcentaje de comisión
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='porcentaje'
-              name='porcentaje'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder=''
-                  invalid={errors.porcentaje && true}
-                  {...field}
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='banios'>
+                  Baños
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='banios'
+                  name='banios'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      placeholder=''
+                      invalid={errors.banios && true}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='aceptar_creditos'>
-              Acepta Creditos
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='aceptar_creditos'
-              name='aceptar_creditos'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='si/no'
-                  invalid={errors.aceptar_creditos && true}
-                  {...field}
+              </div>
+            </Col>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='medios_banios'>
+                  Medios Baños
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='medios_banios'
+                  name='medios_banios'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      placeholder=''
+                      invalid={errors.medios_banios && true}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='fecha_credito'>
-              Fecha Credito
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='fecha_credito'
-              name='fecha_credito'
-              render={({ field }) => (
-                <Input
-                  type='date'
-                  invalid={errors.fecha_credito && true}
-                  {...field}
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='recamaras'>
+                  Recamaras
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='recamaras'
+                  name='recamaras'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      placeholder=''
+                      invalid={errors.recamaras && true}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='fecha_inicio'>
-              Fecha Inicio de Contratación de Servicios
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='fecha_inicio'
-              name='fecha_inicio'
-              render={({ field }) => (
-                <Input
-                  type='date'
-                  invalid={errors.fecha_inicio && true}
-                  {...field}
+              </div>
+            </Col>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='numero_casas'>
+                  Numero de casas
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='numero_casas'
+                  name='numero_casas'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      placeholder=''
+                      invalid={errors.numero_casas && true}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='duracion_dias'>
-              Duración de dias de contrato
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='duracion_dias'
-              name='duracion_dias'
-              render={({ field }) => (
-                <Input
-                  type='number'
-                  placeholder='ingrese en dias'
-                  invalid={errors.duracion_dias && true}
-                  {...field}
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='cocina'>
+                  Cocinas
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='cocina'
+                  name='cocina'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      placeholder=''
+                      invalid={errors.cocina && true}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='requisito_arrendamiento'>
-              Requisitos de arrendamiento
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='requisito_arrendamiento'
-              name='requisito_arrendamiento'
-              render={({ field }) => (
-                <Input
-                  type='textarea'
-                  placeholder='ingrese en dias'
-                  invalid={errors.requisito_arrendamiento && true}
-                  {...field}
+              </div>
+            </Col>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='estacionamiento'>
+                  Estacionamiento
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='estacionamiento'
+                  name='estacionamiento'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      placeholder=''
+                      invalid={errors.estacionamiento && true}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
-
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='numero_elevadores'>
+                  Numero de elevadores
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='numero_elevadores'
+                  name='numero_elevadores'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      invalid={errors.numero_elevadores && true}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='numero_elevadores'>
+                  Numero de elevadores
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='numero_elevadores'
+                  name='numero_elevadores'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      invalid={errors.numero_elevadores && true}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='piso_ubicado'>
+                  Piso en que se encuentra
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='piso_ubicado'
+                  name='piso_ubicado'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      invalid={errors.piso_ubicado && true}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+            </Col>
+          </Row>
           <div className='d-flex'>
             <Button className='me-1' color='primary' type='submit'>
               Enviar
