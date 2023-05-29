@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import axios from 'axios'
+const URL = 'http://127.0.0.1:8000/api/v1/basicos'
+const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
+const token = localStorage.getItem('token');
+const id_propiedad = localStorage.getItem('id');
+const BasicosForm = ({ stepper }) => {
 
-const BasicosForm = () => {
+  const [objectBasicos, setObjectBasicos] = useState()
+
   const {
     reset,
     control,
@@ -12,45 +19,63 @@ const BasicosForm = () => {
     formState: { errors }
   } = useForm()
 
-  const onSubmit = data => {
-    if (Object.values(data).every(field => field.length > 0)) {
-      toast(
-        <div className='d-flex'>
-          <div className='me-1'>
-            <Avatar size='sm' color='success' icon={<Check size={12} />} />
-          </div>
-          <div className='d-flex flex-column'>
-            <h6>Form Submitted!</h6>
-            <ul className='list-unstyled mb-0'>
-              <li>
-                <strong>firstName</strong>: {data.firstNameBasic}
-              </li>
-              <li>
-                <strong>lastName</strong>: {data.lastNameBasic}
-              </li>
-              <li>
-                <strong>email</strong>: {data.emailBasic}
-              </li>
-            </ul>
-          </div>
-        </div>
-      )
-    } else {
-      for (const key in data) {
-        if (data[key].length === 0) {
-          setError(key, {
-            type: 'manual'
-          })
-        }
+  useEffect(() => {
+    axios.get(`${URL_PROPIEDAD}/${id_propiedad}`, {
+      headers: {
+        'Authorization': 'Bearer ' + token
       }
+    })
+      .then(res => {
+        let object = res?.data?.basico        
+        setObjectBasicos(object)
+        reset(object)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
+  const onSubmit = data => {
+    
+    let idBasicos = objectBasicos?.id
+
+    if (idBasicos) {
+      axios.put(`${URL}/${idBasicos}`, data, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => {
+          stepper.next()
+        })
+        .catch(err => console.log(err))
+    } else {
+      data.id_propiedad = localStorage.getItem('id');
+
+      axios.post(URL, data, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => {
+          stepper.next()
+        })
+        .catch(err => console.log(err))
     }
   }
 
   const handleReset = () => {
     reset({
-      emailBasic: '',
-      firstNameBasic: '',
-      lastNameBasic: ''
+      superficie_terreno: '',
+      superficie_construccion: '',
+      banios: '',
+      medios_banios: '',
+      recamaras: '',
+      cocina: '',
+      estacionamiento: '',
+      niveles_construidos: '',
+      cuota_mantenimiento: '',
+      numero_casas: '',
+      numero_elevadores: '',
+      piso_ubicado: '',
     })
   }
   return (
@@ -273,28 +298,6 @@ const BasicosForm = () => {
                 />
               </div>
             </Col>
-            <Col>
-              <div className='mb-1'>
-                <Label className='form-label' for='numero_elevadores'>
-                  Numero de elevadores
-                </Label>
-                <Controller
-                  defaultValue=''
-                  control={control}
-                  id='numero_elevadores'
-                  name='numero_elevadores'
-                  render={({ field }) => (
-                    <Input
-                      type='text'
-                      invalid={errors.numero_elevadores && true}
-                      {...field}
-                    />
-                  )}
-                />
-              </div>
-            </Col>
-          </Row>
-          <Row>
             <Col>
               <div className='mb-1'>
                 <Label className='form-label' for='piso_ubicado'>

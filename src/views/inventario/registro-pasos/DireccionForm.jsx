@@ -1,65 +1,142 @@
-import React from 'react'
-import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row } from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row, InputGroup, InputGroupText } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { Map, Marker } from 'google-maps-react';
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import './../style/style.css'
+const containerStyle = {
+  width: '100%',
+  height: '400px'
+};
+import axios from 'axios';
+const token = localStorage.getItem('token');
+const id_propiedad = localStorage.getItem('id');
+const URL = 'http://127.0.0.1:8000/api/v1/direccion'
+const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
 
+const DireccionForm = ({ stepper }) => {
 
-const DireccionForm = () => {
+  const navigate = useNavigate()
 
-  const coordenadas = { lat: 37.7749, lng: -122.4194 };
+  const [estado, setEstado] = useState()
+  const [objectDirection, setObjectDirection] = useState()
+  const [lat, setLat] = useState()
+  const [lng, setLng] = useState()
+  const [zoom, setZoom] = useState()
+
+  useEffect(() => {
+    axios.get(`${URL_PROPIEDAD}/${id_propiedad}`, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        let object = res?.data?.direccion
+        setObjectDirection(object)
+        reset(object)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
 
   const {
     reset,
     control,
     setError,
     handleSubmit,
+    register,
     formState: { errors }
   } = useForm()
 
   const onSubmit = data => {
-    if (Object.values(data).every(field => field.length > 0)) {
-      toast(
-        <div className='d-flex'>
-          <div className='me-1'>
-            <Avatar size='sm' color='success' icon={<Check size={12} />} />
-          </div>
-          <div className='d-flex flex-column'>
-            <h6>Form Submitted!</h6>
-            <ul className='list-unstyled mb-0'>
-              <li>
-                <strong>firstName</strong>: {data.firstNameBasic}
-              </li>
-              <li>
-                <strong>lastName</strong>: {data.lastNameBasic}
-              </li>
-              <li>
-                <strong>email</strong>: {data.emailBasic}
-              </li>
-            </ul>
-          </div>
-        </div>
-      )
-    } else {
-      for (const key in data) {
-        if (data[key].length === 0) {
-          setError(key, {
-            type: 'manual'
-          })
+
+    let idDireccion = objectDirection?.id
+
+    if (idDireccion) {
+      axios.put(`${URL}/${idDireccion}`, data, {
+        headers: {
+          'Authorization': 'Bearer ' + token
         }
+      })
+        .then(res => {
+          stepper.next()
+        })
+        .catch(err => console.log(err))
+
+    } else {
+      data.id_propiedad = localStorage.getItem('id');
+      axios.post(URL, data, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => {
+          stepper.next()
+        })
+        .catch(err => console.log(err))
+    }
+  }
+
+  const handleLat = (e) => {
+    let latValue = e.target.value
+    if (latValue.endsWith(".")) {
+      setLat(latValue)
+    }
+    else {
+      latValue = Number(latValue)
+      if (typeof (latValue) == 'number') {
+        setLat(latValue)
+        if (isNaN(latValue)) {
+          setLat(0)
+        }
+      }
+    }
+  }
+  const handleLong = (e) => {
+    let lonValue = e.target.value
+    if (lonValue.endsWith(".")) {
+      setLng(lonValue)
+    }
+    else {
+      lonValue = Number(lonValue)
+      if (typeof (lonValue) == 'number') {
+        setLng(lonValue)
+        if (isNaN(lonValue)) {
+          setLng(0)
+        }
+      }
+    }
+  }
+
+  const handleZoom = (e) => {
+    let zoomValue = e.target.value
+    zoomValue = Number(zoomValue)
+    if (typeof (zoomValue) == 'number') {
+      setZoom(zoomValue)
+      if (isNaN(zoomValue)) {
+        setZoom(0)
       }
     }
   }
 
   const handleReset = () => {
     reset({
-      emailBasic: '',
-      firstNameBasic: '',
-      lastNameBasic: ''
+      LAT: '',
+      LON: '',
+      ZOOM: '',
+      calle: '',
+      codigo_postal: '',
+      colonia: '',
+      estado: '',
+      municipio: '',
+      numero: '',
+      pais: ''
     })
   }
 
   return (
+
     <Card>
       <CardHeader>
         <CardTitle tag='h4'>Registrar Dirección</CardTitle>
@@ -198,7 +275,7 @@ const DireccionForm = () => {
                 <Label className='form-label' for='LAT'>
                   Lat
                 </Label>
-                <Controller
+                {/* <Controller
                   defaultValue=''
                   control={control}
                   id='LAT'
@@ -208,10 +285,18 @@ const DireccionForm = () => {
                       type='text'
                       placeholder='99.9999'
                       invalid={errors.LAT && true}
+                      onChange={handleLat}
                       {...field}
                     />
                   )}
-                />
+                /> */}
+                <InputGroupText>
+                  <input className='local_input' type="text" id="LAT"
+                    {...register('LAT')}
+                    onChange={handleLat}
+                    value={lat}
+                  />
+                </InputGroupText>
               </div>
             </Col>
             <Col>
@@ -219,7 +304,7 @@ const DireccionForm = () => {
                 <Label className='form-label' for='LON'>
                   LON
                 </Label>
-                <Controller
+                {/* <Controller
                   defaultValue=''
                   control={control}
                   id='LON'
@@ -232,7 +317,14 @@ const DireccionForm = () => {
                       {...field}
                     />
                   )}
-                />
+                /> */}
+                <InputGroupText>
+                  <input className='local_input' type="text" id="LON"
+                    {...register('LON')}
+                    onChange={handleLong}
+                    value={lng}
+                  />
+                </InputGroupText>
               </div>
             </Col>
             <Col>
@@ -240,7 +332,7 @@ const DireccionForm = () => {
                 <Label className='form-label' for='ZOOM'>
                   ZOOM
                 </Label>
-                <Controller
+                {/* <Controller
                   defaultValue=''
                   control={control}
                   id='ZOOM'
@@ -253,14 +345,40 @@ const DireccionForm = () => {
                       {...field}
                     />
                   )}
-                />
+                /> */}
+                <InputGroupText>
+                  <input className='local_input' type="text" id="ZOOM"
+                    {...register('ZOOM')}
+                    onChange={handleZoom}
+                    value={zoom}
+                  />
+                </InputGroupText>
               </div>
+
             </Col>
           </Row>
           <Row className='px-4'>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1532.7096120314905!2d-76.24779307750135!3d-9.95721809312256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2spe!4v1684713602685!5m2!1ses-419!2spe" width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+            <LoadScript
+              googleMapsApiKey="AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q"
+            >
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={{
+                  lat: lat,
+                  lng: lng
+                }}
+                zoom={zoom}
+              >
+                { /* Child components, such as markers, info windows, etc. */}
+                <></>
+              </GoogleMap>
+            </LoadScript>
+
+            {/* AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q */}
+
           </Row>
-          <div className='d-flex'>
+          <div className='d-flex mt-2'>
             <Button className='me-1' color='primary' type='submit'>
               Enviar
             </Button>

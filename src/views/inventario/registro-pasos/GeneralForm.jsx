@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import axios from 'axios'
+const URL = 'http://127.0.0.1:8000/api/v1/general'
+const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
+const token = localStorage.getItem('token');
+const id_propiedad = localStorage.getItem('id');
+const GeneralForm = ({ stepper }) => {
 
-const GeneralForm = () => {
+  const [objectGeneral, setObjectGeneral] = useState()
   const {
     reset,
     control,
@@ -12,45 +18,65 @@ const GeneralForm = () => {
     formState: { errors }
   } = useForm()
 
+
   const onSubmit = data => {
-    if (Object.values(data).every(field => field.length > 0)) {
-      toast(
-        <div className='d-flex'>
-          <div className='me-1'>
-            <Avatar size='sm' color='success' icon={<Check size={12} />} />
-          </div>
-          <div className='d-flex flex-column'>
-            <h6>Form Submitted!</h6>
-            <ul className='list-unstyled mb-0'>
-              <li>
-                <strong>firstName</strong>: {data.firstNameBasic}
-              </li>
-              <li>
-                <strong>lastName</strong>: {data.lastNameBasic}
-              </li>
-              <li>
-                <strong>email</strong>: {data.emailBasic}
-              </li>
-            </ul>
-          </div>
-        </div>
-      )
-    } else {
-      for (const key in data) {
-        if (data[key].length === 0) {
-          setError(key, {
-            type: 'manual'
-          })
+    let idGeneral = objectGeneral?.id
+
+
+    if (idGeneral) {
+      axios.put(`${URL}/${idGeneral}`, data, {
+        headers: {
+          'Authorization': 'Bearer ' + token
         }
-      }
+      })
+        .then(res => {
+          stepper.next()
+        })
+        .catch(err => console.log(err))
+    } else {
+      data.id_propiedad = localStorage.getItem('id');
+
+      axios.post(URL, data, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => {
+          stepper.next()
+        })
+        .catch(err => console.log(err))
     }
+
   }
+
+  useEffect(() => {
+    axios.get(`${URL_PROPIEDAD}/${id_propiedad}`, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        let object = res?.data?.general
+        setObjectGeneral(object)
+        reset(object)
+      })
+      .catch(err => console.log(err))
+  }, [])
 
   const handleReset = () => {
     reset({
-      emailBasic: '',
-      firstNameBasic: '',
-      lastNameBasic: ''
+      numero_ofna: '',
+      fecha_alta: '',
+      tipo_operacion: '',
+      tipo_propiedad: '',
+      tipo_contrato: '',
+      asesor_exclusivo: '',
+      porcentaje: '',
+      aceptar_creditos: '',
+      fecha_credito: '',
+      fecha_inicio: '',
+      duracion_dias: '',
+      requisito_arrendamiento: '',
     })
   }
   return (
@@ -69,7 +95,7 @@ const GeneralForm = () => {
               control={control}
               id='numero_ofna'
               name='numero_ofna'
-              render={({ field }) => <Input placeholder='numero_ofna' invalid={errors.numero_ofna && true} {...field} />}
+              render={({ field }) => <Input placeholder='23423' invalid={errors.numero_ofna && true} {...field} />}
             />
           </div>
           <div className='mb-1'>
@@ -96,7 +122,7 @@ const GeneralForm = () => {
               render={({ field }) => (
                 <Input
                   type='text'
-                  placeholder='ingrese el tipo de operación'
+                  placeholder='Venta...'
                   invalid={errors.tipo_operacion && true}
                   {...field}
                 />
@@ -134,7 +160,7 @@ const GeneralForm = () => {
               render={({ field }) => (
                 <Input
                   type='text'
-                  placeholder=''
+                  placeholder='Exclusiva...'
                   invalid={errors.tipo_contrato && true}
                   {...field}
                 />
@@ -143,7 +169,7 @@ const GeneralForm = () => {
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='asesor_exclusivo'>
-              Asesor Exclusivo
+              Asesor de Exclusiva
             </Label>
             <Controller
               defaultValue=''
