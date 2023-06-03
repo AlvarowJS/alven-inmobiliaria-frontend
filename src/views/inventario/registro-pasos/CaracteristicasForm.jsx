@@ -4,23 +4,29 @@ import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios';
 const token = localStorage.getItem('token');
-const id_propiedad = localStorage.getItem('id');
+
 const URL = 'http://127.0.0.1:8000/api/v1/caracteristica'
 const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
-const CaracteristicasForm = () => {
+const CaracteristicasForm = ({ stepper, idPropiedad }) => {
 
   const [objectCaracteristica, setObjectCaracteristica] = useState()
+  const arrayEspacios = ['Jardin','Estudio','Cuarto servicio','Desayunador','Comedor','Cuarto TV','Biblioteca','Cantina','Area de lavado','Bodega','Sala','Balcon']
+  const arrayInstalaciones = ['Agua','Drenaje','Luz','Linea Telefonica','Chimenea','Cisterna','Aire Acondicionado','Calefacción','Jacuzzi','TV Cable','Circuito Cerrado','Alumbrado','Hidroneumático','Closets','Portón Eléctrico','Interfon','Video Portero','Tanque Gas Estacionario','Gas Tanque Cilindrico','Gas Red','Asador','Tinaco']
+  const arrayRestricciones = ['No niños','Solo Familias','Para Ejecutivos','Para Estudiantes']
+  const arrayExtras = ['Amueblado','Vigilancia Privada','Propiedad Nueva']
+
   const {
     reset,
     control,
     setError,
     handleSubmit,
     register,
+    setValue,
     formState: { errors }
   } = useForm()
 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${id_propiedad}`, {
+    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -29,6 +35,23 @@ const CaracteristicasForm = () => {
         let object = res?.data?.caracteristica
         setObjectCaracteristica(object)
         reset(object)
+
+        const espaciosArray = JSON.parse(object?.espacios);
+        const espaciosCoincidentes = arrayEspacios.filter(espacio => espaciosArray.includes(espacio));
+        setValue('espacios', espaciosCoincidentes);
+
+        const instalacionesArray = JSON.parse(object?.instalaciones);
+        const instalacionesCoincidentes = arrayInstalaciones.filter(instalacion => instalacionesArray.includes(instalacion));
+        setValue('instalaciones', instalacionesCoincidentes);
+
+        const restriccionesArray = JSON.parse(object?.restricciones);
+        const restriccionesCoincidentes = arrayRestricciones.filter(restriccion => restriccionesArray.includes(restriccion));
+        setValue('restricciones', restriccionesCoincidentes);
+
+        const extrasArray = JSON.parse(object?.extras);
+        const extrasCoincidentes = arrayExtras.filter(extra => extrasArray.includes(extra));
+        setValue('extras', extrasCoincidentes);
+
       })
       .catch(err => console.log(err))
   }, [])
@@ -48,7 +71,7 @@ const CaracteristicasForm = () => {
         .catch(err => console.log(err))
 
     } else {
-      data.id_propiedad = localStorage.getItem('id');
+      data.id_propiedad = idPropiedad
       axios.post(URL, data, {
         headers: {
           'Authorization': 'Bearer ' + token
@@ -76,9 +99,32 @@ const CaracteristicasForm = () => {
       </CardHeader>
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
-
+          <Row>
+            <Col>
+              <div className='my-2'>
+                <Label className='form-label' for='calle'>
+                  <b>  Acepta Mascotas</b>
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='mascotas'
+                  name='mascotas'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      placeholder='si se aceptan pero...'
+                      invalid={errors.mascotas && true}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+            </Col>
+          </Row>
           {/* Espacios */}
           <h5 className='my-2 mx-2'>Espacios</h5>
+
           <Row className='mx-4'>
             <Col>
               <div className='form-check form-check-inline'>
@@ -92,7 +138,7 @@ const CaracteristicasForm = () => {
             <Col>
               <div className='form-check form-check-inline'>
                 {/* <input className='form-check-input' type='checkbox' id='estudio' /> */}
-                <input className='form-check-input' type='checkbox' id='estudio' value='estudio'  {...register('espacios')} />
+                <input className='form-check-input' type='checkbox' id='estudio' value='Estudio'  {...register('espacios')} />
                 <Label for='estudio' className='form-check-label'>
                   Estudio
                 </Label>
@@ -101,7 +147,7 @@ const CaracteristicasForm = () => {
             <Col>
               <div className='form-check form-check-inline'>
                 {/* <input className='form-check-input' type='checkbox' id='cuarto servicio' /> */}
-                <input className='form-check-input' type='checkbox' id='cuarto servicio' value='estudio'  {...register('espacios')} />
+                <input className='form-check-input' type='checkbox' id='cuarto servicio' value='Cuarto servicio'  {...register('espacios')} />
                 <Label for='cuarto servicio' className='form-check-label'>
                   Cuarto Servicio
                 </Label>
@@ -162,7 +208,7 @@ const CaracteristicasForm = () => {
             <Col>
               <div className='form-check form-check-inline'>
                 {/* <input className='form-check-input' type='checkbox' id='area de lavado' /> */}
-                <input className='form-check-input' type='checkbox' id='area de lavado' value='area de lavado'  {...register('espacios')} />
+                <input className='form-check-input' type='checkbox' id='area de lavado' value='Area de lavado'  {...register('espacios')} />
                 <Label for='area de lavado' className='form-check-label'>
                   Área de Lavado
                 </Label>
@@ -415,8 +461,8 @@ const CaracteristicasForm = () => {
             </Col>
             <Col>
               <div className='form-check form-check-inline'>
-                <input className='form-check-input' type='checkbox' id=' Para Ejecutivos' value=' Para Ejecutivos' {...register('restricciones')} />
-                <Label for=' Para Ejecutivos' className='form-check-label'>
+                <input className='form-check-input' type='checkbox' id='Para Ejecutivos' value='Para Ejecutivos' {...register('restricciones')} />
+                <Label for='Para Ejecutivos' className='form-check-label'>
                   Para Ejecutivos
                 </Label>
               </div>

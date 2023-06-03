@@ -11,11 +11,11 @@ const containerStyle = {
 };
 import axios from 'axios';
 const token = localStorage.getItem('token');
-const id_propiedad = localStorage.getItem('id');
+// const idPropiedad = localStorage.getItem('id');
 const URL = 'http://127.0.0.1:8000/api/v1/direccion'
 const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
 
-const DireccionForm = ({ stepper }) => {
+const DireccionForm = ({ stepper, idPropiedad }) => {
 
   const navigate = useNavigate()
 
@@ -26,12 +26,14 @@ const DireccionForm = ({ stepper }) => {
   const [zoom, setZoom] = useState()
 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${id_propiedad}`, {
+    
+    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
     })
       .then(res => {
+        console.log(res.data)
         let object = res?.data?.direccion
         setObjectDirection(object)
         reset(object)
@@ -65,7 +67,7 @@ const DireccionForm = ({ stepper }) => {
         .catch(err => console.log(err))
 
     } else {
-      data.id_propiedad = localStorage.getItem('id');
+      data.id_propiedad = idPropiedad
       axios.post(URL, data, {
         headers: {
           'Authorization': 'Bearer ' + token

@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import axios from 'axios'
+const URL = 'http://127.0.0.1:8000/api/v1/publicidad'
+const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
+const token = localStorage.getItem('token');
+// const idPropiedad = localStorage.getItem('id');
 
-const PublicidadForm = () => {
+const PublicidadForm = ({ stepper, idPropiedad }) => {
+
+  const [objectPublicidad, setObjectPublicidad] = useState()
+  
   const {
     reset,
     control,
@@ -12,51 +20,60 @@ const PublicidadForm = () => {
     formState: { errors }
   } = useForm()
 
-  const onSubmit = data => {
-    if (Object.values(data).every(field => field.length > 0)) {
-      toast(
-        <div className='d-flex'>
-          <div className='me-1'>
-            <Avatar size='sm' color='success' icon={<Check size={12} />} />
-          </div>
-          <div className='d-flex flex-column'>
-            <h6>Form Submitted!</h6>
-            <ul className='list-unstyled mb-0'>
-              <li>
-                <strong>firstName</strong>: {data.firstNameBasic}
-              </li>
-              <li>
-                <strong>lastName</strong>: {data.lastNameBasic}
-              </li>
-              <li>
-                <strong>email</strong>: {data.emailBasic}
-              </li>
-            </ul>
-          </div>
-        </div>
-      )
-    } else {
-      for (const key in data) {
-        if (data[key].length === 0) {
-          setError(key, {
-            type: 'manual'
-          })
-        }
+  useEffect(() => {
+    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
+      headers: {
+        'Authorization': 'Bearer ' + token
       }
+    })
+      .then(res => {
+        let object = res?.data?.publicidad
+        setObjectPublicidad(object)
+        reset(object)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
+  const onSubmit = data => {
+    let idPublicidad = objectPublicidad?.id
+    console.log(idPublicidad)
+    if (idPublicidad) {
+      axios.put(`${URL}/${idPublicidad}`, data, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => {
+          stepper.next()
+        })
+        .catch(err => console.log(err))
+    } else {
+      data.id_propiedad = idPropiedad
+
+      axios.post(URL, data, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => {
+          stepper.next()
+        })
+        .catch(err => console.log(err))
     }
   }
 
   const handleReset = () => {
     reset({
-      emailBasic: '',
-      firstNameBasic: '',
-      lastNameBasic: ''
+      precio_venta: '',
+      encabezado: '',
+      descripcion: '',
+      video_url: ''
     })
   }
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag='h4'>Registrar Básicos </CardTitle>
+        <CardTitle tag='h4'>Registrar Publicidad </CardTitle>
       </CardHeader>
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>

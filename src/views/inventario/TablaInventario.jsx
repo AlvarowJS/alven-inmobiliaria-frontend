@@ -12,6 +12,7 @@ const TablaInventario = () => {
 
     const navigate = useNavigate()
 
+    const [idPropiedad, setIdPropiedad] = useState()
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerPage] = useState(3)
     const [searchValue, setSearchValue] = useState('')
@@ -23,26 +24,38 @@ const TablaInventario = () => {
 
     const registrarPropiedad = () => {
 
-        let id = localStorage.getItem('id');
-        console.log(id, "id ")
+        axios.post(URL, null, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(res => {
+                setIdPropiedad(res?.data?.id)
+                let idProp = res?.data?.id          
+                navigate(`/registrar-propiedad/${idProp}`)
 
-        if (id == null) {
-            console.log('entro al if')
-            axios.post(URL, null, {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
             })
-                .then(res => {
-                    localStorage.setItem('id', res.data.id)
-                    navigate('/registrar-propiedad')
+            .catch(err => { console.log(err) })
+        // let id = localStorage.getItem('id');
+        // console.log(id, "id ")
 
-                })
-                .catch(err => { console.log(err) })
-        } else {
-            console.log('entro al else')
-            navigate('/registrar-propiedad')
-        }
+        // if (id == null) {
+        //     console.log('entro al if')
+        //     axios.post(URL, null, {
+        //         headers: {
+        //             'Authorization': 'Bearer ' + token
+        //         }
+        //     })
+        //         .then(res => {
+        //             localStorage.setItem('id', res.data.id)
+        //             navigate('/registrar-propiedad')
+
+        //         })
+        //         .catch(err => { console.log(err) })
+        // } else {
+        //     console.log('entro al else')
+        //     navigate('/registrar-propiedad')
+        // }
 
 
     }
@@ -132,7 +145,7 @@ const TablaInventario = () => {
     ]
 
     useEffect(() => {
-        
+
         axios.get(URL, {
             headers: {
                 'Authorization': 'Bearer ' + token

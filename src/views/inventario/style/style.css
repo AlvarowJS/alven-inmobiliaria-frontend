@@ -4,3 +4,11 @@
     width: 100%;
     padding-right: 0;
 }
+.border_upload {
+    border: #e09393 5px dashed;
+    padding: 50px;
+    margin: 40px;
+    /* padding-top: 150px; */
+
+
+}

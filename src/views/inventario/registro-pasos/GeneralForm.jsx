@@ -6,8 +6,8 @@ import axios from 'axios'
 const URL = 'http://127.0.0.1:8000/api/v1/general'
 const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
 const token = localStorage.getItem('token');
-const id_propiedad = localStorage.getItem('id');
-const GeneralForm = ({ stepper }) => {
+// const idPropiedad = localStorage.getItem('id');
+const GeneralForm = ({ idPropiedad, stepper }) => {
 
   const [objectGeneral, setObjectGeneral] = useState()
   const {
@@ -17,12 +17,8 @@ const GeneralForm = ({ stepper }) => {
     handleSubmit,
     formState: { errors }
   } = useForm()
-
-
   const onSubmit = data => {
     let idGeneral = objectGeneral?.id
-
-
     if (idGeneral) {
       axios.put(`${URL}/${idGeneral}`, data, {
         headers: {
@@ -34,7 +30,7 @@ const GeneralForm = ({ stepper }) => {
         })
         .catch(err => console.log(err))
     } else {
-      data.id_propiedad = localStorage.getItem('id');
+      data.id_propiedad = idPropiedad
 
       axios.post(URL, data, {
         headers: {
@@ -50,7 +46,7 @@ const GeneralForm = ({ stepper }) => {
   }
 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${id_propiedad}`, {
+    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }

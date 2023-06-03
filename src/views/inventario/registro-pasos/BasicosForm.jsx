@@ -6,8 +6,8 @@ import axios from 'axios'
 const URL = 'http://127.0.0.1:8000/api/v1/basicos'
 const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
 const token = localStorage.getItem('token');
-const id_propiedad = localStorage.getItem('id');
-const BasicosForm = ({ stepper }) => {
+// const idPropiedad = localStorage.getItem('id');
+const BasicosForm = ({ stepper, idPropiedad }) => {
 
   const [objectBasicos, setObjectBasicos] = useState()
 
@@ -20,7 +20,7 @@ const BasicosForm = ({ stepper }) => {
   } = useForm()
 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${id_propiedad}`, {
+    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -48,7 +48,7 @@ const BasicosForm = ({ stepper }) => {
         })
         .catch(err => console.log(err))
     } else {
-      data.id_propiedad = localStorage.getItem('id');
+      data.id_propiedad = idPropiedad
 
       axios.post(URL, data, {
         headers: {

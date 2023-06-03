@@ -73,7 +73,7 @@ const Routes = [
 
   },
   {
-    path: "/registrar-propiedad",
+    path: "/registrar-propiedad/:id",
     element: <AuthGuard><RegistrarPropiedad /></AuthGuard>,
 
   },
