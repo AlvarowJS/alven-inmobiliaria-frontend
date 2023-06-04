@@ -6,11 +6,11 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'rea
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-const URL = 'http://127.0.0.1:8000/api/v1/asesor/'
+const URL = 'http://127.0.0.1:8000/api/v1/cliente/'
+
 const token = localStorage.getItem('token');
 
-const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
-
+const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
     const navigate = useNavigate()
 
     const [idPropiedad, setIdPropiedad] = useState()
@@ -45,21 +45,28 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
         },
         {
             sortable: true,
-            name: 'Apellidos',
+            name: 'Apellido Materno',
             minWidth: '225px',
-            selector: row => row.apellidos
+            selector: row => row.apellido_materno
         },
         {
             sortable: true,
-            name: 'Celular',
+            name: 'Apellido Paterno',
             minWidth: '225px',
-            selector: row => row.celular
+            selector: row => row.apellido_paterno
         },
         {
             sortable: true,
-            name: 'Email',
+            name: 'Asesor',
             minWidth: '225px',
-            selector: row => row.email
+            selector: row => row?.asesor?.nombre +' '+row?.asesor?.apellidos 
+            // cell: row => {
+            //     return (
+            //         <div className='local_buttons'>                    
+
+            //         </div>
+            //     )
+            // }
         },
         {
             sortable: true,
@@ -74,16 +81,28 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             selector: row => row.email
         },
         {
+            sortable: true,
+            name: 'Celular',
+            minWidth: '225px',
+            selector: row => row.celular
+        },
+        {
+            sortable: true,
+            name: 'Medio de contacto',
+            minWidth: '225px',
+            selector: row => row.medio_contacto
+        },
+        {
             name: 'Acciones',
             sortable: true,
             allowOverflow: true,
             cell: row => {
                 return (
                     <div className='local_buttons'>
-                        <button className='btn btn-warning my-1' onClick={() => updateAsesorById(row?.id)}>
+                        <button className='btn btn-warning my-1' onClick={() => updateClienteById(row?.id)}>
                             <Edit />
                         </button>
-                        <button className='btn btn-danger mb-1' onClick={() => deleteAsesorById(row?.id)}>
+                        <button className='btn btn-danger mb-1' onClick={() => deleteClienteById(row?.id)}>
                             <Trash />
                         </button>
 
@@ -98,12 +117,12 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(res => { 
+            .then(res => {
                 setFilter(res.data.filter(e => e.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
             })
             .catch(err => { console.log(err) })
     }, [searchValue])
-    
+
     useEffect(() => {
 
         axios.get(URL, {
@@ -137,7 +156,6 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             .catch(err => { console.log(err) })
     }, [rowsPerPage, currentPage, estado])
 
-    console.log(searchValue, "filter aca")
 
     const handlePerPage = e => {
         setRowsPerPage(parseInt(e.target.value))
@@ -182,7 +200,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
 
             <Card>
                 <CardHeader className='border-bottom'>
-                    <CardTitle tag='h4'>Administrar Asesores</CardTitle>
+                    <CardTitle tag='h4'>Administrar Clientes</CardTitle>
                 </CardHeader>
                 <Row className='mx-0 mt-1 mb-50'>
                     <Col sm='6'>
@@ -238,4 +256,4 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
     )
 }
 
-export default TablaAsesor
+export default TablaCliente

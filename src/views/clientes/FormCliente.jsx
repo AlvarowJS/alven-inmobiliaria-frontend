@@ -1,252 +1,115 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Controller } from 'react-hook-form'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
-import Select from "react-select";
-import axios from 'axios';
-import './cliente.css'
+const URL = 'http://127.0.0.1:8000/api/v1/asesor'
+const token = localStorage.getItem('token');
 
-const FormCliente = ({ modal, toggle, setModal, handleSubmit,
-    submit, control, register, reset, errors, setEstadoUbi, estadoUbi,
-    setDepartamentoVal, departamentoVal, setDistritoVal, distritoVal, setProvinciaVal, provinciaVal
+const FormCliente = ({
+  modal, toggle, submit, control, register, reset, errors, handleSubmit
 }) => {
-    const [departamento, setDepartamento] = useState("");
-    const [provincia, setProvincia] = useState("");
-    const [distrito, setDistrito] = useState("");
-    const [departamentos, setDepartamentos] = useState([]);
-    const [provincias, setProvincias] = useState([]);
-    const [distritos, setDistritos] = useState([]);
 
-    useEffect(() => {
-        
-        axios.get("https://notify.grupogenera.pe/api/v1/departamentos/")
-            .then(response => {
-                setDepartamentos(response?.data);
-                
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
+  const [options, setOptions] = useState()
 
-    useEffect(() => {
-        console.log(distritoVal," ",departamento, " ",departamentoVal, "?")
-        if (departamentoVal != null || distritoVal != null) {
-            console.log("seactivo departamento")
+  useEffect(() => {
+    axios.get(URL, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then(res => setOptions(res.data))
+      .catch(err => console.log(err))
+  }, [])
 
-            axios.get(`https://notify.grupogenera.pe/api/v1/provincias/${departamentoVal}`)
-                .then(response => {
-                    console.log(response.data, "as")
-                    setDepartamento("");
-                    setProvincias(response?.data);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-        if (departamento) {
-            console.log("seactivo tambien depa")
-            axios.get(`https://notify.grupogenera.pe/api/v1/provincias/${departamento}`)
-                .then(response => {
-                    console.log(response.data, "as")
-                    setProvincias(response?.data);
-                    setDepartamentoVal("")
-                    setProvinciaVal("")
-                    setDistritoVal("")
-                    setDistrito("");
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-    }, [departamento, departamentoVal, estadoUbi]);
 
-    useEffect(() => {
-        if (provinciaVal != null) {
-            console.log("seactivo distrito")
-            axios.get(`https://notify.grupogenera.pe/api/v1/distritos/${provinciaVal}`)
-                .then(response => {
-                    setDistritos(response?.data);
-                    
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-        if (provincia) {
-            console.log("seactivo tambien distrito")
-            axios.get(`https://notify.grupogenera.pe/api/v1/distritos/${provincia}`)
-                .then(response => {
-                    setDistritos(response.data);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-    }, [provincia, provinciaVal, estadoUbi]);
+  return (
+    <Modal isOpen={modal} toggle={toggle} size='lg'>
+      <ModalHeader toggle={toggle}>
+        Registrar Cliente
+      </ModalHeader>
+      <ModalBody>
+        <form onSubmit={handleSubmit(submit)}>
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="nombre">Nombre</label>
+            <input type="text" className="form-control" id="nombre"
+              {...register('nombre')}
+              placeholder="Alvaro..."
+              required
+            />
+          </div>
 
-    const departamentoOptions = departamentos.map(departamento => ({
-        label: departamento.name,
-        value: departamento.name
-    }));
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="apellido_paterno">Apellido Paterno</label>
+            <input type="text" className="form-control" id="apellido_paterno"
+              {...register('apellido_paterno')}
+              placeholder="Rosas"
+              required
+            />
+          </div>
 
-    const provinciaOptions = provincias.map(provincia => ({
-        label: provincia.name,
-        value: provincia.name
-    }));
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="apellido_materno">Apellido Materno</label>
+            <input type="text" className="form-control" id="apellido_materno"
+              {...register('apellido_materno')}
+              placeholder="Perez"
+              required
+            />
+          </div>
 
-    const distritoOptions = distritos.map(distrito => ({
-        label: distrito.name,
-        value: distrito.name
-    }));
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="nombre_tarifa">Seleccionar al Asesor</label>
+            <select className="form-select" id="asesor_id" {...register("asesor_id")}>
+              {
+                options?.map(option => (
+                  <option key={option.id} value={option.id}>{option.nombe} {option.apellidos}</option>
+                ))
+              }
+            </select>
+          </div>
 
-    return (
-        <div>
-            <Modal isOpen={modal} toggle={toggle} className='modal-dialog modal-lg'>
-                <ModalHeader toggle={toggle}>
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="cedula">Cedula</label>
+            <input type="text" className="form-control" id="cedula"
+              {...register('cedula')}
+              placeholder="7468737"
+              required
+            />
+          </div>
 
-                </ModalHeader>
-                <ModalBody>
-                    <form onSubmit={handleSubmit(submit)}>
-                        <div className='text-center mb-2'>
-                            <h1 className='mb-1'>Editar Datos del Cliente</h1>
-                        </div>
-                        <Row className='mb-2'>
-                            <Col>
-                                <Label className='form-label'> RUC</Label>
-                                <Controller
-                                    defaultValue=''
-                                    control={control}
-                                    id='ruc'
-                                    name='ruc'
-                                    render={({ field }) => (
-                                        <Input
-                                            type='text'
-                                            placeholder='INGRESE N. DE RUC'
-                                            invalid={errors.ruc && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="email">Email</label>
+            <input type="email" className="form-control" id="email"
+              {...register('email')}
+              placeholder="ejemplo@gmail.com"
+              required
+            />
+          </div>
 
-                            </Col>
-                            <Col>
-                                <Label className='form-label'> Razón Social</Label>
-                                <Controller
-                                    defaultValue=''
-                                    control={control}
-                                    id='razon_social'
-                                    name='razon_social'
-                                    render={({ field }) => (
-                                        <Input
-                                            type='text'
-                                            placeholder='INGRESE RAZON SOCIAL'
-                                            invalid={errors.razon_social && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                            </Col>
-                        </Row>
-                        <Row className='mb-2'>
-                            <Col>
-                                <Label className='form-label'> DIRECCIÓN</Label>
-                                <Controller
-                                    defaultValue=''
-                                    control={control}
-                                    id='direccion'
-                                    name='direccion'
-                                    render={({ field }) => (
-                                        <Input
-                                            type='text'
-                                            placeholder='INGRESE LA DIRECCIÓN'
-                                            invalid={errors.direccion && true}
-                                            {...field}
-                                        />
-                                    )}
-                                />
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="celular">Celular</label>
+            <input type="text" className="form-control" id="celular"
+              {...register('celular')}
+              placeholder="99 442409"
+              required
+            />
+          </div>
 
-                            </Col>
-                        </Row>
-                        <Row className='mb-2'>
-                            <Col>
-                                <div className="custom-select">
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="medio_contacto">Medio de Contacto</label>
+            <input type="text" className="form-control" id="medio_contacto"
+              {...register('medio_contacto')}
+              placeholder="celular, email, telefono..."
+              required
+            />
+          </div>
 
-                                    <select
-                                        name="departamento"
-                                        // value={departamentoVal == [] ? departamento : departamentoVal }
-                                        {...register("departamento_nombre")}
-                                        onChange={event => {
-                                            setDepartamento(event.target.value);
-                                            setDepartamentoVal(null);
-                                            setProvinciaVal(null);
-                                            setDistritoVal(null);
-                                            setProvincias([]);
-                                            setDistritos([]);
-                                        }}
-                                    >
-                                        <option value="">Seleccione un departamento</option>
-                                        {departamentoOptions?.map(departamento => (
-                                            <option key={departamento?.value} value={departamento?.value}>{departamento?.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </Col>
-                            <Col>
-                                <div className="custom-select">
-                                    <select
-                                        name="provincia"
-                                        
-                                        value={provinciaVal == null ? provincia : provinciaVal}                                        
-                                        {...register("provincia_nombre")}
-                                        onChange={event => {
-                                            setProvincia(event.target.value);
-                                            setProvinciaVal(null);
-                                            setDistritoVal(null);
-                                            setDistritos([]);
-                                        }}
-                                    >
-                                        <option value="">Seleccione una provincia</option>
-                                        {provinciaOptions?.map(provincia => (
-                                            <option key={provincia?.value} value={provincia?.value}>{provincia?.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
 
-                            </Col>
-                            <Col>
-                                <div className="custom-select">
-                                    <select
-                                        name="distrito"                                        
-                                        value={distritoVal == null ? distrito : distritoVal}
-                                        {...register("distrito_nombre")}
-                                        onChange={event => {
-                                            setDistrito(event.target.value)
-                                            setDistritoVal(null);
-                                        }}
-                                    >
-                                        <option value="">Seleccione un distrito</option>
-                                        {distritoOptions?.map(distrito => (
-                                            <option key={distrito?.value} value={distrito?.value}>{distrito?.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </Col>                    
-                        </Row>
-                        <div className='d-flex justify-content-end'>
-                            <div className='local_butons_form d-flex justify-content-end'>
-                                <Button color="secondary" onClick={toggle}>
-                                    Cancelar
-                                </Button>
-                                <Button className='mx-2' color="info">
-                                    Grabar
-                                </Button>
-                            </div>
-                        </div>
-                    </form>
-                </ModalBody>
-            </Modal>
-        </div >
-    )
+          <button className='btn btn-primary mx-4 mb-2'>Enviar</button>
+          {/* <button className='btn btn-secondary' onClick={toggle}>Cancelar</button> */}
+        </form>
+      </ModalBody>
+
+    </Modal>
+  )
 }
 
 export default FormCliente

@@ -4,14 +4,14 @@ import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'reactstrap'
 import DataTable from 'react-data-table-component'
-import { ChevronDown } from 'react-feather'
+import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = 'http://127.0.0.1:8000/api/v1/propiedades/'
 const token = localStorage.getItem('token');
 const TablaInventario = () => {
 
     const navigate = useNavigate()
-
+    const [estado, setEstado] = useState(false)
     const [idPropiedad, setIdPropiedad] = useState()
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerPage] = useState(3)
@@ -22,6 +22,39 @@ const TablaInventario = () => {
 
     const dispatch = useDispatch()
 
+    const updateInventarioById = (id) => {
+        navigate(`/registrar-propiedad/${id}`)
+    }
+
+    const deleteInventarioById = (id) => {
+        
+
+        return MySwal.fire({
+          title: '¿Estás seguro de eliminar?',
+          text: "¡No podrás revertir esto!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-outline-danger ms-1'
+          },
+          buttonsStyling: false
+        }).then(function (result) {
+          if (result.value) {
+            axios.delete(`${URL}/${id}`, {
+              headers: {
+                'Authorization': 'Bearer ' + token
+              }
+            })
+              .then(res => {
+                setEstado(true)
+              })
+              .catch(err => console.log(err))
+          }
+        })
+    }
+
     const registrarPropiedad = () => {
 
         axios.post(URL, null, {
@@ -31,7 +64,7 @@ const TablaInventario = () => {
         })
             .then(res => {
                 setIdPropiedad(res?.data?.id)
-                let idProp = res?.data?.id          
+                let idProp = res?.data?.id
                 navigate(`/registrar-propiedad/${idProp}`)
 
             })
@@ -77,7 +110,7 @@ const TablaInventario = () => {
         {
             sortable: true,
             name: 'ID',
-            minWidth: '225px',
+            minWidth: '25px',
             selector: row => row.id
         },
         {
@@ -142,10 +175,28 @@ const TablaInventario = () => {
             minWidth: '250px',
             selector: row => row?.publicidad?.precio_venta + 'MXM'
         },
+        {
+            name: 'Acciones',
+            sortable: true,
+            allowOverflow: true,
+            cell: row => {
+                return (
+                    <div className='local_buttons'>
+                        <button className='btn btn-warning my-1' onClick={() => updateInventarioById(row?.id)}>
+                            <Edit />
+                        </button>
+                        <button className='btn btn-danger mb-1' onClick={() => deleteInventarioById(row?.id)}>
+                            <Trash />
+                        </button>
+
+                    </div>
+                )
+            }
+        }
     ]
 
     useEffect(() => {
-
+        
         axios.get(URL, {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -175,7 +226,7 @@ const TablaInventario = () => {
 
             })
             .catch(err => { console.log(err) })
-    }, [rowsPerPage, currentPage])
+    }, [rowsPerPage, currentPage, estado])
 
     console.log(rowsPerPage, "row per")
     console.log(currentPage, "current")
