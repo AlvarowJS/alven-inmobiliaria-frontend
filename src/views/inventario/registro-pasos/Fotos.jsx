@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import Avatar from '@components/avatar'
 import { Check } from 'react-feather'
@@ -8,12 +8,17 @@ import { useDropzone } from 'react-dropzone'
 import { FileText, X, DownloadCloud } from 'react-feather'
 import './../style/style.css'
 const URL_FOTOS = 'http://127.0.0.1:8000/api/v1/fotos'
+const URL_PROPIEDADES = 'http://127.0.0.1:8000/api/v1/propiedades'
+const token = localStorage.getItem('token');
 import axios from 'axios'
-const Fotos = () => {
+import FotoCard from '../fotos/FotoCard'
+const Fotos = ({ idPropiedad }) => {
 
+  const [fotos, setFotos] = useState()
   const { handleSubmit, control, register, reset, setError, formState: { errors } } = useForm()
   const [files, setFiles] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [estado, setEstado] = useState(false)
 
   const { getRootProps, getInputProps } = useDropzone({
 
@@ -72,23 +77,29 @@ const Fotos = () => {
   }
 
   const createDir = newDir => {
-    console.log(newDir,"asdsddd")
+    console.log(newDir, "asdsddd")
     setIsLoading(true)
-    axios.post(URL_FOTOS, newDir)
+    axios.post(URL_FOTOS, newDir, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
       .then(res => {
         setIsLoading(false)
+        setEstado(false)
         console.log(res.data)
       })
       .catch(err => console.log(err))
 
   }
   const submit = data => {
+    setEstado(true)
     if (files.length > 0) {
       const f = new FormData()
       for (let i = 0; i < files.length; i++) {
         f.append("fotos[]", files[i])
       }
-
+      f.append('propiedad_id', idPropiedad)
       createDir(f)
       toast(
         <div className='d-flex'>
@@ -113,9 +124,22 @@ const Fotos = () => {
         }
       }
     }
-
-
   }
+
+  useEffect(() => {
+    setEstado(true)
+    axios.get(`${URL_FOTOS}/${idPropiedad}`, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        setFotos(res?.data)
+
+      })
+      .catch(err => console.log(err))
+  }, [estado])
+
   return (
     <>
       <Card>
@@ -133,7 +157,7 @@ const Fotos = () => {
               <div className='d-flex align-items-center align-content-center flex-column'>
                 <DownloadCloud size={64} />
                 <h5 className='text_local'>Arrastra los archivos aquí o haga clic en cargar</h5>
-                
+
               </div>
               <div className="cuadrar__spinner">
                 {isLoading ? <div className='spinner'></div> : null}
@@ -156,6 +180,17 @@ const Fotos = () => {
           </form>
 
         </CardBody>
+      </Card>
+      <Card>
+        {
+          fotos?.map(foto => (
+            <FotoCard
+              key={foto?.id}              
+              foto={foto}
+              setEstado={setEstado}
+            />
+          ))
+        }
       </Card>
     </>
   )

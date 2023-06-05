@@ -32,11 +32,7 @@ const TemplateTitle = "%s - Vuexy React Admin Template";
 // ** Default Route
 const DefaultRoute = "/login";
 
-const Home = lazy(() => import("../../views/Home"));
-
 const Error = lazy(() => import("../../views/Error"));
-const Xml = lazy(() => import("../../views/Xml"));
-
 
 const AuthGuard = ({ children }) => {
   const navigate = useNavigate();

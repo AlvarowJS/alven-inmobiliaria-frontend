@@ -40,19 +40,19 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
         {
             sortable: true,
             name: 'Nombre',
-            minWidth: '225px',
+            minWidth: '125px',
             selector: row => row.nombre
         },
         {
             sortable: true,
             name: 'Apellido Materno',
-            minWidth: '225px',
+            minWidth: '155px',
             selector: row => row.apellido_materno
         },
         {
             sortable: true,
             name: 'Apellido Paterno',
-            minWidth: '225px',
+            minWidth: '155px',
             selector: row => row.apellido_paterno
         },
         {
@@ -71,7 +71,7 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
         {
             sortable: true,
             name: 'Cedula',
-            minWidth: '225px',
+            minWidth: '125px',
             selector: row => row.cedula
         },
         {
@@ -83,7 +83,7 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
         {
             sortable: true,
             name: 'Celular',
-            minWidth: '225px',
+            minWidth: '175px',
             selector: row => row.celular
         },
         {

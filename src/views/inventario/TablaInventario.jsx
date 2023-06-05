@@ -6,16 +6,21 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'rea
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-const URL = 'http://127.0.0.1:8000/api/v1/propiedades/'
+const URL = 'http://127.0.0.1:8000/api/v1/propiedades'
 const token = localStorage.getItem('token');
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
+
 const TablaInventario = () => {
 
     const navigate = useNavigate()
     const [estado, setEstado] = useState(false)
     const [idPropiedad, setIdPropiedad] = useState()
     const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerPage] = useState(3)
+    const [rowsPerPage, setRowsPerPage] = useState(5)
     const [searchValue, setSearchValue] = useState('')
+    const [filter, setFilter] = useState()
     const [getData, setGetData] = useState()
     const [getTotalData, setGetTotalData] = useState()
     const [store, setStore] = useState()
@@ -27,31 +32,47 @@ const TablaInventario = () => {
     }
 
     const deleteInventarioById = (id) => {
-        
 
+        setEstado(false)
         return MySwal.fire({
-          title: '¿Estás seguro de eliminar?',
-          text: "¡No podrás revertir esto!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Si',
-          customClass: {
-            confirmButton: 'btn btn-primary',
-            cancelButton: 'btn btn-outline-danger ms-1'
-          },
-          buttonsStyling: false
+            title: '¿Estás seguro de eliminar?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-outline-danger ms-1'
+            },
+            buttonsStyling: false
         }).then(function (result) {
-          if (result.value) {
-            axios.delete(`${URL}/${id}`, {
-              headers: {
-                'Authorization': 'Bearer ' + token
-              }
-            })
-              .then(res => {
-                setEstado(true)
-              })
-              .catch(err => console.log(err))
-          }
+            if (result.value) {
+                axios.delete(`${URL}/${id}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                })
+                    .then(res => {
+                        setEstado(true)
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Inventario Eliminado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'warning',
+                            title: 'Porfavor eliminar primero las imagenes',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    })
+            }
         })
     }
 
@@ -95,23 +116,28 @@ const TablaInventario = () => {
 
     const handleFilter = e => {
         setSearchValue(e.target.value)
-
-        dispatch(
-            getData({
-                page: currentPage,
-                perPage: rowsPerPage,
-                q: e.target.value
-            })
-        )
     }
 
+    useEffect(() => {
+        axios.get(URL, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(res => {
+                setFilter(res.data.filter(e => e.general?.numero_ofna.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
+            })
+            .catch(err => { console.log(err) })
+    }, [searchValue])
+
+    console.log(filter)
     // Columnas
     const serverSideColumns = [
         {
             sortable: true,
             name: 'ID',
             minWidth: '25px',
-            selector: row => row.id
+            selector: row => row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna
         },
         {
             sortable: true,
@@ -122,9 +148,11 @@ const TablaInventario = () => {
                 return (
                     <>
                         {
-                            row?.direccion?.pais + ' ' +
-                            row?.direccion?.codigo_postal + ' ' +
-                            row?.direccion?.estado
+                            row?.direccion?.pais == undefined ? 'Sin asignar' : row?.direccion?.pais
+                                + ' ' +
+                                row?.direccion?.codigo_postal
+                                + ' ' +
+                                row?.direccion?.estado
                         }
                     </>
                 )
@@ -134,13 +162,13 @@ const TablaInventario = () => {
             sortable: true,
             name: 'SubTipo',
             minWidth: '250px',
-            selector: row => row?.general?.tipo_propiedad
+            selector: row => row?.general?.tipo_propiedad == undefined ? 'Sin asignar' : row?.general?.tipo_propiedad
         },
         {
             sortable: true,
             name: 'Tipo Operación',
             minWidth: '250px',
-            selector: row => row?.general?.tipo_operacion
+            selector: row => row?.general?.tipo_operacion == undefined ? 'Sin asignar' : row?.general?.tipo_operacion
         },
         {
             sortable: true,
@@ -149,9 +177,19 @@ const TablaInventario = () => {
             cell: row => {
                 return (
                     <>
-                        Asesor: {row?.cliente?.asesor?.nombre + ' ' + row?.cliente?.asesor?.apellidos}
+                        Asesor: {
+                            row?.cliente?.asesor?.nombre == undefined ? 'Sin asignar' : row?.cliente?.asesor?.nombre
+                                + ' ' +
+                                row?.cliente?.asesor?.apellidos
+                        }
                         <br />
-                        Dueño: {row?.cliente?.nombre + ' ' + row?.cliente?.apellido_materno + ' ' + row?.cliente?.apellido_paterno}
+                        Dueño: {
+                            row?.cliente?.nombre == undefined ? 'Sin asignar' : row?.cliente?.nombre
+                            + ' ' + 
+                            row?.cliente?.apellido_materno 
+                            + ' ' + 
+                            row?.cliente?.apellido_paterno
+                        }
                     </>
                 )
             }
@@ -164,7 +202,7 @@ const TablaInventario = () => {
                 return (
                     <>
 
-                        <img src={`http://127.0.0.1:8000/storage/fotos/${row?.foto[0]?.fotos}`} alt="" style={{ width: "120px", height: "80px" }} />
+                        <img src={`http://127.0.0.1:8000/storage/${row?.id}/${row?.foto[0]?.fotos}`} alt="" style={{ width: "120px", height: "80px" }} />
                     </>
                 )
             }
@@ -173,7 +211,7 @@ const TablaInventario = () => {
             sortable: true,
             name: 'Precio',
             minWidth: '250px',
-            selector: row => row?.publicidad?.precio_venta + 'MXM'
+            selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : row?.publicidad?.precio_venta + 'MXM'
         },
         {
             name: 'Acciones',
@@ -196,7 +234,7 @@ const TablaInventario = () => {
     ]
 
     useEffect(() => {
-        
+
         axios.get(URL, {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -298,9 +336,8 @@ const TablaInventario = () => {
                                     value={rowsPerPage}
                                     onChange={e => handlePerPage(e)}
                                 >
-                                    <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                    <option value={7}>7</option>
+
+                                    <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={25}>25</option>
                                     <option value={50}>50</option>
@@ -319,7 +356,7 @@ const TablaInventario = () => {
                                 type='text'
                                 bsSize='sm'
                                 id='search-input'
-                                value={searchValue}
+                                // value={searchValue}
                                 onChange={handleFilter}
                             />
                         </Col>
@@ -333,7 +370,8 @@ const TablaInventario = () => {
                             columns={serverSideColumns}
                             sortIcon={<ChevronDown size={10} />}
                             paginationComponent={CustomPagination}
-                            data={getData}
+                            // data={getData}
+                            data={searchValue ? filter : getData}
                         />
                     </div>
                 </Card>
