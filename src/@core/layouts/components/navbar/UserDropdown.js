@@ -31,6 +31,8 @@ const UserDropdown = () => {
   const loggout = () => {
     localStorage.removeItem('token', '')
   }
+
+  const name = localStorage.getItem('nombre')
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
       <DropdownToggle
@@ -40,7 +42,7 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name fw-bold">John Doe</span>
+          <span className="user-name fw-bold">{name}</span>
           <span className="user-status">Admin</span>
         </div>
         <Avatar

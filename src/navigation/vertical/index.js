@@ -1,4 +1,4 @@
-import { Mail, Home, Upload, Eye, Folder, CreditCard, Users, MessageSquare, File, User } from "react-feather";
+import { Mail, Home, Upload, Eye, Folder, CreditCard, Users, MessageSquare, File, User, MessageCircle } from "react-feather";
 
 export default [
   {
@@ -20,7 +20,12 @@ export default [
     icon: <User size={20} />,
     navLink: "/asesores",
   },
-
+  {
+    id: "mensajes",
+    title: "Mensajes",
+    icon: <MessageCircle size={20} />,
+    navLink: "/mensajes",
+  },
 
 
 ];

@@ -44,7 +44,8 @@ const Login = () => {
   const submit = data => {
     axios.post(URL, data)
       .then(res => {
-        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('token', res?.data?.token)
+        localStorage.setItem('nombre', res?.data?.name)
         navigate('/inventario')
 
       })

@@ -4,14 +4,21 @@ import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 const URL = 'http://127.0.0.1:8000/api/v1/publicidad'
+const URL_ESTADO = 'http://127.0.0.1:8000/api/v1/actualizar-propiedad'
 const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
 const token = localStorage.getItem('token');
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
+
 // const idPropiedad = localStorage.getItem('id');
 
 const PublicidadForm = ({ stepper, idPropiedad }) => {
-
+  const navigate = useNavigate()
   const [objectPublicidad, setObjectPublicidad] = useState()
-  
+  const [estadoPropiedad, setEstadoPropiedad] = useState()
+
   const {
     reset,
     control,
@@ -19,6 +26,25 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
     handleSubmit,
     formState: { errors }
   } = useForm()
+
+  const terminarEdicion = () => {
+    axios.put(`${URL_ESTADO}/${idPropiedad}`,null, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Inventario Registrado',
+          showConfirmButton: false,
+          timer: 1500
+      })
+        navigate(`/inventario`)
+      })
+      .catch(err => console.log(err))
+  }
 
   useEffect(() => {
     axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
@@ -28,7 +54,9 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
     })
       .then(res => {
         let object = res?.data?.publicidad
+        let estado = res?.data?.estado
         setObjectPublicidad(object)
+        setEstadoPropiedad(estado)
         reset(object)
       })
       .catch(err => console.log(err))
@@ -126,6 +154,9 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
             />
           </div>
           <div className='d-flex'>
+            <Button className='me-1' color='success' onClick={terminarEdicion} disabled={estadoPropiedad}>
+              Terminar
+            </Button>
             <Button className='me-1' color='primary' type='submit'>
               Enviar
             </Button>

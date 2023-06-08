@@ -56,14 +56,7 @@ const RegistrarPropiedad = () => {
             // subtitle: 'Ingrese caracteristicas de la propiedad.',
             icon: <Columns size={18} />,
             content: <CaracteristicasForm stepper={stepper} idPropiedad={id.id} type='wizard-modern' />
-        },
-        {
-            id: 'publicidad',
-            title: 'Publicidad',
-            // subtitle: 'Ingrese datos de publicidad.',
-            icon: <Eye size={18} />,
-            content: <PublicidadForm stepper={stepper} idPropiedad={id.id} type='wizard-modern' />
-        },
+        },       
         {
             id: 'fotos',
             title: 'Fotos',
@@ -71,6 +64,13 @@ const RegistrarPropiedad = () => {
             icon: <Camera size={18} />,
             content: <Fotos stepper={stepper} idPropiedad={id.id} type='wizard-modern' />
         },
+        {
+            id: 'publicidad',
+            title: 'Publicidad',
+            // subtitle: 'Ingrese datos de publicidad.',
+            icon: <Eye size={18} />,
+            content: <PublicidadForm stepper={stepper} idPropiedad={id.id} type='wizard-modern' />
+        }
 
     ]
     return (

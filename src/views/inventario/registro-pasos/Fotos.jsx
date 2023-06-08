@@ -12,7 +12,7 @@ const URL_PROPIEDADES = 'http://127.0.0.1:8000/api/v1/propiedades'
 const token = localStorage.getItem('token');
 import axios from 'axios'
 import FotoCard from '../fotos/FotoCard'
-const Fotos = ({ idPropiedad }) => {
+const Fotos = ({ idPropiedad, stepper }) => {
 
   const [fotos, setFotos] = useState()
   const { handleSubmit, control, register, reset, setError, formState: { errors } } = useForm()
@@ -29,6 +29,9 @@ const Fotos = ({ idPropiedad }) => {
     }
   })
 
+  const pasarSiguiente = () => {
+    stepper.next()
+  }
   const renderFilePreview = file => {
     if (file.type.startsWith('image')) {
       return <img className='rounded' alt={file.name} src={URL.createObjectURL(file)} height='28' width='28' />
@@ -180,12 +183,16 @@ const Fotos = ({ idPropiedad }) => {
           </form>
 
         </CardBody>
+        <Button className='w-25 mb-5 mx-5' color='primary' onClick={pasarSiguiente}>
+          Siguiente
+        </Button>
       </Card>
+
       <Card>
         {
           fotos?.map(foto => (
             <FotoCard
-              key={foto?.id}              
+              key={foto?.id}
               foto={foto}
               setEstado={setEstado}
             />

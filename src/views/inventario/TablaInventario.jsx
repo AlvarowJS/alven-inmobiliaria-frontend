@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
-import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'reactstrap'
+import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } from 'reactstrap'
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
@@ -185,10 +185,10 @@ const TablaInventario = () => {
                         <br />
                         Dueño: {
                             row?.cliente?.nombre == undefined ? 'Sin asignar' : row?.cliente?.nombre
-                            + ' ' + 
-                            row?.cliente?.apellido_materno 
-                            + ' ' + 
-                            row?.cliente?.apellido_paterno
+                                + ' ' +
+                                row?.cliente?.apellido_materno
+                                + ' ' +
+                                row?.cliente?.apellido_paterno
                         }
                     </>
                 )
@@ -210,8 +210,32 @@ const TablaInventario = () => {
         {
             sortable: true,
             name: 'Precio',
-            minWidth: '250px',
+            minWidth: '120px',
             selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : row?.publicidad?.precio_venta + 'MXM'
+        },
+        {
+            sortable: true,
+            name: 'Estado',
+            minWidth: '100px',
+            cell: row => {
+                return (
+                    <>
+                        {
+                            row?.estado == true ?
+
+                                <Badge color='light-success'>
+                                    Terminado
+                                </Badge>
+                                :
+                                <Badge color='light-danger'>
+                                    En Borrador
+                                </Badge>
+
+                        }
+                    </>
+                )
+            }
+            // selector: row => row?.estado == 'false'
         },
         {
             name: 'Acciones',

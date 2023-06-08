@@ -19,6 +19,7 @@ import Clientes from "../../views/clientes/Clientes";
 import Inventario from "../../views/inventario/Inventario";
 import Asesor from "../../views/asesores/Asesor";
 import RegistrarPropiedad from "../../views/inventario/RegistrarPropiedad";
+import Mensajes from "../../views/mensajes/Mensajes";
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -76,9 +77,11 @@ const Routes = [
   {
     path: "/asesores",
     element: <AuthGuard><Asesor /></AuthGuard>,
-
   },
-
+  {
+    path: "/mensajes",
+    element: <AuthGuard><Mensajes /></AuthGuard>,
+  },
   {
     path: "/error",
     element: <Error />,
