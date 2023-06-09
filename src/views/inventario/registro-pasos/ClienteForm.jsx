@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row, InputGroup, InputGroupText } from 'reactstrap'
 import Select from 'react-select';
 import { useForm } from 'react-hook-form'
-const URL_ASESOR = 'http://127.0.0.1:8000/api/v1/asesor'
-const URL = 'http://127.0.0.1:8000/api/v1/cliente'
-const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
+const URL_ASESOR = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente'
+const URL_ID = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente-id'
+const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 import axios from 'axios'
 import Autocomplete from '@components/autocomplete'
 const token = localStorage.getItem('token');
@@ -51,7 +52,8 @@ const ClienteForm = ({ stepper, idPropiedad }) => {
       }
     })
       .then(res => {
-        console.log(res?.data)
+        console.log(res?.data, "cliente")
+        
         reset(res?.data)
 
       })
@@ -80,30 +82,42 @@ const ClienteForm = ({ stepper, idPropiedad }) => {
   }
 
   const submit = (data) => {
-    let idCliente = objectCliente?.id
+    let idClienteActual = objectCliente?.id
+    let actualizaCliente = {}
+    actualizaCliente.cliente_id = idCliente
+    
+    axios.put(`${URL_ID}/${idPropiedad}`, actualizaCliente, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        stepper.next()
+      })
+      .catch(err => console.log(err))
 
-    if (idCliente) {
-      axios.put(`${URL}/${idCliente}`, data, {
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      })
-        .then(res => {
-          stepper.next()
-        })
-        .catch(err => console.log(err))
-    } else {
-      data.id_propiedad = idPropiedad
-      axios.post(URL, data, {
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      })
-        .then(res => {
-          stepper.next()
-        })
-        .catch(err => console.log(err))
-    }
+    // if (idCliente) {
+    //   axios.put(`${URL}/${idCliente}`, data, {
+    //     headers: {
+    //       'Authorization': 'Bearer ' + token
+    //     }
+    //   })
+    //     .then(res => {
+    //       stepper.next()
+    //     })
+    //     .catch(err => console.log(err))
+    // } else {
+    //   data.id_propiedad = idPropiedad
+    //   axios.post(URL, data, {
+    //     headers: {
+    //       'Authorization': 'Bearer ' + token
+    //     }
+    //   })
+    //     .then(res => {
+    //       stepper.next()
+    //     })
+    //     .catch(err => console.log(err))
+    // }
   }
   return (
     <Card>

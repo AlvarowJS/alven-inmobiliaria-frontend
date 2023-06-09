@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React from 'react'
 import { Trash } from 'react-feather'
-const URL_FOTOS = 'http://127.0.0.1:8000/api/v1/fotos'
+const URL_FOTOS = 'https://backend.alven-inmobiliaria.com.mx/api/v1/fotos'
 const token = localStorage.getItem('token');
 const FotoCard = ({ foto, setEstado }) => {
 
-    let img = `http://127.0.0.1:8000/storage/${foto?.propiedad_id}/${foto?.fotos}`
+    let img = `https://backend.alven-inmobiliaria.com.mx/storage/${foto?.propiedad_id}/${foto?.fotos}`
 
     console.log(foto)
     const deleteFotoById = (id) => {

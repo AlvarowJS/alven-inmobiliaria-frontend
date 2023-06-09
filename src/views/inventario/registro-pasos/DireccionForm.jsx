@@ -12,8 +12,11 @@ const containerStyle = {
 import axios from 'axios';
 const token = localStorage.getItem('token');
 // const idPropiedad = localStorage.getItem('id');
-const URL = 'http://127.0.0.1:8000/api/v1/direccion'
-const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/direccion'
+const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
 
 const DireccionForm = ({ stepper, idPropiedad }) => {
 
@@ -26,16 +29,21 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
   const [zoom, setZoom] = useState()
 
   useEffect(() => {
-    
+
     axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
     })
       .then(res => {
-        console.log(res.data)
+
         let object = res?.data?.direccion
+
+        setLat(parseFloat(object?.LAT))
+        setLng(parseFloat(object?.LON))
+        setZoom(parseFloat(object?.ZOOM))
         setObjectDirection(object)
+
         reset(object)
       })
       .catch(err => console.log(err))
@@ -137,6 +145,7 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
     })
   }
 
+  console.log(lat, "lat", lng, "lon", zoom, "zoom")
   return (
 
     <Card>
@@ -360,23 +369,24 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
             </Col>
           </Row>
           <Row className='px-4'>
+            {lat && lng && (
 
-            <LoadScript
-              googleMapsApiKey="AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q"
-            >
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={{
-                  lat: lat,
-                  lng: lng
-                }}
-                zoom={zoom}
+              <LoadScript
+                googleMapsApiKey="AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q"
               >
-                { /* Child components, such as markers, info windows, etc. */}
-                <></>
-              </GoogleMap>
-            </LoadScript>
-
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={{
+                    lat: lat,
+                    lng: lng
+                  }}
+                  zoom={zoom}
+                >
+                  { /* Child components, such as markers, info windows, etc. */}
+                  <></>
+                </GoogleMap>
+              </LoadScript>
+            )}
             {/* AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q */}
 
           </Row>

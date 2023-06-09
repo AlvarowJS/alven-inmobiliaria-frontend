@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
-const URL = 'http://127.0.0.1:8000/api/v1/asesor'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
 const token = localStorage.getItem('token');
 
 const FormCliente = ({

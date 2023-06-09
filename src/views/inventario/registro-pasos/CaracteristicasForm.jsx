@@ -5,8 +5,8 @@ import toast from 'react-hot-toast'
 import axios from 'axios';
 const token = localStorage.getItem('token');
 
-const URL = 'http://127.0.0.1:8000/api/v1/caracteristica'
-const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/caracteristica'
+const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 const CaracteristicasForm = ({ stepper, idPropiedad }) => {
 
   const [objectCaracteristica, setObjectCaracteristica] = useState()
