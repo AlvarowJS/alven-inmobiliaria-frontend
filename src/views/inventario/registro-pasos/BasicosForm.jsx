@@ -5,9 +5,10 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/basicos'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const token = localStorage.getItem('token');
 // const idPropiedad = localStorage.getItem('id');
 const BasicosForm = ({ stepper, idPropiedad }) => {
+
+  const token = localStorage.getItem('token');
 
   const [objectBasicos, setObjectBasicos] = useState()
 
@@ -26,7 +27,7 @@ const BasicosForm = ({ stepper, idPropiedad }) => {
       }
     })
       .then(res => {
-        let object = res?.data?.basico        
+        let object = res?.data?.basico
         setObjectBasicos(object)
         reset(object)
       })
@@ -34,7 +35,7 @@ const BasicosForm = ({ stepper, idPropiedad }) => {
   }, [])
 
   const onSubmit = data => {
-    
+
     let idBasicos = objectBasicos?.id
 
     if (idBasicos) {

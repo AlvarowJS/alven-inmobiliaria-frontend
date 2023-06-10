@@ -30,6 +30,7 @@ import defaultAvatar from "@src/assets/images/portrait/small/avatar-s-11.jpg";
 const UserDropdown = () => {
   const loggout = () => {
     localStorage.removeItem('token', '')
+    localStorage.removeItem('nombre', '')
   }
 
   const name = localStorage.getItem('nombre')

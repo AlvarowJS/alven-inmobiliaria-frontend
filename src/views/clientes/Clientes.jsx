@@ -4,7 +4,6 @@ import axios from 'axios'
 import { useForm } from 'react-hook-form'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente'
 const REG_URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/registrar-cliente'
-const token = localStorage.getItem('token');
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaCliente from './TablaCliente'
@@ -12,6 +11,8 @@ import FormCliente from './FormCliente'
 const MySwal = withReactContent(Swal)
 
 const Clientes = () => {
+  const token = localStorage.getItem('token');
+
   const [modal, setModal] = useState(false)
   const [estado, setEstado] = useState(false)
   const [objUpdate, setObjUpdate] = useState()

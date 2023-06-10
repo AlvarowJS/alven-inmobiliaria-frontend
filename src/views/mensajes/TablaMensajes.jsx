@@ -7,9 +7,9 @@ import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/contacto/'
-const token = localStorage.getItem('token');
 
 const TablaMensajes = ({ deleteMensajeById, estado }) => {
+    const token = localStorage.getItem('token');
 
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerPage] = useState(3)
@@ -33,7 +33,7 @@ const TablaMensajes = ({ deleteMensajeById, estado }) => {
             cell: row => {
                 return (
                     <div className='local_buttons'>
-                      {row?.nombre}
+                        {row?.nombre}
 
                     </div>
                 )
@@ -47,7 +47,7 @@ const TablaMensajes = ({ deleteMensajeById, estado }) => {
             cell: row => {
                 return (
                     <div className='local_buttons'>
-                      {row?.apellido}
+                        {row?.apellido}
 
                     </div>
                 )
@@ -61,7 +61,7 @@ const TablaMensajes = ({ deleteMensajeById, estado }) => {
             cell: row => {
                 return (
                     <div className='local_buttons'>
-                      {row?.email}
+                        {row?.email}
 
                     </div>
                 )
@@ -75,7 +75,7 @@ const TablaMensajes = ({ deleteMensajeById, estado }) => {
             cell: row => {
                 return (
                     <div className='local_buttons'>
-                      {row?.telefono}
+                        {row?.telefono}
 
                     </div>
                 )
@@ -88,7 +88,7 @@ const TablaMensajes = ({ deleteMensajeById, estado }) => {
             cell: row => {
                 return (
                     <div className='local_buttons'>
-                      {row?.direccion_inmueble}
+                        {row?.direccion_inmueble}
 
                     </div>
                 )

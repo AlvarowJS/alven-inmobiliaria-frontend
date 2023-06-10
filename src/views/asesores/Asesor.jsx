@@ -5,12 +5,13 @@ import FormAsesor from './FormAsesor'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
-const token = localStorage.getItem('token');
+
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 const Asesor = () => {
 
+  const token = localStorage.getItem('token');
   const [modal, setModal] = useState(false)
   const [estado, setEstado] = useState(false)
   const [objUpdate, setObjUpdate] = useState()

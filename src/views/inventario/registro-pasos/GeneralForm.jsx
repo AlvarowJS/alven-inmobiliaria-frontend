@@ -5,10 +5,10 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/general'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const token = localStorage.getItem('token');
+
 // const idPropiedad = localStorage.getItem('id');
 const GeneralForm = ({ idPropiedad, stepper }) => {
-
+  const token = localStorage.getItem('token');
   const [objectGeneral, setObjectGeneral] = useState()
   const {
     reset,

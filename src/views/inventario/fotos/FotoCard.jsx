@@ -2,11 +2,9 @@ import axios from 'axios';
 import React from 'react'
 import { Trash } from 'react-feather'
 const URL_FOTOS = 'https://backend.alven-inmobiliaria.com.mx/api/v1/fotos'
-const token = localStorage.getItem('token');
 const FotoCard = ({ foto, setEstado }) => {
-
+    const token = localStorage.getItem('token');
     let img = `https://backend.alven-inmobiliaria.com.mx/storage/${foto?.propiedad_id}/${foto?.fotos}`
-
     console.log(foto)
     const deleteFotoById = (id) => {
         axios.delete(`${URL_FOTOS}/${id}`, {
@@ -14,10 +12,10 @@ const FotoCard = ({ foto, setEstado }) => {
                 'Authorization': 'Bearer ' + token
             }
         })
-        .then(res => {
-            setEstado(false)
-        })
-        .catch(err => console.log(err))
+            .then(res => {
+                setEstado(false)
+            })
+            .catch(err => console.log(err))
 
     }
 

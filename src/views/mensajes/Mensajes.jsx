@@ -6,8 +6,8 @@ import withReactContent from 'sweetalert2-react-content'
 import TablaMensajes from './TablaMensajes'
 const MySwal = withReactContent(Swal)
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/contacto'
-const token = localStorage.getItem('token');
 const Mensajes = () => {
+  const token = localStorage.getItem('token');
 
   const [estado, setEstado] = useState()
 

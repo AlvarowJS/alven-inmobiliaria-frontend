@@ -10,7 +10,6 @@ const containerStyle = {
   height: '400px'
 };
 import axios from 'axios';
-const token = localStorage.getItem('token');
 // const idPropiedad = localStorage.getItem('id');
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/direccion'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
@@ -19,6 +18,8 @@ import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 
 const DireccionForm = ({ stepper, idPropiedad }) => {
+
+  const token = localStorage.getItem('token');
 
   const navigate = useNavigate()
 

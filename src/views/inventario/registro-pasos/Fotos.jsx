@@ -9,11 +9,11 @@ import { FileText, X, DownloadCloud } from 'react-feather'
 import './../style/style.css'
 const URL_FOTOS = 'https://backend.alven-inmobiliaria.com.mx/api/v1/fotos'
 const URL_PROPIEDADES = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const token = localStorage.getItem('token');
 import axios from 'axios'
 import FotoCard from '../fotos/FotoCard'
 const Fotos = ({ idPropiedad, stepper }) => {
 
+  const token = localStorage.getItem('token');
   const [fotos, setFotos] = useState()
   const { handleSubmit, control, register, reset, setError, formState: { errors } } = useForm()
   const [files, setFiles] = useState([])

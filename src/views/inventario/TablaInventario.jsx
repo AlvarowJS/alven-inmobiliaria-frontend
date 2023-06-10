@@ -7,13 +7,12 @@ import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const token = localStorage.getItem('token');
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 
 const TablaInventario = () => {
-
+    const token = localStorage?.getItem('token');
     const navigate = useNavigate()
     const [estado, setEstado] = useState(false)
     const [idPropiedad, setIdPropiedad] = useState()
@@ -24,7 +23,7 @@ const TablaInventario = () => {
     const [getData, setGetData] = useState()
     const [getTotalData, setGetTotalData] = useState()
     const [store, setStore] = useState()
-
+    
     const dispatch = useDispatch()
 
     const updateInventarioById = (id) => {
@@ -289,9 +288,6 @@ const TablaInventario = () => {
             })
             .catch(err => { console.log(err) })
     }, [rowsPerPage, currentPage, estado])
-
-    console.log(rowsPerPage, "row per")
-    console.log(currentPage, "current")
 
     const handlePerPage = e => {
         setRowsPerPage(parseInt(e.target.value))

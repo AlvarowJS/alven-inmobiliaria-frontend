@@ -8,8 +8,9 @@ const URL_ID = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente-id'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 import axios from 'axios'
 import Autocomplete from '@components/autocomplete'
-const token = localStorage.getItem('token');
 const ClienteForm = ({ stepper, idPropiedad }) => {
+  const token = localStorage.getItem('token');
+
   const [options, setOptions] = useState()
   const [optionsAsesor, setOptionsAsesor] = useState()
   const [objectCliente, setObjectCliente] = useState()
@@ -53,7 +54,7 @@ const ClienteForm = ({ stepper, idPropiedad }) => {
     })
       .then(res => {
         console.log(res?.data, "cliente")
-        
+
         reset(res?.data)
 
       })
@@ -85,7 +86,7 @@ const ClienteForm = ({ stepper, idPropiedad }) => {
     let idClienteActual = objectCliente?.id
     let actualizaCliente = {}
     actualizaCliente.cliente_id = idCliente
-    
+
     axios.put(`${URL_ID}/${idPropiedad}`, actualizaCliente, {
       headers: {
         'Authorization': 'Bearer ' + token

@@ -8,10 +8,10 @@ import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente/'
 
-const token = localStorage.getItem('token');
 
 const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
     const navigate = useNavigate()
+    let token = localStorage.getItem('token');
 
     const [idPropiedad, setIdPropiedad] = useState()
     const [currentPage, setCurrentPage] = useState(1)

@@ -6,7 +6,6 @@ import axios from 'axios'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/publicidad'
 const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/actualizar-propiedad'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const token = localStorage.getItem('token');
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -15,6 +14,8 @@ const MySwal = withReactContent(Swal)
 // const idPropiedad = localStorage.getItem('id');
 
 const PublicidadForm = ({ stepper, idPropiedad }) => {
+  const token = localStorage.getItem('token');
+
   const navigate = useNavigate()
   const [objectPublicidad, setObjectPublicidad] = useState()
   const [estadoPropiedad, setEstadoPropiedad] = useState()
@@ -28,7 +29,7 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
   } = useForm()
 
   const terminarEdicion = () => {
-    axios.put(`${URL_ESTADO}/${idPropiedad}`,null, {
+    axios.put(`${URL_ESTADO}/${idPropiedad}`, null, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -40,7 +41,7 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
           title: 'Inventario Registrado',
           showConfirmButton: false,
           timer: 1500
-      })
+        })
         navigate(`/inventario`)
       })
       .catch(err => console.log(err))

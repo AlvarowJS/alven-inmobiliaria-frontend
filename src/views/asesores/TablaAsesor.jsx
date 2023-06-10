@@ -7,10 +7,10 @@ import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor/'
-const token = localStorage.getItem('token');
+
 
 const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
-
+    const token = localStorage.getItem('token');
     const navigate = useNavigate()
 
     const [idPropiedad, setIdPropiedad] = useState()

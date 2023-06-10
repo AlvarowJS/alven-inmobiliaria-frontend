@@ -2,12 +2,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
-const token = localStorage.getItem('token');
+
 
 const FormCliente = ({
   modal, toggle, submit, control, register, reset, errors, handleSubmit
 }) => {
 
+  const token = localStorage.getItem('token');
   const [options, setOptions] = useState()
 
   useEffect(() => {
