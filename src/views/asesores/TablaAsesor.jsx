@@ -121,7 +121,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
                     let limite = cantidadPag * currentPage
                     let inicio = cantidadPag * (currentPage - 1)
 
-                    // console.log(currentPage-1, limite, "currente y limite")
+                    
                     let data = (res?.data).slice(inicio, limite)
                     setGetData(data)
                 } else {
@@ -131,8 +131,6 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             })
             .catch(err => { console.log(err) })
     }, [rowsPerPage, currentPage, estado])
-
-    console.log(searchValue, "filter aca")
 
     const handlePerPage = e => {
         setRowsPerPage(parseInt(e.target.value))

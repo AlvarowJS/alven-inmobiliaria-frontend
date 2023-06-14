@@ -5,78 +5,83 @@ import { useForm } from 'react-hook-form'
 const URL_ASESOR = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente'
 const URL_ID = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente-id'
-const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 import axios from 'axios'
-import Autocomplete from '@components/autocomplete'
-const ClienteForm = ({ stepper, idPropiedad }) => {
-  const token = localStorage.getItem('token');
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
 
+const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
+  const token = localStorage.getItem('token');
   const [options, setOptions] = useState()
   const [optionsAsesor, setOptionsAsesor] = useState()
   const [objectCliente, setObjectCliente] = useState()
   const [idCliente, setIdCliente] = useState()
   const { handleSubmit, control, register, reset, setError, formState: { errors } } = useForm()
 
-  useEffect(() => {
-    axios.get(URL_ASESOR, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => setOptionsAsesor(res.data))
-      .catch(err => console.log(err))
-  }, [])
-
-  useEffect(() => {
-    axios.get(`${URL}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        console.log(res.data)
-        const tranformarData = res?.data?.map(item => ({
-          value: item.id,
-          label: item.nombre
-        }))
-        setOptions(tranformarData)
-      })
-      .catch(err => console.log(err))
-  }, [])
-
-
-  useEffect(() => {
-
-    axios.get(`${URL}/${idCliente}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        console.log(res?.data, "cliente")
-
-        reset(res?.data)
-
-      })
-      .catch(err => console.log(err))
-
-  }, [idCliente, options, optionsAsesor])
-
   // LLenara datos 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        reset(res?.data?.cliente)
-        setObjectCliente(res?.data?.cliente)
+    reset(objectGlobal?.cliente)
+    setObjectCliente(objectGlobal?.cliente)
 
-      })
-      .catch(err => console.log(err))
   }, [])
 
+  useEffect(() => {
+    try {
+      axios.get(URL_ASESOR, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => setOptionsAsesor(res.data))
+        .catch(err => null)
+    } catch (error) {
+      null
+    }
+
+  }, [])
+
+  useEffect(() => {
+    try {
+      axios.get(`${URL}`, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => {
+          const tranformarData = res?.data?.map(item => ({
+            value: item.id,
+            label: item.nombre
+          }))
+          setOptions(tranformarData)
+        })
+        .catch(err => null)
+    } catch (error) {
+      null
+    }
+
+  }, [])
+
+
+  useEffect(() => {
+
+    try {
+      axios.get(`${URL}/${idCliente}`, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => {
+
+          reset(res?.data)
+
+        })
+        .catch(err => null)
+    } catch (error) {
+      null
+    }
+
+
+  }, [idCliente, options, optionsAsesor])
 
   const buscarCliente = (selectedOption) => {
     setIdCliente(selectedOption?.value)
@@ -93,37 +98,24 @@ const ClienteForm = ({ stepper, idPropiedad }) => {
       }
     })
       .then(res => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Guardado',
+          showConfirmButton: false,
+          timer: 1500
+        })
         stepper.next()
-      })
-      .catch(err => console.log(err))
 
-    // if (idCliente) {
-    //   axios.put(`${URL}/${idCliente}`, data, {
-    //     headers: {
-    //       'Authorization': 'Bearer ' + token
-    //     }
-    //   })
-    //     .then(res => {
-    //       stepper.next()
-    //     })
-    //     .catch(err => console.log(err))
-    // } else {
-    //   data.id_propiedad = idPropiedad
-    //   axios.post(URL, data, {
-    //     headers: {
-    //       'Authorization': 'Bearer ' + token
-    //     }
-    //   })
-    //     .then(res => {
-    //       stepper.next()
-    //     })
-    //     .catch(err => console.log(err))
-    // }
+      })
+      .catch(err => null)
+
   }
   return (
     <Card>
       <CardHeader>
         <CardTitle tag='h4'>Registrar Propietario</CardTitle>
+
       </CardHeader>
       <CardBody>
         <Row className='mx-4 my-2'>
@@ -178,7 +170,7 @@ const ClienteForm = ({ stepper, idPropiedad }) => {
 
             <Col>
               <div className="form-group mx-4 mb-2">
-                <label htmlFor="cedula">Cedula</label>
+                <label htmlFor="cedula">Cédula</label>
                 <input type="text" className="form-control" id="cedula"
                   {...register('cedula')}
                   placeholder="7468737"

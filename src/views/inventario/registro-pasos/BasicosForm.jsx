@@ -4,9 +4,11 @@ import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/basicos'
-const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-// const idPropiedad = localStorage.getItem('id');
-const BasicosForm = ({ stepper, idPropiedad }) => {
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
+
+const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
   const token = localStorage.getItem('token');
 
@@ -21,17 +23,19 @@ const BasicosForm = ({ stepper, idPropiedad }) => {
   } = useForm()
 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        let object = res?.data?.basico
-        setObjectBasicos(object)
-        reset(object)
-      })
-      .catch(err => console.log(err))
+    setObjectBasicos(objectGlobal?.basico)
+    reset(objectGlobal?.basico)
+    // axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
+    //   headers: {
+    //     'Authorization': 'Bearer ' + token
+    //   }
+    // })
+    //   .then(res => {
+    //     let object = res?.data?.basico
+    //     setObjectBasicos(object)
+    //     reset(object)
+    //   })
+    //   .catch(err => null)
   }, [])
 
   const onSubmit = data => {
@@ -45,9 +49,16 @@ const BasicosForm = ({ stepper, idPropiedad }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
           stepper.next()
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     } else {
       data.id_propiedad = idPropiedad
 
@@ -57,9 +68,16 @@ const BasicosForm = ({ stepper, idPropiedad }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
           stepper.next()
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     }
   }
 
@@ -194,7 +212,7 @@ const BasicosForm = ({ stepper, idPropiedad }) => {
             <Col>
               <div className='mb-1'>
                 <Label className='form-label' for='recamaras'>
-                  Recamaras
+                  Recámaras
                 </Label>
                 <Controller
                   defaultValue=''
@@ -215,7 +233,7 @@ const BasicosForm = ({ stepper, idPropiedad }) => {
             <Col>
               <div className='mb-1'>
                 <Label className='form-label' for='numero_casas'>
-                  Numero de casas
+                  Número de casas
                 </Label>
                 <Controller
                   defaultValue=''
@@ -282,7 +300,7 @@ const BasicosForm = ({ stepper, idPropiedad }) => {
             <Col>
               <div className='mb-1'>
                 <Label className='form-label' for='numero_elevadores'>
-                  Numero de elevadores
+                  Número de elevadores
                 </Label>
                 <Controller
                   defaultValue=''

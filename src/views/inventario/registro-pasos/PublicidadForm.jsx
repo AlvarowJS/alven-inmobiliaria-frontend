@@ -13,7 +13,7 @@ const MySwal = withReactContent(Swal)
 
 // const idPropiedad = localStorage.getItem('id');
 
-const PublicidadForm = ({ stepper, idPropiedad }) => {
+const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const token = localStorage.getItem('token');
 
   const navigate = useNavigate()
@@ -28,44 +28,34 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
     formState: { errors }
   } = useForm()
 
-  const terminarEdicion = () => {
-    axios.put(`${URL_ESTADO}/${idPropiedad}`, null, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Inventario Registrado',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        navigate(`/inventario`)
-      })
-      .catch(err => console.log(err))
-  }
+  // const terminarEdicion = () => {
+  //   axios.put(`${URL_ESTADO}/${idPropiedad}`, null, {
+  //     headers: {
+  //       'Authorization': 'Bearer ' + token
+  //     }
+  //   })
+  //     .then(res => {
+  //       Swal.fire({
+  //         position: 'center',
+  //         icon: 'success',
+  //         title: 'Inventario Registrado',
+  //         showConfirmButton: false,
+  //         timer: 1500
+  //       })
+  //       navigate(`/inventario`)
+  //     })
+  //     .catch(err => null)
+  // }
 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        let object = res?.data?.publicidad
-        let estado = res?.data?.estado
-        setObjectPublicidad(object)
-        setEstadoPropiedad(estado)
-        reset(object)
-      })
-      .catch(err => console.log(err))
+
+    setObjectPublicidad(objectGlobal?.publicidad)
+    reset(objectGlobal?.publicidad)
+
   }, [])
 
   const onSubmit = data => {
     let idPublicidad = objectPublicidad?.id
-    console.log(idPublicidad)
     if (idPublicidad) {
       axios.put(`${URL}/${idPublicidad}`, data, {
         headers: {
@@ -73,9 +63,17 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Inventario Registrado',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          navigate(`/inventario`)
           stepper.next()
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     } else {
       data.id_propiedad = idPropiedad
 
@@ -86,8 +84,16 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
       })
         .then(res => {
           stepper.next()
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Inventario Registrado',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          navigate(`/inventario`)
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     }
   }
 
@@ -155,11 +161,11 @@ const PublicidadForm = ({ stepper, idPropiedad }) => {
             />
           </div>
           <div className='d-flex'>
-            <Button className='me-1' color='success' onClick={terminarEdicion} disabled={estadoPropiedad}>
+            {/* <Button className='me-1' color='success' onClick={terminarEdicion} disabled={estadoPropiedad}>
               Terminar
-            </Button>
+            </Button> */}
             <Button className='me-1' color='primary' type='submit'>
-              Enviar
+              Enviar y Terminar
             </Button>
             <Button outline color='secondary' type='reset' onClick={handleReset}>
               Reset

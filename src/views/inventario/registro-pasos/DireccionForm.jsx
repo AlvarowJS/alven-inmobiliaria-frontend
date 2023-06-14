@@ -4,20 +4,19 @@ import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { Check, X } from 'react-feather'
 import './../style/style.css'
 const containerStyle = {
   width: '100%',
   height: '400px'
 };
 import axios from 'axios';
-// const idPropiedad = localStorage.getItem('id');
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/direccion'
-const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 
-const DireccionForm = ({ stepper, idPropiedad }) => {
+const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
 
   const token = localStorage.getItem('token');
 
@@ -29,25 +28,44 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
   const [lng, setLng] = useState()
   const [zoom, setZoom] = useState()
 
+  const CustomLabel = ({ htmlForDireccion }) => {
+    return (
+      <Label className='form-check-label' htmlFor={htmlForDireccion}>
+        <span className='switch-icon-left'>
+          <Check size={14} />
+        </span>
+        <span className='switch-icon-right'>
+          <X size={14} />
+        </span>
+      </Label>
+    )
+  }
+
   useEffect(() => {
 
-    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
+    reset(objectGlobal?.direccion)
+    setLat(parseFloat(objectGlobal?.direccion?.LAT) ? parseFloat(objectGlobal?.direccion?.LAT) : 0)
+    setLng(parseFloat(objectGlobal?.direccion?.LON) ? parseFloat(objectGlobal?.direccion?.LON) : 0)
+    setZoom(parseFloat(objectGlobal?.direccion?.ZOOM) ? parseFloat(objectGlobal?.direccion?.ZOOM) : 0)
+    setObjectDirection(parseFloat(objectGlobal?.direccion))
 
-        let object = res?.data?.direccion
+    // axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
+    //   headers: {
+    //     'Authorization': 'Bearer ' + token
+    //   }
+    // })
+    //   .then(res => {
 
-        setLat(parseFloat(object?.LAT))
-        setLng(parseFloat(object?.LON))
-        setZoom(parseFloat(object?.ZOOM))
-        setObjectDirection(object)
+    //     let object = res?.data?.direccion
 
-        reset(object)
-      })
-      .catch(err => console.log(err))
+    //     setLat(parseFloat(object?.LAT))
+    //     setLng(parseFloat(object?.LON))
+    //     setZoom(parseFloat(object?.ZOOM))
+    //     setObjectDirection(object)
+
+    //     reset(object)
+    //   })
+    //   .catch(err => null)
   }, [])
 
 
@@ -71,9 +89,16 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
           stepper.next()
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
 
     } else {
       data.id_propiedad = idPropiedad
@@ -83,9 +108,17 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
           stepper.next()
+
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     }
   }
 
@@ -100,6 +133,7 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
         setLat(latValue)
         if (isNaN(latValue)) {
           setLat(0)
+
         }
       }
     }
@@ -146,7 +180,6 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
     })
   }
 
-  console.log(lat, "lat", lng, "lon", zoom, "zoom")
   return (
 
     <Card>
@@ -262,7 +295,7 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
             <Col>
               <div className='mb-1'>
                 <Label className='form-label' for='numero'>
-                  Numero
+                  Número
                 </Label>
                 <Controller
                   defaultValue=''
@@ -285,7 +318,7 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
             <Col>
               <div className='mb-1'>
                 <Label className='form-label' for='LAT'>
-                  Lat
+                  LATITUD
                 </Label>
                 {/* <Controller
                   defaultValue=''
@@ -314,7 +347,7 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
             <Col>
               <div className='mb-1'>
                 <Label className='form-label' for='LON'>
-                  LON
+                  LONGITUD
                 </Label>
                 {/* <Controller
                   defaultValue=''
@@ -363,6 +396,7 @@ const DireccionForm = ({ stepper, idPropiedad }) => {
                     {...register('ZOOM')}
                     onChange={handleZoom}
                     value={zoom}
+                    placeholder='Distancia en como se vera el mapa'
                   />
                 </InputGroupText>
               </div>

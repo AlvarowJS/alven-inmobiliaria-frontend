@@ -129,7 +129,6 @@ const TablaInventario = () => {
             .catch(err => { console.log(err) })
     }, [searchValue])
 
-    console.log(filter)
     // Columnas
     const serverSideColumns = [
         {
@@ -140,7 +139,7 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
-            name: 'Direccion',
+            name: 'Dirección',
             minWidth: '250px',
             // selector: row => row.direccion_id
             cell: row => {
@@ -171,7 +170,7 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
-            name: 'Asingación',
+            name: 'Asignación',
             minWidth: '250px',
             cell: row => {
                 return (

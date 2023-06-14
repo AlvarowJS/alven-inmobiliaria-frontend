@@ -5,9 +5,10 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/general'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-
-// const idPropiedad = localStorage.getItem('id');
-const GeneralForm = ({ idPropiedad, stepper }) => {
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
+const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
   const token = localStorage.getItem('token');
   const [objectGeneral, setObjectGeneral] = useState()
   const {
@@ -26,9 +27,16 @@ const GeneralForm = ({ idPropiedad, stepper }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
           stepper.next()
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     } else {
       data.id_propiedad = idPropiedad
 
@@ -38,25 +46,25 @@ const GeneralForm = ({ idPropiedad, stepper }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
           stepper.next()
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     }
 
   }
 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        let object = res?.data?.general
-        setObjectGeneral(object)
-        reset(object)
-      })
-      .catch(err => console.log(err))
+
+    setObjectGeneral(objectGlobal?.general)
+    reset(objectGlobal?.general)
+
   }, [])
 
   const handleReset = () => {
@@ -258,7 +266,7 @@ const GeneralForm = ({ idPropiedad, stepper }) => {
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='duracion_dias'>
-              Duración de dias de contrato
+              Duración de días de contrato
             </Label>
             <Controller
               defaultValue=''

@@ -33,19 +33,17 @@ const Validation = () => {
   const digit6Ref = useRef();
 
   const submit = data => {
-    console.log(data, "asd")
     setIsLoading(true)
     axios.post(URLACTIVE, data)
 
       .then(res => {
-        console.log(res.data)
         navigate('/home')
         setIsLoading(false)
         navigate('/home')
 
 
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
   }
 
   return (

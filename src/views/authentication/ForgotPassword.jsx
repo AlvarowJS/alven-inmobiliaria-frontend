@@ -37,14 +37,12 @@ const ForgotPassword = () => {
     axios.post(URL, data)
       .then(res => {
         setIsLoading(false)
-        console.log(res.data)
         setMensaje(true)
 
       })
       .catch(err => {
         setIsLoading(false)
         setMensajeError(true)
-        console.log(err)
       })
   }
 

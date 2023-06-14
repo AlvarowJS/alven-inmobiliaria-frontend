@@ -18,7 +18,7 @@ const FormCliente = ({
       }
     })
       .then(res => setOptions(res.data))
-      .catch(err => console.log(err))
+      .catch(err => null)
   }, [])
 
 

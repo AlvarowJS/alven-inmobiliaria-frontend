@@ -63,7 +63,7 @@ const Register = () => {
             navigate('/validation')
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     }
 
 

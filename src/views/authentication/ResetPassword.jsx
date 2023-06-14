@@ -48,14 +48,11 @@ const ResetPassword = () => {
             setRespuestaMatch(false)
             axios.post(URL, data)
                 .then(res => {
-                    console.log(res.data)
                     navigate('/login')
                     setRespuesta(true)
                     setIsLoading(false)
                 })
                 .catch(err => {
-                    console.log('error en ed')
-                    console.log(err.response.status)
                     if(err?.response.status == 422){
                         setpasswordRepeat(true)
                     }else { setpasswordRepeat(false) }

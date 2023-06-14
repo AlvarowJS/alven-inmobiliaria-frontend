@@ -80,7 +80,6 @@ const Fotos = ({ idPropiedad, stepper }) => {
   }
 
   const createDir = newDir => {
-    console.log(newDir, "asdsddd")
     setIsLoading(true)
     axios.post(URL_FOTOS, newDir, {
       headers: {
@@ -90,9 +89,8 @@ const Fotos = ({ idPropiedad, stepper }) => {
       .then(res => {
         setIsLoading(false)
         setEstado(false)
-        console.log(res.data)
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
 
   }
   const submit = data => {
@@ -140,7 +138,7 @@ const Fotos = ({ idPropiedad, stepper }) => {
         setFotos(res?.data)
 
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
   }, [estado])
 
   return (

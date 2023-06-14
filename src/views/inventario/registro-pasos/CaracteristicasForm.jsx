@@ -3,10 +3,12 @@ import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col,
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios';
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/caracteristica'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const CaracteristicasForm = ({ stepper, idPropiedad }) => {
+const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const token = localStorage.getItem('token');
 
   const [objectCaracteristica, setObjectCaracteristica] = useState()
@@ -26,34 +28,30 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
   } = useForm()
 
   useEffect(() => {
-    axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        let object = res?.data?.caracteristica
-        setObjectCaracteristica(object)
-        reset(object)
 
-        const espaciosArray = JSON.parse(object?.espacios);
-        const espaciosCoincidentes = arrayEspacios.filter(espacio => espaciosArray.includes(espacio));
-        setValue('espacios', espaciosCoincidentes);
+    try {
+      setObjectCaracteristica(objectGlobal?.caracteristica)
+      reset(objectGlobal?.caracteristica)
 
-        const instalacionesArray = JSON.parse(object?.instalaciones);
-        const instalacionesCoincidentes = arrayInstalaciones.filter(instalacion => instalacionesArray.includes(instalacion));
-        setValue('instalaciones', instalacionesCoincidentes);
+      const espaciosArray = JSON.parse(objectGlobal?.caracteristica?.espacios);
+      const espaciosCoincidentes = arrayEspacios.filter(espacio => espaciosArray.includes(espacio));
+      setValue('espacios', espaciosCoincidentes);
 
-        const restriccionesArray = JSON.parse(object?.restricciones);
-        const restriccionesCoincidentes = arrayRestricciones.filter(restriccion => restriccionesArray.includes(restriccion));
-        setValue('restricciones', restriccionesCoincidentes);
+      const instalacionesArray = JSON.parse(objectGlobal?.caracteristica?.instalaciones);
+      const instalacionesCoincidentes = arrayInstalaciones.filter(instalacion => instalacionesArray.includes(instalacion));
+      setValue('instalaciones', instalacionesCoincidentes);
 
-        const extrasArray = JSON.parse(object?.extras);
-        const extrasCoincidentes = arrayExtras.filter(extra => extrasArray.includes(extra));
-        setValue('extras', extrasCoincidentes);
+      const restriccionesArray = JSON.parse(objectGlobal?.caracteristica?.restricciones);
+      const restriccionesCoincidentes = arrayRestricciones.filter(restriccion => restriccionesArray.includes(restriccion));
+      setValue('restricciones', restriccionesCoincidentes);
 
-      })
-      .catch(err => console.log(err))
+      const extrasArray = JSON.parse(objectGlobal?.caracteristica?.extras);
+      const extrasCoincidentes = arrayExtras.filter(extra => extrasArray.includes(extra));
+      setValue('extras', extrasCoincidentes);
+    } catch (error) {
+      console.log(error)
+    }
+
   }, [])
 
   const onSubmit = data => {
@@ -66,9 +64,16 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
           stepper.next()
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
 
     } else {
       data.id_propiedad = idPropiedad
@@ -78,9 +83,16 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
         }
       })
         .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
           stepper.next()
         })
-        .catch(err => console.log(err))
+        .catch(err => null)
     }
   }
 
@@ -95,7 +107,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag='h4'>Registrar Caracteristicas </CardTitle>
+        <CardTitle tag='h4'>Registrar Características </CardTitle>
       </CardHeader>
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -131,7 +143,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
                 {/* <input className='form-check-input' type='checkbox' id='jardin'/> */}
                 <input className='form-check-input' type='checkbox' id='jardin' value='Jardin'  {...register('espacios')} />
                 <Label for='jardin' className='form-check-label'>
-                  Jardin
+                  Jardín
                 </Label>
               </div>
             </Col>
@@ -274,7 +286,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
               <div className='form-check form-check-inline'>
                 <input className='form-check-input' type='checkbox' id='Linea Telefonica' value='Linea Telefonica' {...register('instalaciones')} />
                 <Label for='Linea Telefonica' className='form-check-label'>
-                  Linea Telefonica
+                  Línea Telefónica
                 </Label>
               </div>
             </Col>
@@ -363,7 +375,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
               <div className='form-check form-check-inline'>
                 <input className='form-check-input' type='checkbox' id='Closets' value='Closets' {...register('instalaciones')} />
                 <Label for='Closets' className='form-check-label'>
-                  Closets
+                  Clósets
                 </Label>
               </div>
             </Col>
@@ -405,7 +417,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
               <div className='form-check form-check-inline'>
                 <input className='form-check-input' type='checkbox' id='Gas Tanque Cilindrico' value='Gas Tanque Cilindrico' {...register('instalaciones')} />
                 <Label for='Gas Tanque Cilindrico' className='form-check-label'>
-                  Gas Tanque Cilindrico
+                  Gas Tanque Cilíndrico
                 </Label>
               </div>
             </Col>
@@ -455,7 +467,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad }) => {
               <div className='form-check form-check-inline'>
                 <input className='form-check-input' type='checkbox' id='Solo Familias' value='Solo Familias' {...register('restricciones')} />
                 <Label for='Solo Familias' className='form-check-label'>
-                  Solo Familias
+                  Sólo Familias
                 </Label>
               </div>
             </Col>

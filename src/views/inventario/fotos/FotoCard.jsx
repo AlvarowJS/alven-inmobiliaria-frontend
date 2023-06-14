@@ -5,7 +5,6 @@ const URL_FOTOS = 'https://backend.alven-inmobiliaria.com.mx/api/v1/fotos'
 const FotoCard = ({ foto, setEstado }) => {
     const token = localStorage.getItem('token');
     let img = `https://backend.alven-inmobiliaria.com.mx/storage/${foto?.propiedad_id}/${foto?.fotos}`
-    console.log(foto)
     const deleteFotoById = (id) => {
         axios.delete(`${URL_FOTOS}/${id}`, {
             headers: {
@@ -14,8 +13,9 @@ const FotoCard = ({ foto, setEstado }) => {
         })
             .then(res => {
                 setEstado(false)
+                
             })
-            .catch(err => console.log(err))
+            .catch(err => null)
 
     }
 

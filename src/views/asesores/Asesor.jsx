@@ -50,7 +50,7 @@ const Asesor = () => {
           timer: 1500
         })
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
   }
 
   const crearAsesor = data => {
@@ -70,7 +70,7 @@ const Asesor = () => {
           timer: 1500
         })
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
   }
 
   const updateAsesorById = (id) => {
@@ -87,7 +87,7 @@ const Asesor = () => {
         reset(object)
 
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
   }
 
   const deleteAsesorById = (id) => {
@@ -114,7 +114,7 @@ const Asesor = () => {
           .then(res => {
             setEstado(true)
           })
-          .catch(err => console.log(err))
+          .catch(err => null)
       }
     })
 

@@ -30,7 +30,7 @@ const FormAsesor = ({
                     </div>
 
                     <div className="form-group mx-4 mb-2">
-                        <label htmlFor="cedula">Cedula</label>
+                        <label htmlFor="cedula">Cédula</label>
                         <input type="text" className="form-control" id="cedula"
                             {...register('cedula')}
                             placeholder="7468737"

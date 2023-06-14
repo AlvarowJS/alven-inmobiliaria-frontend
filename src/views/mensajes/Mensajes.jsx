@@ -35,7 +35,7 @@ const Mensajes = () => {
           .then(res => {
             setEstado(true)
           })
-          .catch(err => console.log(err))
+          .catch(err => null)
       }
     })
 

@@ -53,7 +53,7 @@ const Clientes = () => {
           timer: 1500
         })
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
   }
 
   const crearCliente = data => {
@@ -73,7 +73,7 @@ const Clientes = () => {
           timer: 1500
         })
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
   }
 
   const updateClienteById = (id) => {
@@ -90,7 +90,7 @@ const Clientes = () => {
         reset(object)
 
       })
-      .catch(err => console.log(err))
+      .catch(err => null)
   }
 
   const deleteClienteById = (id) => {
@@ -117,7 +117,7 @@ const Clientes = () => {
           .then(res => {
             setEstado(true)
           })
-          .catch(err => console.log(err))
+          .catch(err => null)
       }
     })
 
