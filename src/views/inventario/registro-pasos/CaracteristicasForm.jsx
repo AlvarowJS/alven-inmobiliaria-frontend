@@ -126,6 +126,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder='si se aceptan pero...'
+                      required
                       invalid={errors.mascotas && true}
                       {...field}
                     />
@@ -535,6 +536,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
                       type='text'
                       placeholder='www.youtube.com'
                       invalid={errors.youtube && true}
+                      required
                       {...field}
                     />
                   )}

@@ -140,7 +140,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="nombre"
                   {...register('nombre')}
                   placeholder="Alvaro..."
-                  required
+                  disabled
                 />
               </div>
             </Col>
@@ -150,7 +150,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="apellido_paterno"
                   {...register('apellido_paterno')}
                   placeholder="Rosas"
-                  required
+                  disabled
                 />
               </div>
             </Col>
@@ -160,7 +160,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="apellido_materno"
                   {...register('apellido_materno')}
                   placeholder="Perez"
-                  required
+                  disabled
                 />
               </div>
             </Col>
@@ -174,7 +174,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="cedula"
                   {...register('cedula')}
                   placeholder="7468737"
-                  required
+                  disabled
                 />
               </div>
             </Col>
@@ -184,7 +184,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="email" className="form-control" id="email"
                   {...register('email')}
                   placeholder="ejemplo@gmail.com"
-                  required
+                  disabled
                 />
               </div>
             </Col>
@@ -196,7 +196,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="celular"
                   {...register('celular')}
                   placeholder="99 442409"
-                  required
+                  disabled
                 />
               </div>
             </Col>
@@ -206,7 +206,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="medio_contacto"
                   {...register('medio_contacto')}
                   placeholder="celular, email, telefono..."
-                  required
+                  disabled
                 />
               </div>
             </Col>
@@ -215,7 +215,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
 
           <div className="form-group mx-4 mb-2">
             <label htmlFor="nombre_tarifa">Seleccionar al Asesor</label>
-            <select className="form-select" id="asesor_id" {...register("asesor_id")}>
+            <select className="form-select" id="asesor_id" {...register("asesor_id")} disabled>
               {
                 optionsAsesor?.map(optionAsesor => (
                   <option key={optionAsesor.id} value={optionAsesor.id}>{optionAsesor.nombe} {optionAsesor.apellidos}</option>

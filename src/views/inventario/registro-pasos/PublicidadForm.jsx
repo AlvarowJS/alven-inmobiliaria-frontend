@@ -121,7 +121,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='precio_venta'
               name='precio_venta'
-              render={({ field }) => <Input invalid={errors.precio_venta && true} {...field} />}
+              render={({ field }) => <Input invalid={errors.precio_venta && true} required {...field} />}
             />
           </div>
           <div className='mb-1'>
@@ -133,7 +133,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='encabezado'
               name='encabezado'
-              render={({ field }) => <Input invalid={errors.encabezado && true} {...field} />}
+              render={({ field }) => <Input invalid={errors.encabezado && true} required {...field} />}
             />
           </div>
           <div className='mb-1'>
@@ -145,7 +145,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='descripcion'
               name='descripcion'
-              render={({ field }) => <Input invalid={errors.descripcion && true} {...field} />}
+              render={({ field }) => <Input invalid={errors.descripcion && true} required {...field} />}
             />
           </div>
           <div className='mb-1'>
@@ -157,7 +157,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='video_url'
               name='video_url'
-              render={({ field }) => <Input invalid={errors.video_url && true} {...field} />}
+              render={({ field }) => <Input invalid={errors.video_url && true} required {...field} />}
             />
           </div>
           <div className='d-flex'>

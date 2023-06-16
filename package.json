@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^2.8.10",
     "@popperjs/core": "^2.11.3",
     "@react-google-maps/api": "^2.18.1",
+    "@react-pdf/renderer": "^3.1.12",
     "@reduxjs/toolkit": "^1.2.5",
     "animate.css": "4.1.1",
     "apexcharts": "^3.35.2",

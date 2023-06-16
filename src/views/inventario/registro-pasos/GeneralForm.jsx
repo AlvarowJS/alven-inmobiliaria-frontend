@@ -86,7 +86,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag='h4'>Registrar Dirección</CardTitle>
+        <CardTitle tag='h4'>Registrar datos Generales</CardTitle>
       </CardHeader>
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -99,6 +99,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
               control={control}
               id='numero_ofna'
               name='numero_ofna'
+              required
               render={({ field }) => <Input placeholder='23423' invalid={errors.numero_ofna && true} {...field} />}
             />
           </div>
@@ -111,6 +112,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
               control={control}
               id='fecha_alta'
               name='fecha_alta'
+              required
               render={({ field }) => <Input type='date' placeholder='fecha alta' invalid={errors.fecha_alta && true} {...field} />}
             />
           </div>
@@ -127,6 +129,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='text'
                   placeholder='Venta...'
+                  required
                   invalid={errors.tipo_operacion && true}
                   {...field}
                 />
@@ -146,6 +149,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='text'
                   placeholder=''
+                  required
                   invalid={errors.tipo_propiedad && true}
                   {...field}
                 />
@@ -165,6 +169,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='text'
                   placeholder='Exclusiva...'
+                  required
                   invalid={errors.tipo_contrato && true}
                   {...field}
                 />
@@ -184,6 +189,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='text'
                   placeholder=''
+                  required
                   invalid={errors.asesor_exclusivo && true}
                   {...field}
                 />
@@ -203,6 +209,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='text'
                   placeholder=''
+                  required
                   invalid={errors.porcentaje && true}
                   {...field}
                 />
@@ -222,6 +229,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='text'
                   placeholder='si/no'
+                  required
                   invalid={errors.aceptar_creditos && true}
                   {...field}
                 />
@@ -240,6 +248,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
               render={({ field }) => (
                 <Input
                   type='date'
+                  required
                   invalid={errors.fecha_credito && true}
                   {...field}
                 />
@@ -258,6 +267,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
               render={({ field }) => (
                 <Input
                   type='date'
+                  required
                   invalid={errors.fecha_inicio && true}
                   {...field}
                 />
@@ -277,6 +287,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='number'
                   placeholder='ingrese en dias'
+                  required
                   invalid={errors.duracion_dias && true}
                   {...field}
                 />
@@ -296,6 +307,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='textarea'
                   placeholder='ingrese en dias'
+                  required
                   invalid={errors.requisito_arrendamiento && true}
                   {...field}
                 />

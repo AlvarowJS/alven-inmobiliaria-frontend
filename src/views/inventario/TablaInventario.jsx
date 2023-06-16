@@ -4,11 +4,12 @@ import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } from 'reactstrap'
 import DataTable from 'react-data-table-component'
-import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
+import { ChevronDown, Delete, Edit, File, FileText, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+
 const MySwal = withReactContent(Swal)
 
 const TablaInventario = () => {
@@ -23,7 +24,7 @@ const TablaInventario = () => {
     const [getData, setGetData] = useState()
     const [getTotalData, setGetTotalData] = useState()
     const [store, setStore] = useState()
-    
+
     const dispatch = useDispatch()
 
     const updateInventarioById = (id) => {
@@ -111,6 +112,10 @@ const TablaInventario = () => {
         // }
 
 
+    }
+
+    const descargarPdf = (id) => {
+       window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id}`)
     }
 
     const handleFilter = e => {
@@ -247,6 +252,9 @@ const TablaInventario = () => {
                         </button>
                         <button className='btn btn-danger mb-1' onClick={() => deleteInventarioById(row?.id)}>
                             <Trash />
+                        </button>
+                        <button className='btn btn-success mb-1' onClick={() => descargarPdf(row?.id)}>
+                            <FileText />
                         </button>
 
                     </div>

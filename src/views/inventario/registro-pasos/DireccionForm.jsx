@@ -16,7 +16,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 
-const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
+const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
   const token = localStorage.getItem('token');
 
@@ -28,19 +28,6 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
   const [lng, setLng] = useState()
   const [zoom, setZoom] = useState()
 
-  const CustomLabel = ({ htmlForDireccion }) => {
-    return (
-      <Label className='form-check-label' htmlFor={htmlForDireccion}>
-        <span className='switch-icon-left'>
-          <Check size={14} />
-        </span>
-        <span className='switch-icon-right'>
-          <X size={14} />
-        </span>
-      </Label>
-    )
-  }
-
   useEffect(() => {
 
     reset(objectGlobal?.direccion)
@@ -49,23 +36,6 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
     setZoom(parseFloat(objectGlobal?.direccion?.ZOOM) ? parseFloat(objectGlobal?.direccion?.ZOOM) : 0)
     setObjectDirection(parseFloat(objectGlobal?.direccion))
 
-    // axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
-    //   headers: {
-    //     'Authorization': 'Bearer ' + token
-    //   }
-    // })
-    //   .then(res => {
-
-    //     let object = res?.data?.direccion
-
-    //     setLat(parseFloat(object?.LAT))
-    //     setLng(parseFloat(object?.LON))
-    //     setZoom(parseFloat(object?.ZOOM))
-    //     setObjectDirection(object)
-
-    //     reset(object)
-    //   })
-    //   .catch(err => null)
   }, [])
 
 
@@ -226,6 +196,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
                   type='text'
                   placeholder='ingrese el estado'
                   invalid={errors.estado && true}
+                  required
                   {...field}
                 />
               )}
@@ -245,6 +216,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
                   type='text'
                   placeholder='ingrese el municipio'
                   invalid={errors.municipio && true}
+                  required
                   {...field}
                 />
               )}
@@ -264,6 +236,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
                   type='text'
                   placeholder='ingrese el estado'
                   invalid={errors.colonia && true}
+                  required
                   {...field}
                 />
               )}
@@ -286,6 +259,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
                       type='text'
                       placeholder='ingrese el calle'
                       invalid={errors.calle && true}
+                      required
                       {...field}
                     />
                   )}
@@ -307,6 +281,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
                       type='text'
                       placeholder='ingrese el numero'
                       invalid={errors.numero && true}
+                      required
                       {...field}
                     />
                   )}
@@ -339,6 +314,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
                   <input className='local_input' type="text" id="LAT"
                     {...register('LAT')}
                     onChange={handleLat}
+                    required
                     value={lat}
                   />
                 </InputGroupText>
@@ -367,6 +343,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
                   <input className='local_input' type="text" id="LON"
                     {...register('LON')}
                     onChange={handleLong}
+                    required
                     value={lng}
                   />
                 </InputGroupText>
@@ -396,6 +373,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal, borrador }) => {
                     {...register('ZOOM')}
                     onChange={handleZoom}
                     value={zoom}
+                    required
                     placeholder='Distancia en como se vera el mapa'
                   />
                 </InputGroupText>
