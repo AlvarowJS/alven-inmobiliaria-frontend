@@ -2,8 +2,8 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Breadcrumb, Col, Card, Row, Button } from 'reactstrap'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente'
-const REG_URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/registrar-cliente'
+const URL = 'http://127.0.0.1:8000/api/v1/cliente'
+const REG_URL = 'http://127.0.0.1:8000/api/v1/registrar-cliente'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaCliente from './TablaCliente'
@@ -38,6 +38,7 @@ const Clientes = () => {
   };
 
   const updateCliente = (id, data) => {
+    setEstado(false)
     axios.patch(`${URL}/${id}`, data, {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -57,7 +58,7 @@ const Clientes = () => {
   }
 
   const crearCliente = data => {
-
+    setEstado(false)
     axios.post(REG_URL, data, {
       headers: {
         'Authorization': 'Bearer ' + token

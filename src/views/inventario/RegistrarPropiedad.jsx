@@ -14,8 +14,9 @@ import DireccionForm from './registro-pasos/DireccionForm'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Card, Label, Input } from 'reactstrap'
-const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/estado-propiedad'
-const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+const URL_ESTADO = 'http://127.0.0.1:8000/api/v1/estado-propiedad'
+const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
+const URL_ASESOR = 'http://127.0.0.1:8000/api/v1/asesor'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
@@ -24,9 +25,23 @@ const RegistrarPropiedad = () => {
     const token = localStorage.getItem('token');
     const [objectGlobal, setObjectGlobal] = useState()
     const [borrador, setBorrador] = useState()
+    const [asesorObj, setAsesorObj] = useState()
 
     const id = useParams();
 
+    // Listar Asesores
+    useEffect(() => {
+
+        axios.get(`${URL_ASESOR}`, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(res => {
+                setAsesorObj(res?.data)                
+            })
+            .catch(err => null)
+    }, [])
     // LLenara datos 
     useEffect(() => {
 
@@ -86,7 +101,7 @@ const RegistrarPropiedad = () => {
             id: 'general',
             title: 'General',
             icon: <AlignLeft size={18} />,
-            content: <GeneralForm stepper={stepper}  borrador={borrador} objectGlobal={objectGlobal} idPropiedad={id.id} type='wizard-modern' />
+            content: <GeneralForm stepper={stepper} asesorObj={asesorObj} borrador={borrador} objectGlobal={objectGlobal} idPropiedad={id.id} type='wizard-modern' />
         },
         {
             id: 'basico',

@@ -4,7 +4,8 @@ import TablaAsesor from './TablaAsesor'
 import FormAsesor from './FormAsesor'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
+const URL = 'http://127.0.0.1:8000/api/v1/asesor'
+const URL_FOTO = 'http://127.0.0.1:8000/api/v1/asesor-foto'
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -16,32 +17,53 @@ const Asesor = () => {
   const [estado, setEstado] = useState(false)
   const [objUpdate, setObjUpdate] = useState()
   const [data, setData] = useState([]);
+  const [fotoAsesor, setFotoAsesor] = useState()
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const { handleSubmit, control, register, reset, setError, formState: { errors } } = useForm()
 
   const defaultValuesForm = {
     nombre: '',
     apellidos: '',
-    cedula: '',
+    rfc: '',
     email: '',
     celular: '',
+    direccion: '',
+    contacto_emergencia: '',
+    foto: '',
   }
 
   const toggle = () => {
+    setObjUpdate(null)
+    setSelectedImage(null)
+    setFotoAsesor(null)
     setModal(!modal)
+    
     if (objUpdate !== undefined) {
       reset(defaultValuesForm)
     }
   };
 
-  const updateAsesor = (id, data) => {
-    axios.patch(`${URL}/${id}`, data, {
+  const updateAsesor = (id, data) => {       
+    const f = new FormData()
+    f.append('id', id)
+    f.append('nombre', data.nombre)
+    f.append('apellidos', data.apellidos)
+    f.append('celular', data.celular)
+    f.append('direccion', data.direccion)
+    f.append('email', data.email)
+    f.append('rfc', data.rfc)
+    f.append('contacto_emergencia', data.contacto_emergencia)
+    f.append('foto', fotoAsesor)
+    
+    axios.post(`${URL_FOTO}`, f, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
     })
       .then(res => {
         setEstado(true)
+        
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -54,8 +76,19 @@ const Asesor = () => {
   }
 
   const crearAsesor = data => {
-
-    axios.post(URL, data, {
+    setEstado(false)
+    console.log('entro al crear' )
+    const f = new FormData()
+    
+    f.append('nombre', data.nombre)
+    f.append('apellidos', data.apellidos)
+    f.append('celular', data.celular)
+    f.append('direccion', data.direccion)
+    f.append('email', data.email)
+    f.append('rfc', data.rfc)
+    f.append('contacto_emergencia', data.contacto_emergencia)
+    f.append('foto', fotoAsesor)
+    axios.post(URL, f, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -83,9 +116,10 @@ const Asesor = () => {
     })
       .then(res => {
         setObjUpdate(res?.data)
+        setFotoAsesor(res?.data?.foto)
         const object = res?.data
         reset(object)
-
+        
       })
       .catch(err => null)
   }
@@ -121,7 +155,9 @@ const Asesor = () => {
   }
 
   const submit = (data) => {
-    if (objUpdate !== undefined) {
+    // console.log(objUpdate)  
+    // console.log(data.id)
+    if (objUpdate != null || data.id != undefined) {
 
       updateAsesor(objUpdate?.id, data)
       reset(defaultValuesForm)
@@ -170,6 +206,10 @@ const Asesor = () => {
         register={register}
         reset={reset}
         errors={errors}
+        fotoAsesor={fotoAsesor}
+        setFotoAsesor={setFotoAsesor}
+        setSelectedImage={setSelectedImage}
+        selectedImage={selectedImage}
       />
     </Fragment>
   )

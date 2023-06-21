@@ -3,18 +3,21 @@ import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col,
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/general'
-const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+import Select from 'react-select'
+const URL = 'http://127.0.0.1:8000/api/v1/general'
+const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
-const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
+const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
   const token = localStorage.getItem('token');
   const [objectGeneral, setObjectGeneral] = useState()
+
   const {
     reset,
     control,
     setError,
+    register,
     handleSubmit,
     formState: { errors }
   } = useForm()
@@ -118,9 +121,13 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='tipo_operacion'>
-              Tipo Operación
+              Tipo de Operación
             </Label>
-            <Controller
+            <select className="form-select" id="tipo_operacion" {...register("tipo_operacion")}>
+              <option value="Venta">Venta</option>
+              <option value="Renta">Renta</option>
+            </select>
+            {/* <Controller
               defaultValue=''
               control={control}
               id='tipo_operacion'
@@ -134,7 +141,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                   {...field}
                 />
               )}
-            />
+            /> */}
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='tipo_propiedad'>
@@ -158,9 +165,13 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='tipo_contrato'>
-              Tipo Contrato
+              Tipo de Contrato
             </Label>
-            <Controller
+            <select className="form-select" id="tipo_contrato" {...register("tipo_contrato")}>
+              <option value="Exclusiva">Exclusiva</option>
+              <option value="Opción">Opción</option>
+            </select>
+            {/* <Controller
               defaultValue=''
               control={control}
               id='tipo_contrato'
@@ -174,13 +185,20 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                   {...field}
                 />
               )}
-            />
+            /> */}
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='asesor_exclusivo'>
               Asesor de Exclusiva
             </Label>
-            <Controller
+            <select className="form-select" id="asesor_id" {...register("asesor_exclusivo")}>
+              {
+                asesorObj?.map(option => (
+                  <option key={option.id} value={option.nombre +' '+ option.apellidos}>{option.nombre} {option.apellidos}</option>
+                ))
+              }
+            </select>
+            {/* <Controller
               defaultValue=''
               control={control}
               id='asesor_exclusivo'
@@ -194,7 +212,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                   {...field}
                 />
               )}
-            />
+            /> */}
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='porcentaje'>
@@ -236,7 +254,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
               )}
             />
           </div>
-          <div className='mb-1'>
+          {/* <div className='mb-1'>
             <Label className='form-label' for='fecha_credito'>
               Fecha Credito
             </Label>
@@ -254,8 +272,8 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 />
               )}
             />
-          </div>
-          <div className='mb-1'>
+          </div> */}
+          {/* <div className='mb-1'>
             <Label className='form-label' for='fecha_inicio'>
               Fecha Inicio de Contratación de Servicios
             </Label>
@@ -273,7 +291,7 @@ const GeneralForm = ({ idPropiedad, stepper, objectGlobal }) => {
                 />
               )}
             />
-          </div>
+          </div> */}
           <div className='mb-1'>
             <Label className='form-label' for='duracion_dias'>
               Duración de días de contrato

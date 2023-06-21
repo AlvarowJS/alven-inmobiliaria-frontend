@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/estado-propiedad'
+const URL_ESTADO = 'http://127.0.0.1:8000/api/v1/estado-propiedad'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'

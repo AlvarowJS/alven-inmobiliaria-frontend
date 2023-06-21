@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
+const URL = 'http://127.0.0.1:8000/api/v1/asesor'
 
 
 const FormCliente = ({
@@ -61,7 +61,7 @@ const FormCliente = ({
             <select className="form-select" id="asesor_id" {...register("asesor_id")}>
               {
                 options?.map(option => (
-                  <option key={option.id} value={option.id}>{option.nombe} {option.apellidos}</option>
+                  <option key={option.id} value={option.id}>{option.nombre} {option.apellidos}</option>
                 ))
               }
             </select>

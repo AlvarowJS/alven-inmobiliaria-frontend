@@ -1,9 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 
 const FormAsesor = ({
-    modal, toggle, submit, control, register, reset, errors, handleSubmit
+    modal, toggle, submit, control, register, 
+    reset, errors, handleSubmit, fotoAsesor, setFotoAsesor,
+    selectedImage, setSelectedImage
 }) => {
+    // const [selectedImage, setSelectedImage] = useState(null);
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            // Leer el archivo y obtener la URL de la imagen
+            
+            const reader = new FileReader();
+            reader.onload = () => {
+                setSelectedImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+        setFotoAsesor(file)
+    };
+
+
     return (
         <Modal isOpen={modal} toggle={toggle} size='lg'>
             <ModalHeader toggle={toggle}>
@@ -30,9 +49,9 @@ const FormAsesor = ({
                     </div>
 
                     <div className="form-group mx-4 mb-2">
-                        <label htmlFor="cedula">Cédula</label>
-                        <input type="text" className="form-control" id="cedula"
-                            {...register('cedula')}
+                        <label htmlFor="rfc">RFC</label>
+                        <input type="text" className="form-control" id="rfc"
+                            {...register('rfc')}
                             placeholder="7468737"
                             required
                         />
@@ -55,13 +74,49 @@ const FormAsesor = ({
                             required
                         />
                     </div>
+                    <div className="form-group mx-4 mb-2">
+                        <label htmlFor="direccion">Dirección </label>
+                        <input type="text" className="form-control" id="direccion"
+                            {...register('direccion')}
+                            placeholder="99 442409"
+                            required
+                        />
+                    </div>
 
+                    <div className="form-group mx-4 mb-2">
+                        <label htmlFor="contacto_emergencia">Contacto de emergencia</label>
+                        <input type="text" className="form-control" id="contacto_emergencia"
+                            {...register('contacto_emergencia')}
+                            placeholder="99 442409"
+                            required
+                        />
+                    </div>
 
+                    <div className="form-group mx-4 mb-2">
+                        <label htmlFor="foto">Foto de asesor</label>
+                        <input type="file" className="form-control" id="foto"
+                            {...register('foto')}
+                            onChange={handleFileChange}
+                            required
+                        />
+                    </div>
+                    {/* Mostrar la imagen seleccionada */}
+                    <div className="form-group mx-4 mb-2">
+                        {
+                            fotoAsesor != null && selectedImage == null ?
+                            <img src={`http://127.0.0.1:8000/storage/asesor/${fotoAsesor}`} alt="" style={{ width: "100%", height: "auto" }} />:null
+                        }
+                        {selectedImage && (
+                            <div className="preview-image">
+                                <img src={selectedImage} alt="Preview" style={{ width: "100%", height: "auto" }}/>
+                            </div>
+                        )}
+                    </div>
                     <button className='btn btn-primary mx-4 mb-2'>Enviar</button>
                     {/* <button className='btn btn-secondary' onClick={toggle}>Cancelar</button> */}
                 </form>
             </ModalBody>
-        
+
         </Modal>
     )
 }

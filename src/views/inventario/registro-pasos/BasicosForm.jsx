@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col,
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/basicos'
+const URL = 'http://127.0.0.1:8000/api/v1/basicos'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
@@ -18,6 +18,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
     reset,
     control,
     setError,
+    register,
     handleSubmit,
     formState: { errors }
   } = useForm()
@@ -262,7 +263,13 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='cocina'>
                   Cocinas
                 </Label>
-                <Controller
+                <select className="form-select" id="cocina" {...register("cocina")}>
+                  <option value="Integral">Integral</option>
+                  <option value="Solo Tarja">Solo Tarja</option>
+                  <option value="Sin Cocina">Sin Cocina</option>
+                  <option value="Cocineta">Cocineta</option>
+                </select>
+                {/* <Controller
                   defaultValue=''
                   control={control}
                   id='cocina'
@@ -276,7 +283,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                       {...field}
                     />
                   )}
-                />
+                /> */}
               </div>
             </Col>
             <Col>

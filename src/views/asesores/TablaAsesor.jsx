@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'rea
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor/'
+const URL = 'http://127.0.0.1:8000/api/v1/asesor/'
 
 
 const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
@@ -15,7 +15,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
 
     const [idPropiedad, setIdPropiedad] = useState()
     const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerPage] = useState(3)
+    const [rowsPerPage, setRowsPerPage] = useState(5)
     const [searchValue, setSearchValue] = useState('')
     const [getData, setGetData] = useState()
     const [getTotalData, setGetTotalData] = useState()
@@ -63,11 +63,22 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
         },
         {
             sortable: true,
-            name: 'Cedula',
+            name: 'RFC',
             minWidth: '225px',
-            selector: row => row.cedula
+            selector: row => row.rfc
         },
-      
+        {
+            sortable: true,
+            name: 'Foto',
+            minWidth: '225px',
+            cell: row => {
+                return (
+                    <>
+                    <img src={`http://127.0.0.1:8000/storage/asesor/${row?.foto}`} alt="" style={{ width: "120px", height: "80px" }} />
+                    </>
+                )
+            }
+        },
         {
             name: 'Acciones',
             sortable: true,
@@ -188,9 +199,8 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
                                 value={rowsPerPage}
                                 onChange={e => handlePerPage(e)}
                             >
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={7}>7</option>
+                                
+                                <option value={5}>5</option>
                                 <option value={10}>10</option>
                                 <option value={25}>25</option>
                                 <option value={50}>50</option>
