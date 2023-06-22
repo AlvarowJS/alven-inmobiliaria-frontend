@@ -20,6 +20,7 @@ import Inventario from "../../views/inventario/Inventario";
 import Asesor from "../../views/asesores/Asesor";
 import RegistrarPropiedad from "../../views/inventario/RegistrarPropiedad";
 import Mensajes from "../../views/mensajes/Mensajes";
+import Medio from "../../views/medio/Medio";
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -77,6 +78,10 @@ const Routes = [
   {
     path: "/asesores",
     element: <AuthGuard><Asesor /></AuthGuard>,
+  },
+  {
+    path: "/medios",
+    element: <AuthGuard><Medio /></AuthGuard>,
   },
   {
     path: "/mensajes",

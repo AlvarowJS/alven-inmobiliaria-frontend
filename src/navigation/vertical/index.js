@@ -21,6 +21,12 @@ export default [
     navLink: "/asesores",
   },
   {
+    id: "medios",
+    title: "Medios de contacto",
+    icon: <MessageSquare size={20} />,
+    navLink: "/medios",
+  },
+  {
     id: "mensajes",
     title: "Mensajes",
     icon: <MessageCircle size={20} />,

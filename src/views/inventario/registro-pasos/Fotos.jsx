@@ -8,9 +8,15 @@ import { useDropzone } from 'react-dropzone'
 import { FileText, X, DownloadCloud } from 'react-feather'
 import './../style/style.css'
 const URL_FOTOS = 'http://127.0.0.1:8000/api/v1/fotos'
+const URL_ORDER = 'http://127.0.0.1:8000/api/v1/ordernar-fotos'
 const URL_PROPIEDADES = 'http://127.0.0.1:8000/api/v1/propiedades'
 import axios from 'axios'
 import FotoCard from '../fotos/FotoCard'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
+import { DndContext, closestCenter } from '@dnd-kit/core'
+import { SortableContext, arrayMove } from '@dnd-kit/sortable'
 const Fotos = ({ idPropiedad, stepper }) => {
 
   const token = localStorage.getItem('token');
@@ -141,6 +147,43 @@ const Fotos = ({ idPropiedad, stepper }) => {
       .catch(err => null)
   }, [estado])
 
+  const handleDragEnd = (event) => {
+    const {active, over} = event
+    const oldIndex = fotos.findIndex(foto => foto.id === active.id)
+    const newIndex = fotos.findIndex(foto => foto.id === over.id)
+
+    const newOrder = arrayMove(fotos, oldIndex, newIndex)
+    
+    setFotos(newOrder)
+  }
+
+  const ordernar = () => {
+    let datosOrden = []
+    for (let i = 0; i < fotos.length; i++) {
+      datosOrden.push({
+        id: fotos[i].id,
+        orden: i
+      })
+    }
+    axios.post(URL_ORDER, datosOrden, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+    .then(res => {
+      setFotos(res?.data)
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Imagenes Ordenadas',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    })
+    .catch(err => null)
+  }
+
+
   return (
     <>
       <Card>
@@ -186,9 +229,15 @@ const Fotos = ({ idPropiedad, stepper }) => {
         </Button>
       </Card>
 
-      <Card>
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={fotos || []}
+        >
         {
-          fotos?.map(foto => (
+          fotos && fotos?.map(foto => (
             <FotoCard
               key={foto?.id}
               foto={foto}
@@ -196,7 +245,10 @@ const Fotos = ({ idPropiedad, stepper }) => {
             />
           ))
         }
-      </Card>
+        </SortableContext>
+      </DndContext>
+      
+      <Button onClick={ordernar}>Ordenar</Button>
     </>
   )
 }

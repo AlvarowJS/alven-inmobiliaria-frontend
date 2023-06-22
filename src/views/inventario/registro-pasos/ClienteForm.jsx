@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { useForm } from 'react-hook-form'
 const URL_ASESOR = 'http://127.0.0.1:8000/api/v1/asesor'
 const URL = 'http://127.0.0.1:8000/api/v1/cliente'
+const URL_MEDIO = 'http://127.0.0.1:8000/api/v1/medios'
 const URL_ID = 'http://127.0.0.1:8000/api/v1/cliente-id'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -12,8 +13,11 @@ const MySwal = withReactContent(Swal)
 
 const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
   const token = localStorage.getItem('token');
+  const [activar, setActivar] = useState(false)
+
   const [options, setOptions] = useState()
   const [optionsAsesor, setOptionsAsesor] = useState()
+  const [optionsMedio, setOptionsMedio] = useState()
   const [objectCliente, setObjectCliente] = useState()
   const [idCliente, setIdCliente] = useState()
   const { handleSubmit, control, register, reset, setError, formState: { errors } } = useForm()
@@ -24,6 +28,22 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
     setObjectCliente(objectGlobal?.cliente)
 
   }, [])
+
+  useEffect(() => {
+    try {
+      axios.get(URL_MEDIO, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(res => setOptionsMedio(res.data))
+        .catch(err => null)
+    } catch (error) {
+      null
+    }
+
+  }, [])
+
 
   useEffect(() => {
     try {
@@ -87,29 +107,80 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
     setIdCliente(selectedOption?.value)
   }
 
+  const crearCliente = () => {
+    setActivar(!activar)
+    if (activar) {
+      console.log("Crear usuario")
+    } else {
+      console.log("seleccionar usuario")
+    }
+
+  }
   const submit = (data) => {
+    // false = registrar cliente
+    // true = buscar por cliente 
+
     let idClienteActual = objectCliente?.id
-    let actualizaCliente = {}
-    actualizaCliente.cliente_id = idCliente
+    console.log(idPropiedad, "asd")
+    if (activar) {
+      let actualizaCliente = {}
+      actualizaCliente.cliente_id = idCliente
 
-    axios.put(`${URL_ID}/${idPropiedad}`, actualizaCliente, {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Guardado',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        stepper.next()
-
+      axios.put(`${URL_ID}/${idPropiedad}`, actualizaCliente, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
       })
-      .catch(err => null)
+        .then(res => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Guardado',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          stepper.next()
 
+        })
+        .catch(err => null)
+    } else {
+      if (idCliente) {
+        axios.put(`${URL}/${idCliente}`, data, {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(res => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Guardado',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            stepper.next()
+          })
+          .catch(err => null)
+      } else {
+        data.id_propiedad = idPropiedad
+        axios.post(URL, data, {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(res => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Guardado',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            stepper.next()
+          })
+          .catch(err => null)
+      }
+    }
   }
   return (
     <Card>
@@ -118,19 +189,36 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
 
       </CardHeader>
       <CardBody>
-        <Row className='mx-4 my-2'>
-          <Label className='me-1' for='search-input'>
-            Buscar Cliente
-          </Label>
+        <Row>
+          <Col className='mx-4 my-2'>
+            <button className='btn btn-info' onClick={crearCliente}>
+              {
+                activar ? 'Crear Cliente' : 'Buscar Cliente'
+              }
 
-          <Select
-            options={options}
-            isSearchable
-            placeholder="Buscar..."
-            onChange={buscarCliente}
-          />
-
+            </button>
+          </Col>
         </Row>
+
+        {
+          activar ?
+            <Row className='mx-2 my-2'>
+              <Label className='me-1' for='search-input'>
+                <h2> Buscar Cliente</h2>
+              </Label>
+
+              <Select
+                options={options}
+                isSearchable
+                placeholder="Buscar..."
+                onChange={buscarCliente}
+              />
+
+            </Row>
+            : null
+        }
+
+
         <form onSubmit={handleSubmit(submit)}>
           <Row>
             <h4 className='mx-2'> Nombre del cliente</h4>
@@ -140,7 +228,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="nombre"
                   {...register('nombre')}
                   placeholder="Alvaro..."
-                  disabled
+                  disabled={activar}
                 />
               </div>
             </Col>
@@ -150,7 +238,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="apellido_paterno"
                   {...register('apellido_paterno')}
                   placeholder="Rosas"
-                  disabled
+                  disabled={activar}
                 />
               </div>
             </Col>
@@ -160,7 +248,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="apellido_materno"
                   {...register('apellido_materno')}
                   placeholder="Perez"
-                  disabled
+                  disabled={activar}
                 />
               </div>
             </Col>
@@ -174,7 +262,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="cedula"
                   {...register('cedula')}
                   placeholder="7468737"
-                  disabled
+                  disabled={activar}
                 />
               </div>
             </Col>
@@ -184,7 +272,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="email" className="form-control" id="email"
                   {...register('email')}
                   placeholder="ejemplo@gmail.com"
-                  disabled
+                  disabled={activar}
                 />
               </div>
             </Col>
@@ -196,31 +284,51 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
                 <input type="text" className="form-control" id="celular"
                   {...register('celular')}
                   placeholder="99 442409"
-                  disabled
+                  disabled={activar}
                 />
               </div>
             </Col>
             <Col>
               <div className="form-group mx-4 mb-2">
                 <label htmlFor="medio_contacto">Medio de Contacto</label>
+                <select className="form-select" id="medio_contacto" {...register("medio_contacto")} disabled={activar}>
+                  {
+                    optionsMedio?.map(optionMedio => (
+                      <option key={optionMedio.id} value={optionMedio.medio_contacto}>{optionMedio.medio_contacto} </option>
+                    ))
+                  }
+                </select>
+              </div>
+              {/* <div className="form-group mx-4 mb-2">
+                <label htmlFor="medio_contacto">Medio de Contacto</label>
                 <input type="text" className="form-control" id="medio_contacto"
                   {...register('medio_contacto')}
                   placeholder="celular, email, telefono..."
-                  disabled
-                />
-              </div>
+                  disabled={activar}
+                />                
+              </div> */}
             </Col>
           </Row>
           <h4 className='mx-2'> Asesor</h4>
 
           <div className="form-group mx-4 mb-2">
-            <label htmlFor="nombre_tarifa">Seleccionar al Asesor</label>
-            <select className="form-select" id="asesor_id" {...register("asesor_id")} disabled>
+            <label htmlFor="asesor_id">Seleccionar al Asesor</label>
+            <select className="form-select" id="asesor_id" {...register("asesor_id")} disabled={activar}>
               {
                 optionsAsesor?.map(optionAsesor => (
-                  <option key={optionAsesor.id} value={optionAsesor.id}>{optionAsesor.nombe} {optionAsesor.apellidos}</option>
+                  <option key={optionAsesor.id} value={optionAsesor.id}>{optionAsesor.nombre} {optionAsesor.apellidos}</option>
                 ))
               }
+            </select>
+          </div>
+
+          <h4 className='mx-2'> Tipo de cliente</h4>
+
+          <div className="form-group mx-4 mb-2">
+            <label htmlFor="tipo_cliente">Seleccionar el tipo de cliente</label>
+            <select className="form-select" id="tipo_cliente" {...register("tipo_cliente")} disabled={activar}>
+              <option value="Propietario">Propietario</option>
+              <option value="Interesado">Interesado</option>
             </select>
           </div>
 

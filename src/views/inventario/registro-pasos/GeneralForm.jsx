@@ -12,7 +12,8 @@ const MySwal = withReactContent(Swal)
 const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
   const token = localStorage.getItem('token');
   const [objectGeneral, setObjectGeneral] = useState()
-
+  const [tipoOpe, setTipoOpe] = useState()
+  const [tipoProp, setTipoProp] = useState()
   const {
     reset,
     control,
@@ -66,6 +67,8 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
   useEffect(() => {
 
     setObjectGeneral(objectGlobal?.general)
+    setTipoOpe(objectGlobal?.general?.tipo_operacion)
+    setTipoOpe(objectGlobal?.general?.tipo_propiedad)
     reset(objectGlobal?.general)
 
   }, [])
@@ -78,14 +81,15 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
       tipo_propiedad: '',
       tipo_contrato: '',
       asesor_exclusivo: '',
-      porcentaje: '',
       aceptar_creditos: '',
       fecha_credito: '',
       fecha_inicio: '',
-      duracion_dias: '',
+      operacion: '',
       requisito_arrendamiento: '',
     })
   }
+
+  console.log(tipoOpe)
   return (
     <Card>
       <CardHeader>
@@ -123,45 +127,62 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
             <Label className='form-label' for='tipo_operacion'>
               Tipo de Operación
             </Label>
-            <select className="form-select" id="tipo_operacion" {...register("tipo_operacion")}>
+            <select className="form-select" id="tipo_operacion" {...register("tipo_operacion")} onChange={(e) => setTipoOpe(e.target.value)} >
               <option value="Venta">Venta</option>
               <option value="Renta">Renta</option>
             </select>
-            {/* <Controller
-              defaultValue=''
-              control={control}
-              id='tipo_operacion'
-              name='tipo_operacion'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='Venta...'
-                  required
-                  invalid={errors.tipo_operacion && true}
-                  {...field}
-                />
-              )}
-            /> */}
+
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='tipo_propiedad'>
               Tipo de Propiedad
             </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='tipo_propiedad'
-              name='tipo_propiedad'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder=''
-                  required
-                  invalid={errors.tipo_propiedad && true}
-                  {...field}
-                />
-              )}
-            />
+            <select className="form-select" id="tipo_propiedad" {...register("tipo_propiedad")} onChange={(e) => setTipoProp(e.target.value)}>
+              <option value="Habitacional">Habitacional</option>
+              <option value="Comercial">Comercial</option>
+            </select>
+
+          </div>
+
+          <div className='mb-1'>
+            <Label className='form-label' for='tipo_propiedad'>
+              Subtipo de Propiedad
+            </Label>
+
+            {
+              tipoProp == 'Habitacional' ? (
+                <select className="form-select" id="tipo_propiedad" {...register("sub_tipo_propiedad")} >
+                  <option value="Casa">Casa</option>
+                  <option value="Casa Duplex">Casa Duplex</option>
+                  <option value="Casa en Condominio">Casa en Condominio</option>
+                  <option value="Departamento">Departamento</option>
+                  <option value="Penthouse">Penthouse</option>
+                  <option value="Terreno">Terreno</option>
+                  <option value="Huerta">Huerta</option>
+                  <option value="Quinta">Quinta</option>
+                  <option value="Rancho">Rancho</option>
+                  <option value="Hacienda">Hacienda</option>
+                  <option value="Edificio">Edificio</option>
+                </select>
+
+              ) :
+                (
+                  <select className="form-select" id="tipo_propiedad" {...register("sub_tipo_propiedad")} >
+                    <option value="Terreno">Terreno</option>
+                    <option value="Edificio">Edificio</option>
+                    <option value="Fracccionamiento">Fracccionamiento</option>
+                    <option value="Inmueble Productivo">Inmueble Productivo</option>
+                    <option value="Consultorio">Consultorio</option>
+                    <option value="Local">Local</option>
+                    <option value="Oficinas">Oficinas</option>
+                    <option value="Bodegas">Bodegas</option>
+                    <option value="Fábrica">Fábrica</option>
+                    <option value="Nave">Nave</option>
+                  </select>
+                )}
+
+
+
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='tipo_contrato'>
@@ -171,21 +192,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
               <option value="Exclusiva">Exclusiva</option>
               <option value="Opción">Opción</option>
             </select>
-            {/* <Controller
-              defaultValue=''
-              control={control}
-              id='tipo_contrato'
-              name='tipo_contrato'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='Exclusiva...'
-                  required
-                  invalid={errors.tipo_contrato && true}
-                  {...field}
-                />
-              )}
-            /> */}
+
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='asesor_exclusivo'>
@@ -194,41 +201,30 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
             <select className="form-select" id="asesor_id" {...register("asesor_exclusivo")}>
               {
                 asesorObj?.map(option => (
-                  <option key={option.id} value={option.nombre +' '+ option.apellidos}>{option.nombre} {option.apellidos}</option>
+                  <option key={option.id} value={option.nombre + ' ' + option.apellidos}>{option.nombre} {option.apellidos}</option>
                 ))
               }
             </select>
-            {/* <Controller
-              defaultValue=''
-              control={control}
-              id='asesor_exclusivo'
-              name='asesor_exclusivo'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder=''
-                  required
-                  invalid={errors.asesor_exclusivo && true}
-                  {...field}
-                />
-              )}
-            /> */}
+
           </div>
           <div className='mb-1'>
-            <Label className='form-label' for='porcentaje'>
-              Porcentaje de comisión
+            <Label className='form-label' for='operacion'>
+              {
+                tipoOpe == 'Venta' ? 'Porcentaje de comisión' : 'Número de Días'
+              }
+
             </Label>
             <Controller
               defaultValue=''
               control={control}
-              id='porcentaje'
-              name='porcentaje'
+              id='operacion'
+              name='operacion'
               render={({ field }) => (
                 <Input
                   type='text'
                   placeholder=''
                   required
-                  invalid={errors.porcentaje && true}
+                  invalid={errors.operacion && true}
                   {...field}
                 />
               )}
@@ -254,64 +250,8 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
               )}
             />
           </div>
-          {/* <div className='mb-1'>
-            <Label className='form-label' for='fecha_credito'>
-              Fecha Credito
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='fecha_credito'
-              name='fecha_credito'
-              render={({ field }) => (
-                <Input
-                  type='date'
-                  required
-                  invalid={errors.fecha_credito && true}
-                  {...field}
-                />
-              )}
-            />
-          </div> */}
-          {/* <div className='mb-1'>
-            <Label className='form-label' for='fecha_inicio'>
-              Fecha Inicio de Contratación de Servicios
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='fecha_inicio'
-              name='fecha_inicio'
-              render={({ field }) => (
-                <Input
-                  type='date'
-                  required
-                  invalid={errors.fecha_inicio && true}
-                  {...field}
-                />
-              )}
-            />
-          </div> */}
-          <div className='mb-1'>
-            <Label className='form-label' for='duracion_dias'>
-              Duración de días de contrato
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='duracion_dias'
-              name='duracion_dias'
-              render={({ field }) => (
-                <Input
-                  type='number'
-                  placeholder='ingrese en dias'
-                  required
-                  invalid={errors.duracion_dias && true}
-                  {...field}
-                />
-              )}
-            />
-          </div>
+
+
           <div className='mb-1'>
             <Label className='form-label' for='requisito_arrendamiento'>
               Requisitos de arrendamiento
@@ -324,7 +264,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
               render={({ field }) => (
                 <Input
                   type='textarea'
-                  placeholder='ingrese en dias'
+                  placeholder=''
                   required
                   invalid={errors.requisito_arrendamiento && true}
                   {...field}
