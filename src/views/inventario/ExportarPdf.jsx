@@ -115,7 +115,7 @@ const ExportarPdf = ({ propiedades, espacios }) => {
 
                     <View style={styles.imageContainer}>
                         <Image
-                            src={`http://127.0.0.1:8000/storage/${propiedades?.id}/${propiedades?.foto[0]?.fotos}`}
+                            src={`https://backend.alven-inmobiliaria.com.mx/storage/${propiedades?.id}/${propiedades?.foto[0]?.fotos}`}
                             style={styles.image}
                         />
 
@@ -124,7 +124,7 @@ const ExportarPdf = ({ propiedades, espacios }) => {
                                     {propiedades?.foto?.map((foto, index) => (
                                         <Image
                                             key={index}
-                                            src={`http://127.0.0.1:8000/storage/${propiedades?.id}/${foto?.fotos}`}
+                                            src={`https://backend.alven-inmobiliaria.com.mx/storage/${propiedades?.id}/${foto?.fotos}`}
                                             style={styles.galleryImage}
                                         />
                                     ))}

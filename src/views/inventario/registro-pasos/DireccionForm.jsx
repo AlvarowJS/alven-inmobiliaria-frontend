@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row, InputGroup, InputGroupText } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Check, X } from 'react-feather'
+
 import './../style/style.css'
 const containerStyle = {
   width: '100%',
   height: '400px'
 };
 import axios from 'axios';
-const URL = 'http://127.0.0.1:8000/api/v1/direccion'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/direccion'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import html2canvas from 'html2canvas';
 const MySwal = withReactContent(Swal)
 
 const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
@@ -28,29 +30,40 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const [colonia, setColonia] = useState()
   const [calle, setCalle] = useState()
   const [numero, setNumero] = useState()
-  
+
+  const [mapaCapturado, setMapaCapturado] = useState(null);
   const [objectDirection, setObjectDirection] = useState()
-  const [lat, setLat] = useState()
-  const [lng, setLng] = useState()
-  const [zoom, setZoom] = useState()
+  const [lat, setLat] = useState(-9.960817)
+  const [lng, setLng] = useState(-76.248254)
+  const [zoom, setZoom] = useState(15)
   const [direccion, setDireccion] = useState('');
 
+  // const mapRef = useRef(null);
+
+  // const capturarMapa = () => {
+  //   const mapContainer = document.getElementById('map-container');
+
+  //   html2canvas(mapContainer).then((canvas) => {
+  //     const imgData = canvas.toDataURL('image/png');
+  //     setMapaCapturado(imgData);
+  //   });
+  // };
 
 
 
-  const handleMapClick = (event) => {
-    const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode({ location: event.latLng }, (results, status) => {
-      if (status === 'OK') {
-        if (results[0]) {
-          setDireccion(results[0].formatted_address);
-          console.log(results[0], "Asd")
-        }
-      } else {
-        console.error('Error al obtener la dirección:', status);
-      }
-    });
-  };
+  // const handleMapClick = (event) => {
+  //   const geocoder = new window.google.maps.Geocoder();
+  //   geocoder.geocode({ location: event.latLng }, (results, status) => {
+  //     if (status === 'OK') {
+  //       if (results[0]) {
+  //         setDireccion(results[0].formatted_address);
+  //         console.log(direccion)
+  //       }
+  //     } else {
+  //       console.error('Error al obtener la dirección:', status);
+  //     }
+  //   });
+  // };
 
   useEffect(() => {
     setPais(objectGlobal?.direccion?.pais)
@@ -61,9 +74,9 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
     setNumero(objectGlobal?.direccion?.numero)
 
     reset(objectGlobal?.direccion)
-    setLat(parseFloat(objectGlobal?.direccion?.LAT) ? parseFloat(objectGlobal?.direccion?.LAT) : 0)
-    setLng(parseFloat(objectGlobal?.direccion?.LON) ? parseFloat(objectGlobal?.direccion?.LON) : 0)
-    setZoom(parseFloat(objectGlobal?.direccion?.ZOOM) ? parseFloat(objectGlobal?.direccion?.ZOOM) : 0)
+    setLat(parseFloat(objectGlobal?.direccion?.LAT) ? parseFloat(objectGlobal?.direccion?.LAT) : lat)
+    setLng(parseFloat(objectGlobal?.direccion?.LON) ? parseFloat(objectGlobal?.direccion?.LON) : lng)
+    setZoom(parseFloat(objectGlobal?.direccion?.ZOOM) ? parseFloat(objectGlobal?.direccion?.ZOOM) : zoom)
     setObjectDirection(parseFloat(objectGlobal?.direccion))
 
   }, [])
@@ -79,17 +92,19 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
   } = useForm()
 
   const buscarDireccion = () => {
-    let direccionUnida = `${pais} ${estado} ${municipio} ${colonia} ${calle} ${numero}`  
-
+    let direccionUnida = `${pais && pais} ${estado && estado} ${municipio && municipio} ${colonia && colonia} ${calle && calle} ${numero && numero}`
+    console.log(direccionUnida)
     const geocoder = new window.google.maps.Geocoder();
+
     geocoder.geocode({ address: direccionUnida }, (results, status) => {
       if (status === 'OK') {
         if (results[0]) {
-          
+
           const { lat, lng } = results[0].geometry.location;
           // Utiliza las coordenadas obtenidas (lat y lng) como nuevo centro del mapa
           setLat(lat);
           setLng(lng);
+          setZoom(15);
         }
       } else {
         console.error('Error al buscar la dirección:', status);
@@ -214,21 +229,8 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
             <Label className='form-label' for='pais'>
               Pais
             </Label>
-            <input className='form-control' type="text" {...register("pais")} onChange={(e) => setPais(e.target.value)} />
-            {/* <Controller
-              defaultValue=''
-              control={control}
-              id='pais'
-              name='pais'
-              render={({ field }) =>
-                <Input
-                  placeholder='pais'
-                  invalid={errors.pais && true}
-                  onChange={(e) => setPais(e.target.value)}
-                  {...field}
-                />
-              }
-            /> */}
+            <input className='form-control' type="text" {...register("pais")} onChange={(e) => setPais(e.target.value)} required />
+
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='codigo_postal'>
@@ -239,71 +241,29 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='codigo_postal'
               name='codigo_postal'
-              render={({ field }) => <Input placeholder='10003' invalid={errors.codigo_postal && true} {...field} />}
+              render={({ field }) => <Input placeholder='10003' invalid={errors.codigo_postal && true} {...field} required />}
             />
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='estado'>
               Estado
             </Label>
-            <input className='form-control' type="text" {...register("estado")} onChange={(e) => setEstado(e.target.value)} />
-            {/* <Controller
-              defaultValue=''
-              control={control}
-              id='estado'
-              name='estado'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='ingrese el estado'
-                  invalid={errors.estado && true}
-                  required
-                  {...field}
-                />
-              )}
-            /> */}
+            <input className='form-control' type="text" onChange={(e) => setEstado(e.target.value)} {...register("estado")} required />
+
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='municipio'>
               Municipio
             </Label>
-            <input className='form-control' type="text" {...register("municipio")} onChange={(e) => setMunicipio(e.target.value)} />
-            {/* <Controller
-              defaultValue=''
-              control={control}
-              id='municipio'
-              name='municipio'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='ingrese el municipio'
-                  invalid={errors.municipio && true}
-                  required
-                  {...field}
-                />
-              )}
-            /> */}
+            <input className='form-control' type="text" {...register("municipio")} onChange={(e) => setMunicipio(e.target.value)} required />
+
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='colonia'>
               Colonia
             </Label>
-            <input className='form-control' type="text" {...register("colonia")} onChange={(e) => setColonia(e.target.value)} />
-            {/* <Controller
-              defaultValue=''
-              control={control}
-              id='colonia'
-              name='colonia'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='ingrese el estado'
-                  invalid={errors.colonia && true}
-                  required
-                  {...field}
-                />
-              )}
-            /> */}
+            <input className='form-control' type="text" {...register("colonia")} onChange={(e) => setColonia(e.target.value)} required />
+
           </div>
 
           <Row>
@@ -312,22 +272,8 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='calle'>
                   Calle
                 </Label>
-                <input className='form-control' type="text" {...register("calle")} onChange={(e) => setCalle(e.target.value)} />
-                {/* <Controller
-                  defaultValue=''
-                  control={control}
-                  id='calle'
-                  name='calle'
-                  render={({ field }) => (
-                    <Input
-                      type='text'
-                      placeholder='ingrese el calle'
-                      invalid={errors.calle && true}
-                      required
-                      {...field}
-                    />
-                  )}
-                /> */}
+                <input className='form-control' type="text" onChange={(e) => setCalle(e.target.value)} {...register("calle")} required />
+
               </div>
             </Col>
             <Col>
@@ -335,7 +281,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='numero'>
                   Número
                 </Label>
-                <input className='form-control' type="text" {...register("numero")} onChange={(e) => setNumero(e.target.value)} />             
+                <input className='form-control' type="text" onChange={(e) => setNumero(e.target.value)} {...register("numero")} required />
               </div>
             </Col>
             <Col>
@@ -343,7 +289,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='numero_interior'>
                   Número Interior
                 </Label>
-                <input className='form-control' type="text" {...register("numero_interior")} />             
+                <input className='form-control' type="text" {...register("numero_interior")} required />
               </div>
             </Col>
           </Row>
@@ -353,9 +299,9 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='LAT'>
                   LATITUD
                 </Label>
-          
+
                 <InputGroupText>
-                  <input className='local_input' type="text" id="LAT"                                        
+                  <input className='local_input' type="text" id="LAT"
                     required
                     value={lat}
                     onChange={handleLat}
@@ -369,10 +315,10 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='LON'>
                   LONGITUD
                 </Label>
-         
+
                 <InputGroupText>
-                  <input className='local_input' type="text" id="LON"                    
-                    
+                  <input className='local_input' type="text" id="LON"
+
                     required
                     value={lng}
                     onChange={handleLong}
@@ -386,24 +332,12 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='ZOOM'>
                   ZOOM
                 </Label>
-                {/* <Controller
-                  defaultValue=''
-                  control={control}
-                  id='ZOOM'
-                  name='ZOOM'
-                  render={({ field }) => (
-                    <Input
-                      type='text'
-                      placeholder='16'
-                      invalid={errors.ZOOM && true}
-                      {...field}
-                    />
-                  )}
-                /> */}
+
                 <InputGroupText>
-                  <input className='local_input' type="text" id="ZOOM"                                      
-                    value={zoom}
+                  <input className='local_input' type="text" id="ZOOM"
+
                     onChange={handleZoom}
+                    value={zoom}
                     required
                     placeholder='Distancia en como se vera el mapa'
                     {...register('ZOOM')}
@@ -417,31 +351,34 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
             <Col>
               <Button onClick={buscarDireccion}>Buscar en el mapa</Button>
             </Col>
+
+            {/* <Button onClick={capturarMapa}>Descargar</Button> */}
+
           </Row>
           <Row className='px-4 '>
-     
 
-            {lat && lng && (
+            {/* <div id="map-container"> */}
+              {lat && lng && (
 
-              <LoadScript
-                googleMapsApiKey="AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q"
-              >
-                <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  onClick={handleMapClick}
-                  center={{
-                    lat: lat,
-                    lng: lng
-                  }}
-                  zoom={zoom}
+                <LoadScript
+                  googleMapsApiKey="AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q"
                 >
-                  {/* {direccion && (
-                    <Marker position={{ lat: lat, lng: lng }} />
-                  )} */}
-                </GoogleMap>
-              </LoadScript>
-            )}
-
+                  <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    // onClick={handleMapClick}
+                    center={{
+                      lat: lat,
+                      lng: lng
+                    }}
+                    zoom={zoom}
+                  >
+                    {/* {direccion && ( */}
+                    {/* <Marker position={{ lat: lat, lng: lng }} /> */}
+                    {/* )} */}
+                  </GoogleMap>
+                </LoadScript>
+              )}
+            {/* </div> */}
           </Row>
           <div className='d-flex mt-2'>
             <Button className='me-1' color='primary' type='submit'>
@@ -453,6 +390,8 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
           </div>
         </Form>
       </CardBody>
+      {/* {mapaCapturado && <img src={mapaCapturado} alt="Mapa capturado" />} */}
+
     </Card>
   )
 }

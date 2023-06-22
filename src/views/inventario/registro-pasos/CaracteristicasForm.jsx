@@ -6,8 +6,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
-const URL = 'http://127.0.0.1:8000/api/v1/caracteristica'
-const URL_PROPIEDAD = 'http://127.0.0.1:8000/api/v1/propiedades'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/caracteristica'
+const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const token = localStorage.getItem('token');
 
