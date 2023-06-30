@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 
 const FormAsesor = ({
-    modal, toggle, submit, control, register, 
+    modal, toggle, submit, control, register,
     reset, errors, handleSubmit, fotoAsesor, setFotoAsesor,
     selectedImage, setSelectedImage
 }) => {
@@ -12,7 +12,7 @@ const FormAsesor = ({
         const file = event.target.files[0];
         if (file) {
             // Leer el archivo y obtener la URL de la imagen
-            
+
             const reader = new FileReader();
             reader.onload = () => {
                 setSelectedImage(reader.result);
@@ -93,22 +93,38 @@ const FormAsesor = ({
                     </div>
 
                     <div className="form-group mx-4 mb-2">
+                        <label htmlFor="status">Status</label>
+                        <select className="form-select" id="status" {...register('status')}  >
+                            <option value="Activo">Activo</option>
+                            <option value="Suspendido">Suspendido</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group mx-4 mb-2">
+                        <label htmlFor="publico">En publico</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="publico" {...register("publico")} />
+                            <label class="form-check-label" for="publico">Publicado</label>
+                        </div>
+                    </div>
+
+                    <div className="form-group mx-4 mb-2">
                         <label htmlFor="foto">Foto de asesor</label>
                         <input type="file" className="form-control" id="foto"
                             {...register('foto')}
                             onChange={handleFileChange}
-                            required
+
                         />
                     </div>
                     {/* Mostrar la imagen seleccionada */}
                     <div className="form-group mx-4 mb-2">
                         {
                             fotoAsesor != null && selectedImage == null ?
-                            <img src={`https://backend.alven-inmobiliaria.com.mx/storage/asesor/${fotoAsesor}`} alt="" style={{ width: "100%", height: "auto" }} />:null
+                                <img src={`https://backend.alven-inmobiliaria.com.mx/storage/asesor/${fotoAsesor}`} alt="" style={{ width: "100%", height: "auto" }} /> : null
                         }
                         {selectedImage && (
                             <div className="preview-image">
-                                <img src={selectedImage} alt="Preview" style={{ width: "100%", height: "auto" }}/>
+                                <img src={selectedImage} alt="Preview" style={{ width: "100%", height: "auto" }} />
                             </div>
                         )}
                     </div>

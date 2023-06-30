@@ -9,7 +9,9 @@ const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propieda
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
-const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
+const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral }) => {
+
+  console.log(idGeneral)
   const token = localStorage.getItem('token');
   const [objectGeneral, setObjectGeneral] = useState()
   const [tipoOpe, setTipoOpe] = useState()
@@ -23,9 +25,10 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
     formState: { errors }
   } = useForm()
   const onSubmit = data => {
-    let idGeneral = objectGeneral?.id
-    if (idGeneral) {
-      axios.put(`${URL}/${idGeneral}`, data, {
+    let idGeneralForm = objectGeneral?.id    
+    if (idGeneralForm) {
+      
+      axios.put(`${URL}/${idGeneralForm}`, data, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -42,6 +45,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
         })
         .catch(err => null)
     } else {
+      data.numero_ofna = idGeneral
       data.id_propiedad = idPropiedad
 
       axios.post(URL, data, {
@@ -101,14 +105,15 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
             <Label className='form-label' for='numero_ofna'>
               id
             </Label>
-            <Controller
+            <input className='form-control' type="text" value={idGeneral} {...register("numero_ofna")} disabled/>
+            {/* <Controller
               defaultValue=''
               control={control}
               id='numero_ofna'
               name='numero_ofna'
-              required
+              
               render={({ field }) => <Input placeholder='23423' invalid={errors.numero_ofna && true} {...field} />}
-            />
+            /> */}
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='fecha_alta'>
@@ -119,7 +124,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
               control={control}
               id='fecha_alta'
               name='fecha_alta'
-              required
+              
               render={({ field }) => <Input type='date' placeholder='fecha alta' invalid={errors.fecha_alta && true} {...field} />}
             />
           </div>
@@ -223,7 +228,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='text'
                   placeholder=''
-                  required
+                  
                   invalid={errors.operacion && true}
                   {...field}
                 />
@@ -243,7 +248,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='text'
                   placeholder='si/no'
-                  required
+                  
                   invalid={errors.aceptar_creditos && true}
                   {...field}
                 />
@@ -265,7 +270,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal }) => {
                 <Input
                   type='textarea'
                   placeholder=''
-                  required
+                  
                   invalid={errors.requisito_arrendamiento && true}
                   {...field}
                 />

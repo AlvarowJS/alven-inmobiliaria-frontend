@@ -6,7 +6,7 @@ const Inventario = () => {
   return (
     <Fragment>
       <Breadcrumb title='Datatables Advance' data={[{ title: 'Datatables' }, { title: 'Datatables Advance' }]} />
-      <Row>  
+      <Row>      
         <Col sm='12'>
           <TablaInventario />
         </Col>

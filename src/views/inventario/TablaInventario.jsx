@@ -7,6 +7,7 @@ import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, File, FileText, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+const URL_FILTER = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedad-filtrado'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -24,8 +25,26 @@ const TablaInventario = () => {
     const [getData, setGetData] = useState()
     const [getTotalData, setGetTotalData] = useState()
     const [store, setStore] = useState()
+    const [estadoPropiedad, setEstadoPropiedad] = useState()
+    const [nombreEstado, setNombreEstado] = useState()
 
     const dispatch = useDispatch()
+
+    const CambiarEstado = (status) => {
+        setNombreEstado(status)
+        let objStatus = {}
+        objStatus.estado = status
+        axios.post(URL_FILTER, objStatus, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(res => {
+                setEstadoPropiedad(res?.data)
+            })
+            .catch(err => { console.log(err) })
+    }
+
 
     const updateInventarioById = (id) => {
         navigate(`/registrar-propiedad/${id}`)
@@ -115,7 +134,7 @@ const TablaInventario = () => {
     }
 
     const descargarPdf = (id) => {
-       window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id}`)
+        window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id}`)
     }
 
     const handleFilter = e => {
@@ -151,21 +170,31 @@ const TablaInventario = () => {
                 return (
                     <>
                         {
-                            row?.direccion?.pais == undefined ? 'Sin asignar' : row?.direccion?.pais
+                            row?.direccion?.calle == undefined ? 'Sin asignar' : row?.direccion?.numero
                                 + ' ' +
-                                row?.direccion?.codigo_postal
+                                row?.direccion?.colonia
+                                + ' ' +
+                                row?.direccion?.municipio
                                 + ' ' +
                                 row?.direccion?.estado
+                                + ' ' +
+                                row?.direccion?.pais
                         }
                     </>
                 )
             }
         },
+        // {
+        //     sortable: true,
+        //     name: 'SubTipo',
+        //     minWidth: '250px',
+        //     selector: row => row?.general?.tipo_propiedad == undefined ? 'Sin asignar' : row?.general?.tipo_propiedad
+        // },
         {
             sortable: true,
-            name: 'SubTipo',
-            minWidth: '250px',
-            selector: row => row?.general?.tipo_propiedad == undefined ? 'Sin asignar' : row?.general?.tipo_propiedad
+            name: 'Precio',
+            minWidth: '120px',
+            selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : row?.publicidad?.precio_venta.toLocaleString() + '$'
         },
         {
             sortable: true,
@@ -210,12 +239,7 @@ const TablaInventario = () => {
                 )
             }
         },
-        {
-            sortable: true,
-            name: 'Precio',
-            minWidth: '120px',
-            selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : row?.publicidad?.precio_venta + 'MXM'
-        },
+
         {
             sortable: true,
             name: 'Estado',
@@ -262,39 +286,63 @@ const TablaInventario = () => {
             }
         }
     ]
-
     useEffect(() => {
 
-        axios.get(URL, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-            .then(res => {
-
-                // Total de registros
-                let totalData = res?.data.length
-                setGetTotalData(totalData)
-
-                // Con la sigueinte logica evitara errores
-                if (totalData > (res?.data).slice(0, rowsPerPage).length) {
-
-                    //Cantidad enumaraciones
-                    let count = Math.ceil(totalData / rowsPerPage)
-                    let cantidadPag = Math.ceil(totalData / count)
-                    let limite = cantidadPag * currentPage
-                    let inicio = cantidadPag * (currentPage - 1)
-
-                    // console.log(currentPage-1, limite, "currente y limite")
-                    let data = (res?.data).slice(inicio, limite)
-                    setGetData(data)
-                } else {
-                    setGetData((res?.data).slice(0, rowsPerPage))
+        if (nombreEstado == 'Todos' || estadoPropiedad == undefined) {
+            console.log("hola?")
+            axios.get(URL, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
                 }
-
             })
-            .catch(err => { console.log(err) })
-    }, [rowsPerPage, currentPage, estado])
+                .then(res => {
+
+                    // Total de registros
+                    let totalData = res?.data.length
+                    let allData = res?.data
+                    setGetTotalData(totalData)
+
+                    // Con la sigueinte logica evitara errores
+                    if (totalData > (allData).slice(0, rowsPerPage).length) {
+
+                        //Cantidad enumaraciones
+                        let count = Math.ceil(totalData / rowsPerPage)
+                        let cantidadPag = Math.ceil(totalData / count)
+                        let limite = cantidadPag * currentPage
+                        let inicio = cantidadPag * (currentPage - 1)
+
+                        // console.log(currentPage-1, limite, "currente y limite")
+                        let data = (allData).slice(inicio, limite)
+                        setGetData(data)
+                    } else {
+                        setGetData((allData).slice(0, rowsPerPage))
+                    }
+
+                })
+                .catch(err => { console.log(err) })
+        } else {
+            let totalData = estadoPropiedad.length
+            let allData = estadoPropiedad
+            setGetTotalData(totalData)
+
+            // Con la sigueinte logica evitara errores
+            if (totalData > (allData).slice(0, rowsPerPage).length) {
+
+                //Cantidad enumaraciones
+                let count = Math.ceil(totalData / rowsPerPage)
+                let cantidadPag = Math.ceil(totalData / count)
+                let limite = cantidadPag * currentPage
+                let inicio = cantidadPag * (currentPage - 1)
+
+                // console.log(currentPage-1, limite, "currente y limite")
+                let data = (allData).slice(inicio, limite)
+                setGetData(data)
+            } else {
+                setGetData((allData).slice(0, rowsPerPage))
+            }
+        }
+
+    }, [rowsPerPage, currentPage, estado, estadoPropiedad])
 
     const handlePerPage = e => {
         setRowsPerPage(parseInt(e.target.value))
@@ -345,8 +393,30 @@ const TablaInventario = () => {
                             </Button>
                         </Col>
                     </Row>
-
-
+                </Card>
+                <Card className='p-4'>
+                    <Row>
+                        <Col lg='6' className='d-flex align-items-center px-0 px-lg-1'>
+                            <Button className='mt-sm-0 mt-1' onClick={() => CambiarEstado('Todos')}>
+                                Todos
+                            </Button>
+                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('En Promocion')}>
+                                En promoción
+                            </Button>
+                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('Con Manifestación')}>
+                                Con Manifestación
+                            </Button>
+                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('Cancelada')}>
+                                Cancelada
+                            </Button>
+                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('Suspendida')}>
+                                Suspendida
+                            </Button>
+                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('Cerrada')}>
+                                Cerrada
+                            </Button>
+                        </Col>
+                    </Row>
                 </Card>
                 <Card>
                     <CardHeader className='border-bottom'>

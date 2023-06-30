@@ -31,6 +31,8 @@ const Asesor = () => {
     direccion: '',
     contacto_emergencia: '',
     foto: '',
+    status: '',
+    publico: '',
   }
 
   const toggle = () => {
@@ -55,6 +57,10 @@ const Asesor = () => {
     f.append('rfc', data.rfc)
     f.append('contacto_emergencia', data.contacto_emergencia)
     f.append('foto', fotoAsesor)
+    f.append('status', data.status)
+    // f.append('publico', data.publico)
+    f.append('publico', data.publico ? 1 : 0);
+
     
     axios.post(`${URL_FOTO}`, f, {
       headers: {
@@ -88,6 +94,10 @@ const Asesor = () => {
     f.append('rfc', data.rfc)
     f.append('contacto_emergencia', data.contacto_emergencia)
     f.append('foto', fotoAsesor)
+    // f.append('publico', data.publico)
+    f.append('publico', data.publico ? 1 : 0);
+
+    f.append('status', data.status)
     axios.post(URL, f, {
       headers: {
         'Authorization': 'Bearer ' + token

@@ -116,7 +116,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   control={control}
                   id='superficie_terreno'
                   name='superficie_terreno'
-                  render={({ field }) => <Input invalid={errors.superficie_terreno && true} required {...field} />}
+                  render={({ field }) => <Input invalid={errors.superficie_terreno && true}  {...field} />}
                 />
               </div>
             </Col>
@@ -130,7 +130,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   control={control}
                   id='niveles_construidos'
                   name='niveles_construidos'
-                  render={({ field }) => <Input invalid={errors.niveles_construidos && true} required {...field} />}
+                  render={({ field }) => <Input invalid={errors.niveles_construidos && true}  {...field} />}
                 />
               </div>
             </Col>
@@ -146,7 +146,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   control={control}
                   id='superficie_construccion'
                   name='superficie_construccion'
-                  render={({ field }) => <Input type='text' placeholder='' invalid={errors.superficie_construccion && true} required {...field} />}
+                  render={({ field }) => <Input type='text' placeholder='' invalid={errors.superficie_construccion && true}  {...field} />}
                 />
               </div>
             </Col>
@@ -160,7 +160,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   control={control}
                   id='cuota_mantenimiento'
                   name='cuota_mantenimiento'
-                  render={({ field }) => <Input type='text' placeholder='' invalid={errors.cuota_mantenimiento && true} required {...field} />}
+                  render={({ field }) => <Input type='text' placeholder='' invalid={errors.cuota_mantenimiento && true}  {...field} />}
                 />
               </div>
             </Col>
@@ -180,7 +180,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      required
+                      
                       invalid={errors.banios && true}
                       {...field}
                     />
@@ -202,7 +202,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      required
+                      
                       invalid={errors.medios_banios && true}
                       {...field}
                     />
@@ -226,7 +226,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      required
+                      
                       invalid={errors.recamaras && true}
                       {...field}
                     />
@@ -248,7 +248,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      required
+                      
                       invalid={errors.numero_casas && true}
                       {...field}
                     />
@@ -278,7 +278,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      required
+                      
                       invalid={errors.cocina && true}
                       {...field}
                     />
@@ -300,7 +300,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      required
+                      
                       invalid={errors.estacionamiento && true}
                       {...field}
                     />
@@ -323,7 +323,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   render={({ field }) => (
                     <Input
                       type='text'
-                      required
+                      
                       invalid={errors.numero_elevadores && true}
                       {...field}
                     />
@@ -344,7 +344,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   render={({ field }) => (
                     <Input
                       type='text'
-                      required
+                      
                       invalid={errors.piso_ubicado && true}
                       {...field}
                     />

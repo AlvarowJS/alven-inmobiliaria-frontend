@@ -24,34 +24,16 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
     reset,
     control,
     setError,
+    register,
     handleSubmit,
     formState: { errors }
   } = useForm()
 
-  // const terminarEdicion = () => {
-  //   axios.put(`${URL_ESTADO}/${idPropiedad}`, null, {
-  //     headers: {
-  //       'Authorization': 'Bearer ' + token
-  //     }
-  //   })
-  //     .then(res => {
-  //       Swal.fire({
-  //         position: 'center',
-  //         icon: 'success',
-  //         title: 'Inventario Registrado',
-  //         showConfirmButton: false,
-  //         timer: 1500
-  //       })
-  //       navigate(`/inventario`)
-  //     })
-  //     .catch(err => null)
-  // }
 
   useEffect(() => {
 
     setObjectPublicidad(objectGlobal?.publicidad)
     reset(objectGlobal?.publicidad)
-
   }, [])
 
   const onSubmit = data => {
@@ -102,7 +84,8 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       precio_venta: '',
       encabezado: '',
       descripcion: '',
-      video_url: ''
+      video_url: '',
+      estado: ''
     })
   }
   return (
@@ -121,7 +104,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='precio_venta'
               name='precio_venta'
-              render={({ field }) => <Input invalid={errors.precio_venta && true} required {...field} />}
+              render={({ field }) => <Input invalid={errors.precio_venta && true}  {...field} />}
             />
           </div>
           <div className='mb-1'>
@@ -133,7 +116,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='encabezado'
               name='encabezado'
-              render={({ field }) => <Input invalid={errors.encabezado && true} required {...field} />}
+              render={({ field }) => <Input invalid={errors.encabezado && true}  {...field} />}
             />
           </div>
           <div className='mb-1'>
@@ -145,7 +128,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='descripcion'
               name='descripcion'
-              render={({ field }) => <Input type="textarea" invalid={errors.descripcion && true} required {...field} />}
+              render={({ field }) => <Input type="textarea" invalid={errors.descripcion && true}  {...field} />}
             />
           </div>
           <div className='mb-1'>
@@ -157,8 +140,20 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='video_url'
               name='video_url'
-              render={({ field }) => <Input invalid={errors.video_url && true} required {...field} />}
+              render={({ field }) => <Input invalid={errors.video_url && true}  {...field} />}
             />
+          </div>
+          <div className='mb-1'>
+            <Label className='form-label' for='estado'>
+              Status
+            </Label>
+            <select className="form-select" id="estado" {...register("estado")} >
+              <option value="En Promocion">En Promoción</option>
+              <option value="Con Manifestacion">Con Manifestación</option>
+              <option value="Cancelada">Cancelada </option>
+              <option value="Suspendida">Suspendida </option>
+              <option value="Cerrada">Cerrada</option>
+            </select>
           </div>
           <div className='d-flex'>
             {/* <Button className='me-1' color='success' onClick={terminarEdicion} disabled={estadoPropiedad}>

@@ -51,19 +51,21 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
 
 
-  // const handleMapClick = (event) => {
-  //   const geocoder = new window.google.maps.Geocoder();
-  //   geocoder.geocode({ location: event.latLng }, (results, status) => {
-  //     if (status === 'OK') {
-  //       if (results[0]) {
-  //         setDireccion(results[0].formatted_address);
-  //         console.log(direccion)
-  //       }
-  //     } else {
-  //       console.error('Error al obtener la dirección:', status);
-  //     }
-  //   });
-  // };
+  const handleMapClick = (event) => {
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ location: event.latLng }, (results, status) => {
+      if (status === 'OK') {
+        if (results[0]) {
+          setDireccion(results[0].formatted_address);
+          const { lat, lng } = results[0].geometry.location;
+          setLat(lat())
+          setLng(lng())
+        }
+      } else {
+        console.error('Error al obtener la dirección:', status);
+      }
+    });
+  };
 
   useEffect(() => {
     setPais(objectGlobal?.direccion?.pais)
@@ -229,7 +231,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
             <Label className='form-label' for='pais'>
               Pais
             </Label>
-            <input className='form-control' type="text" {...register("pais")} onChange={(e) => setPais(e.target.value)} required />
+            <input className='form-control' type="text" {...register("pais")} onInput={(e) => setPais(e.target.value)}  />
 
           </div>
           <div className='mb-1'>
@@ -241,28 +243,28 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='codigo_postal'
               name='codigo_postal'
-              render={({ field }) => <Input placeholder='10003' invalid={errors.codigo_postal && true} {...field} required />}
+              render={({ field }) => <Input placeholder='10003' invalid={errors.codigo_postal && true} {...field}  />}
             />
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='estado'>
               Estado
             </Label>
-            <input className='form-control' type="text" onChange={(e) => setEstado(e.target.value)} {...register("estado")} required />
+            <input className='form-control' type="text" {...register("estado")} onInput={(e) => setEstado(e.target.value)}  />
 
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='municipio'>
               Municipio
             </Label>
-            <input className='form-control' type="text" {...register("municipio")} onChange={(e) => setMunicipio(e.target.value)} required />
+            <input className='form-control' type="text" {...register("municipio")} onInput={(e) => setMunicipio(e.target.value)}  />
 
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='colonia'>
               Colonia
             </Label>
-            <input className='form-control' type="text" {...register("colonia")} onChange={(e) => setColonia(e.target.value)} required />
+            <input className='form-control' type="text" {...register("colonia")} onInput={(e) => setColonia(e.target.value)}  />
 
           </div>
 
@@ -272,7 +274,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='calle'>
                   Calle
                 </Label>
-                <input className='form-control' type="text" onChange={(e) => setCalle(e.target.value)} {...register("calle")} required />
+                <input className='form-control' type="text" {...register("calle")} onInput={(e) => setCalle(e.target.value)}  />
 
               </div>
             </Col>
@@ -281,7 +283,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='numero'>
                   Número
                 </Label>
-                <input className='form-control' type="text" onChange={(e) => setNumero(e.target.value)} {...register("numero")} required />
+                <input className='form-control' type="text" {...register("numero")} onInput={(e) => setNumero(e.target.value)}  />
               </div>
             </Col>
             <Col>
@@ -289,7 +291,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='numero_interior'>
                   Número Interior
                 </Label>
-                <input className='form-control' type="text" {...register("numero_interior")} required />
+                <input className='form-control' type="text" {...register("numero_interior")}  />
               </div>
             </Col>
           </Row>
@@ -302,7 +304,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
                 <InputGroupText>
                   <input className='local_input' type="text" id="LAT"
-                    required
+                    
                     value={lat}
                     onChange={handleLat}
                     {...register('LAT')}
@@ -319,7 +321,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <InputGroupText>
                   <input className='local_input' type="text" id="LON"
 
-                    required
+                    
                     value={lng}
                     onChange={handleLong}
                     {...register('LON')}
@@ -338,7 +340,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
                     onChange={handleZoom}
                     value={zoom}
-                    required
+                    
                     placeholder='Distancia en como se vera el mapa'
                     {...register('ZOOM')}
                   />
@@ -358,26 +360,26 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
           <Row className='px-4 '>
 
             {/* <div id="map-container"> */}
-              {lat && lng && (
+            {lat && lng && (
 
-                <LoadScript
-                  googleMapsApiKey="AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q"
+              <LoadScript
+                googleMapsApiKey="AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q"
+              >
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  onClick={handleMapClick}
+                  center={{
+                    lat: lat,
+                    lng: lng
+                  }}
+                  zoom={zoom}
                 >
-                  <GoogleMap
-                    mapContainerStyle={containerStyle}
-                    // onClick={handleMapClick}
-                    center={{
-                      lat: lat,
-                      lng: lng
-                    }}
-                    zoom={zoom}
-                  >
-                    {/* {direccion && ( */}
-                    {/* <Marker position={{ lat: lat, lng: lng }} /> */}
-                    {/* )} */}
-                  </GoogleMap>
-                </LoadScript>
-              )}
+                  {/* {direccion && ( */}
+                  <Marker position={{ lat: lat, lng: lng }} />
+                  {/* )} */}
+                </GoogleMap>
+              </LoadScript>
+            )}
             {/* </div> */}
           </Row>
           <div className='d-flex mt-2'>

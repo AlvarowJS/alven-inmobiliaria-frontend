@@ -17,6 +17,7 @@ import { Card, Label, Input } from 'reactstrap'
 const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/estado-propiedad'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 const URL_ASESOR = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
+const URL_ID = 'https://backend.alven-inmobiliaria.com.mx/api/v1/general-id'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
@@ -26,9 +27,23 @@ const RegistrarPropiedad = () => {
     const [objectGlobal, setObjectGlobal] = useState()
     const [borrador, setBorrador] = useState()
     const [asesorObj, setAsesorObj] = useState()
+    const [idGeneral, setIdGeneral] = useState()
 
     const id = useParams();
 
+    // General
+    useEffect(() => {
+        axios.get(URL_ID, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(res => {
+                setIdGeneral(res.data)
+            })
+            .catch(err => { console.log(err) })
+
+    }, [])
     // Listar Asesores
     useEffect(() => {
 
@@ -101,7 +116,7 @@ const RegistrarPropiedad = () => {
             id: 'general',
             title: 'General',
             icon: <AlignLeft size={18} />,
-            content: <GeneralForm stepper={stepper} asesorObj={asesorObj} borrador={borrador} objectGlobal={objectGlobal} idPropiedad={id.id} type='wizard-modern' />
+            content: <GeneralForm stepper={stepper} idGeneral={idGeneral} asesorObj={asesorObj} borrador={borrador} objectGlobal={objectGlobal} idPropiedad={id.id} type='wizard-modern' />
         },
         {
             id: 'basico',
