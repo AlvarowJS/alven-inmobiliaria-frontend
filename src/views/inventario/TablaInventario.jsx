@@ -274,9 +274,9 @@ const TablaInventario = () => {
                         <button className='btn btn-warning my-1' onClick={() => updateInventarioById(row?.id)}>
                             <Edit />
                         </button>
-                        <button className='btn btn-danger mb-1' onClick={() => deleteInventarioById(row?.id)}>
+                        {/* <button className='btn btn-danger mb-1' onClick={() => deleteInventarioById(row?.id)}>
                             <Trash />
-                        </button>
+                        </button> */}
                         <button className='btn btn-success mb-1' onClick={() => descargarPdf(row?.id)}>
                             <FileText />
                         </button>

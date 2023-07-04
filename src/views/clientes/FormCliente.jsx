@@ -34,7 +34,7 @@ const FormCliente = ({
             <input type="text" className="form-control" id="nombre"
               {...register('nombre')}
               placeholder="Alvaro..."
-              required
+              
             />
           </div>
 
@@ -43,7 +43,7 @@ const FormCliente = ({
             <input type="text" className="form-control" id="apellido_paterno"
               {...register('apellido_paterno')}
               placeholder="Rosas"
-              required
+              
             />
           </div>
 
@@ -52,7 +52,7 @@ const FormCliente = ({
             <input type="text" className="form-control" id="apellido_materno"
               {...register('apellido_materno')}
               placeholder="Perez"
-              required
+              
             />
           </div>
 
@@ -72,7 +72,7 @@ const FormCliente = ({
             <input type="text" className="form-control" id="cedula"
               {...register('cedula')}
               placeholder="7468737"
-              required
+              
             />
           </div>
 
@@ -81,7 +81,7 @@ const FormCliente = ({
             <input type="email" className="form-control" id="email"
               {...register('email')}
               placeholder="ejemplo@gmail.com"
-              required
+              
             />
           </div>
 
@@ -90,7 +90,7 @@ const FormCliente = ({
             <input type="text" className="form-control" id="celular"
               {...register('celular')}
               placeholder="99 442409"
-              required
+              
             />
           </div>
 
@@ -99,7 +99,7 @@ const FormCliente = ({
             <input type="text" className="form-control" id="medio_contacto"
               {...register('medio_contacto')}
               placeholder="celular, email, telefono..."
-              required
+              
             />
           </div>
 
