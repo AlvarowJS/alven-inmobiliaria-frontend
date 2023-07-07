@@ -31,6 +31,7 @@ const UserDropdown = () => {
   const loggout = () => {
     localStorage.removeItem('token', '')
     localStorage.removeItem('nombre', '')
+    localStorage.removeItem('role', '')
   }
 
   const name = localStorage.getItem('nombre')

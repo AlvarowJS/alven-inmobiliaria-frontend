@@ -55,16 +55,7 @@ const FormAsesor = ({
                             placeholder="7468737"
                             required
                         />
-                    </div>
-
-                    <div className="form-group mx-4 mb-2">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" className="form-control" id="email"
-                            {...register('email')}
-                            placeholder="ejemplo@gmail.com"
-                            required
-                        />
-                    </div>
+                    </div>                   
 
                     <div className="form-group mx-4 mb-2">
                         <label htmlFor="celular">Celular</label>
@@ -109,6 +100,23 @@ const FormAsesor = ({
                     </div>
 
                     <div className="form-group mx-4 mb-2">
+                        <label htmlFor="email">Email</label>
+                        <input type="email" className="form-control" id="email"
+                            {...register('email')}
+                            placeholder="ejemplo@gmail.com"
+                            required
+                        />
+                    </div>
+                    
+                    <div className="form-group mx-4 mb-2">
+                        <label htmlFor="password">Contraseña</label>                        
+                        <input type="password" className="form-control" id="password"
+                            {...register('password')}                        
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group mx-4 mb-2">
                         <label htmlFor="foto">Foto de asesor</label>
                         <input type="file" className="form-control" id="foto"
                             {...register('foto')}
@@ -120,7 +128,7 @@ const FormAsesor = ({
                     <div className="form-group mx-4 mb-2">
                         {
                             fotoAsesor != null && selectedImage == null ?
-                                <img src={`https://backend.alven-inmobiliaria.com.mx/storage/asesor/${fotoAsesor}`} alt="" style={{ width: "100%", height: "auto" }} /> : null
+                                <img src={`http://127.0.0.1:8000/storage/asesor/${fotoAsesor}`} alt="" style={{ width: "100%", height: "auto" }} /> : null
                         }
                         {selectedImage && (
                             <div className="preview-image">

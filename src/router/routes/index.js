@@ -41,11 +41,24 @@ const AuthGuard = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
     if (!token) {
       navigate("/login");
     } else {
       // Aquí debe validar su token con su servidor para asegurarse de que es válido
       // Si el token no es válido, llame a "navigate" para redirigir al usuario a la página de inicio de sesión
+      if(role === "1"){
+        
+      } else if(role === "2") {        
+        const restrictedRoutes = ["/registrar-propiedad/:id","/asesores","/medios","/mensajes"];        
+        if (restrictedRoutes.includes(window.location.pathname)) {
+          navigate("/error"); 
+        }
+      }
+      else{
+        navigate("/error")
+      }
     }
   }, [navigate]);
 

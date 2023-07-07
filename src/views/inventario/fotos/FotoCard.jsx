@@ -3,7 +3,7 @@ import React from 'react'
 import { Trash } from 'react-feather'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-const URL_FOTOS = 'https://backend.alven-inmobiliaria.com.mx/api/v1/fotos'
+const URL_FOTOS = 'http://127.0.0.1:8000/api/v1/fotos'
 const FotoCard = ({ foto, setEstado }) => {
 
     const {
@@ -21,9 +21,9 @@ const FotoCard = ({ foto, setEstado }) => {
         transition
     }
     const token = localStorage.getItem('token');
-    let img = `https://backend.alven-inmobiliaria.com.mx/storage/${foto?.propiedad_id}/${foto?.fotos}`
+    let img = `http://127.0.0.1:8000/storage/${foto?.propiedad_id}/${foto?.fotos}`
     const deleteFotoById = (id) => {
-        console.log("hola?")
+        
         axios.delete(`${URL_FOTOS}/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + token

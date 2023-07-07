@@ -6,8 +6,8 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } fr
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, File, FileText, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const URL_FILTER = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedad-filtrado'
+const URL = 'http://127.0.0.1:8000/api/v1/propiedades'
+const URL_FILTER = 'http://127.0.0.1:8000/api/v1/propiedad-filtrado'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -134,7 +134,7 @@ const TablaInventario = () => {
     }
 
     const descargarPdf = (id) => {
-        window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id}`)
+        window.open(`http://127.0.0.1:8000/api/v1/exportar-propiedad/${id}`)
     }
 
     const handleFilter = e => {
@@ -234,7 +234,7 @@ const TablaInventario = () => {
                 return (
                     <>
 
-                        <img src={`https://backend.alven-inmobiliaria.com.mx/storage/${row?.id}/${row?.foto[0]?.fotos}`} alt="" style={{ width: "120px", height: "80px" }} />
+                        <img src={`http://127.0.0.1:8000/storage/${row?.id}/${row?.foto[0]?.fotos}`} alt="" style={{ width: "120px", height: "80px" }} />
                     </>
                 )
             }
@@ -289,7 +289,7 @@ const TablaInventario = () => {
     useEffect(() => {
 
         if (nombreEstado == 'Todos' || estadoPropiedad == undefined) {
-            console.log("hola?")
+            
             axios.get(URL, {
                 headers: {
                     'Authorization': 'Bearer ' + token

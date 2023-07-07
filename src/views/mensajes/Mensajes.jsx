@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaMensajes from './TablaMensajes'
 const MySwal = withReactContent(Swal)
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/contacto'
+const URL = 'http://127.0.0.1:8000/api/v1/contacto'
 const Mensajes = () => {
   const token = localStorage.getItem('token');
 

@@ -1,13 +1,12 @@
 import { Mail, Home, Upload, Eye, Folder, CreditCard, Users, MessageSquare, File, User, MessageCircle } from "react-feather";
 
-export default [
+const menuItems = [
   {
     id: "inventario",
     title: "Inventario",
     icon: <Home size={20} />,
     navLink: "/inventario",
   },
-
   {
     id: "clientes",
     title: "Clientes",
@@ -32,6 +31,10 @@ export default [
     icon: <MessageCircle size={20} />,
     navLink: "/mensajes",
   },
-
-
 ];
+
+const role = localStorage?.getItem("role");
+
+const filteredMenuItems = role === "2" ? menuItems?.filter(item => item.id === "inventario" || item.id === "clientes") : menuItems;
+
+export default filteredMenuItems;

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/medios'
+const URL = 'http://127.0.0.1:8000/api/v1/medios'
 import axios from 'axios'
 import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
