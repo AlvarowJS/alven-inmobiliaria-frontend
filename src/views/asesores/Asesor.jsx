@@ -4,8 +4,8 @@ import TablaAsesor from './TablaAsesor'
 import FormAsesor from './FormAsesor'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
-const URL = 'http://127.0.0.1:8000/api/v1/asesor'
-const URL_FOTO = 'http://127.0.0.1:8000/api/v1/asesor-foto'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
+const URL_FOTO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor-foto'
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -33,6 +33,7 @@ const Asesor = () => {
     foto: '',
     status: '',
     publico: '',
+    password: '',
   }
 
   const toggle = () => {
@@ -54,6 +55,7 @@ const Asesor = () => {
     f.append('celular', data.celular)
     f.append('direccion', data.direccion)
     f.append('email', data.email)
+    f.append('password', data.password)
     f.append('rfc', data.rfc)
     f.append('contacto_emergencia', data.contacto_emergencia)
     f.append('foto', fotoAsesor)

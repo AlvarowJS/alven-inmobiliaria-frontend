@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'rea
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-const URL = 'http://127.0.0.1:8000/api/v1/asesor/'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor/'
 
 
 const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
@@ -74,7 +74,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             cell: row => {
                 return (
                     <>
-                    <img src={`http://127.0.0.1:8000/storage/asesor/${row?.foto}`} alt="" style={{ width: "120px", height: "80px" }} />
+                    <img src={`https://backend.alven-inmobiliaria.com.mx/storage/asesor/${row?.foto}`} alt="" style={{ width: "120px", height: "80px" }} />
                     </>
                 )
             }

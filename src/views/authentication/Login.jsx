@@ -30,7 +30,7 @@ import './styles/style.css'
 import axios from "axios";
 import { useState } from "react";
 
-const URL = 'http://127.0.0.1:8000/api/login/'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/login/'
 const Login = () => {
 
   const navigate = useNavigate()
@@ -46,6 +46,7 @@ const Login = () => {
       .then(res => {
         localStorage.setItem('token', res?.data?.token)
         localStorage.setItem('nombre', res?.data?.name)
+        localStorage.setItem('id', res?.data?.id_user)
         localStorage.setItem('role', res?.data?.role_id)
         navigate('/inventario')
 

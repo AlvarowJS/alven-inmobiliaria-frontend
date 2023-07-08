@@ -6,8 +6,8 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } fr
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, File, FileText, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-const URL = 'http://127.0.0.1:8000/api/v1/propiedades'
-const URL_FILTER = 'http://127.0.0.1:8000/api/v1/propiedad-filtrado'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+const URL_FILTER = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedad-filtrado'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -15,6 +15,7 @@ const MySwal = withReactContent(Swal)
 
 const TablaInventario = () => {
     const token = localStorage?.getItem('token');
+    const role = localStorage?.getItem('role');
     const navigate = useNavigate()
     const [estado, setEstado] = useState(false)
     const [idPropiedad, setIdPropiedad] = useState()
@@ -134,7 +135,8 @@ const TablaInventario = () => {
     }
 
     const descargarPdf = (id) => {
-        window.open(`http://127.0.0.1:8000/api/v1/exportar-propiedad/${id}`)
+        const idUser = localStorage?.getItem('id');
+        window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id},${idUser}`)
     }
 
     const handleFilter = e => {
@@ -234,7 +236,7 @@ const TablaInventario = () => {
                 return (
                     <>
 
-                        <img src={`http://127.0.0.1:8000/storage/${row?.id}/${row?.foto[0]?.fotos}`} alt="" style={{ width: "120px", height: "80px" }} />
+                        <img src={`https://backend.alven-inmobiliaria.com.mx/storage/${row?.id}/${row?.foto[0]?.fotos}`} alt="" style={{ width: "120px", height: "80px" }} />
                     </>
                 )
             }
@@ -271,12 +273,19 @@ const TablaInventario = () => {
             cell: row => {
                 return (
                     <div className='local_buttons'>
-                        <button className='btn btn-warning my-1' onClick={() => updateInventarioById(row?.id)}>
-                            <Edit />
-                        </button>
+
+                        {
+                            role === "1" ?
+                                <button className='btn btn-warning my-1' onClick={() => updateInventarioById(row?.id)}>
+                                    <Edit />
+                                </button> : null
+                        }
+
                         {/* <button className='btn btn-danger mb-1' onClick={() => deleteInventarioById(row?.id)}>
                             <Trash />
                         </button> */}
+
+
                         <button className='btn btn-success mb-1' onClick={() => descargarPdf(row?.id)}>
                             <FileText />
                         </button>
@@ -289,7 +298,7 @@ const TablaInventario = () => {
     useEffect(() => {
 
         if (nombreEstado == 'Todos' || estadoPropiedad == undefined) {
-            
+
             axios.get(URL, {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -385,15 +394,23 @@ const TablaInventario = () => {
     return (
         <>
             <Fragment>
-                <Card className='p-4'>
-                    <Row>
-                        <Col lg='6' className='d-flex align-items-center px-0 px-lg-1'>
-                            <Button className='mt-sm-0 mt-1' color='primary' onClick={registrarPropiedad}>
-                                Agregar Propiedad
-                            </Button>
-                        </Col>
-                    </Row>
-                </Card>
+                {
+                    role === "1" ?
+                        <Card className='p-4'>
+                            <Row>
+                                <Col lg='6' className='d-flex align-items-center px-0 px-lg-1'>
+
+                                    <Button className='mt-sm-0 mt-1' color='primary' onClick={registrarPropiedad}>
+                                        Agregar Propiedad
+                                    </Button>
+
+
+                                </Col>
+                            </Row>
+                        </Card>
+                        :
+                        null
+                }
                 <Card className='p-4'>
                     <Row>
                         <Col lg='6' className='d-flex align-items-center px-0 px-lg-1'>

@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col,
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios'
-const URL = 'http://127.0.0.1:8000/api/v1/basicos'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/basicos'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)

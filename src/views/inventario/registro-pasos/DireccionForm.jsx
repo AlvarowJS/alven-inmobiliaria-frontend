@@ -12,7 +12,7 @@ const containerStyle = {
   height: '400px'
 };
 import axios from 'axios';
-const URL = 'http://127.0.0.1:8000/api/v1/direccion'
+const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/direccion'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import html2canvas from 'html2canvas';

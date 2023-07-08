@@ -32,6 +32,7 @@ const UserDropdown = () => {
     localStorage.removeItem('token', '')
     localStorage.removeItem('nombre', '')
     localStorage.removeItem('role', '')
+    localStorage.removeItem('id', '')
   }
 
   const name = localStorage.getItem('nombre')
