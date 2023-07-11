@@ -10,7 +10,7 @@ const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/caracteristica'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const token = localStorage.getItem('token');
-
+  const role = localStorage?.getItem('role');
   const [objectCaracteristica, setObjectCaracteristica] = useState()
   const arrayEspacios = ['Jardin', 'Estudio', 'Cuarto servicio', 'Desayunador', 'Comedor', 'Cuarto TV', 'Biblioteca', 'Cantina', 'Area de lavado', 'Bodega', 'Sala', 'Balcon']
   const arrayInstalaciones = ['Agua', 'Drenaje', 'Luz', 'Linea Telefonica', 'Chimenea', 'Cisterna', 'Aire Acondicionado', 'Calefacción', 'Jacuzzi', 'TV Cable', 'Circuito Cerrado', 'Alumbrado', 'Hidroneumático', 'Closets', 'Portón Eléctrico', 'Interfon', 'Video Portero', 'Tanque Gas Estacionario', 'Gas Tanque Cilindrico', 'Gas Red', 'Asador', 'Tinaco']
@@ -126,7 +126,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder='si se aceptan pero...'
-                      
+
                       invalid={errors.mascotas && true}
                       {...field}
                     />
@@ -536,7 +536,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
                       type='text'
                       placeholder='www.youtube.com'
                       invalid={errors.youtube && true}
-                      
+
                       {...field}
                     />
                   )}
@@ -545,12 +545,19 @@ const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
             </Col>
           </Row>
           <div className='d-flex mt-2'>
-            <Button className='me-1' color='primary' type='submit'>
-              Enviar
-            </Button>
-            <Button outline color='secondary' type='reset' onClick={handleReset}>
-              Reset
-            </Button>
+            {
+              role == "1" ?
+                <>
+                  <Button className='me-1' color='primary' type='submit'>
+                    Enviar
+                  </Button>
+                  <Button outline color='secondary' type='reset' onClick={handleReset}>
+                    Reset
+                  </Button>
+                </>
+                : null
+            }
+
           </div>
         </Form>
       </CardBody>

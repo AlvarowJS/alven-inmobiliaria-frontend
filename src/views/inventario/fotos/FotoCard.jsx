@@ -21,9 +21,10 @@ const FotoCard = ({ foto, setEstado }) => {
         transition
     }
     const token = localStorage.getItem('token');
+    const role = localStorage?.getItem('role');
     let img = `https://backend.alven-inmobiliaria.com.mx/storage/${foto?.propiedad_id}/${foto?.fotos}`
     const deleteFotoById = (id) => {
-        
+
         axios.delete(`${URL_FOTOS}/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -48,12 +49,15 @@ const FotoCard = ({ foto, setEstado }) => {
         >
 
             <img src={img} style={{ width: '15%' }} alt="" />
-            <button className='align-self-center btn btn-danger mb-1 my-5'
-                // onClick={() => deleteFotoById(foto.id)}
-                onPointerUp={() => deleteFotoById(foto.id)}
-            >
-                <Trash />
-            </button>
+            {
+                role == "1" ?
+                    <button className='align-self-center btn btn-danger mb-1 my-5'
+                        onPointerUp={() => deleteFotoById(foto.id)}
+                    >
+                        <Trash />
+                    </button>
+                    : null
+            }
         </div>
 
     )

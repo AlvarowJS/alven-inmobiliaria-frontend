@@ -11,7 +11,7 @@ const MySwal = withReactContent(Swal)
 const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
   const token = localStorage.getItem('token');
-
+  const role = localStorage?.getItem('role');
   const [objectBasicos, setObjectBasicos] = useState()
 
   const {
@@ -180,7 +180,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      
+
                       invalid={errors.banios && true}
                       {...field}
                     />
@@ -202,7 +202,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      
+
                       invalid={errors.medios_banios && true}
                       {...field}
                     />
@@ -226,7 +226,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      
+
                       invalid={errors.recamaras && true}
                       {...field}
                     />
@@ -248,7 +248,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      
+
                       invalid={errors.numero_casas && true}
                       {...field}
                     />
@@ -300,7 +300,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                     <Input
                       type='text'
                       placeholder=''
-                      
+
                       invalid={errors.estacionamiento && true}
                       {...field}
                     />
@@ -323,7 +323,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   render={({ field }) => (
                     <Input
                       type='text'
-                      
+
                       invalid={errors.numero_elevadores && true}
                       {...field}
                     />
@@ -344,7 +344,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   render={({ field }) => (
                     <Input
                       type='text'
-                      
+
                       invalid={errors.piso_ubicado && true}
                       {...field}
                     />
@@ -354,12 +354,20 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
             </Col>
           </Row>
           <div className='d-flex'>
-            <Button className='me-1' color='primary' type='submit'>
-              Enviar
-            </Button>
-            <Button outline color='secondary' type='reset' onClick={handleReset}>
-              Reset
-            </Button>
+
+            {
+              role == "1" ?
+                <>
+                  <Button className='me-1' color='primary' type='submit'>
+                    Enviar
+                  </Button>
+                  <Button outline color='secondary' type='reset' onClick={handleReset}>
+                    Reset
+                  </Button>
+                </>
+                : null
+            }
+
           </div>
         </Form>
       </CardBody>

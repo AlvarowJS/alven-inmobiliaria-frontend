@@ -4,7 +4,7 @@ import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } from 'reactstrap'
 import DataTable from 'react-data-table-component'
-import { ChevronDown, Delete, Edit, File, FileText, Trash } from 'react-feather'
+import { ChevronDown, Delete, Edit, Eye, File, FileText, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 const URL_FILTER = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedad-filtrado'
@@ -49,6 +49,10 @@ const TablaInventario = () => {
 
     const updateInventarioById = (id) => {
         navigate(`/registrar-propiedad/${id}`)
+    }
+
+    const verInventarioById = (id) => {
+        navigate(`/ver-propiedad/${id}`)
     }
 
     const deleteInventarioById = (id) => {
@@ -284,8 +288,13 @@ const TablaInventario = () => {
                         {/* <button className='btn btn-danger mb-1' onClick={() => deleteInventarioById(row?.id)}>
                             <Trash />
                         </button> */}
-
-
+                        {
+                            role === "2" ?
+                                <button className='btn btn-warning mb-1 mt-1' onClick={() => updateInventarioById(row?.id)}>
+                                    <Eye />
+                                </button>
+                                : null
+                        }
                         <button className='btn btn-success mb-1' onClick={() => descargarPdf(row?.id)}>
                             <FileText />
                         </button>

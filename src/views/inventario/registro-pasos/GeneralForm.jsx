@@ -11,8 +11,8 @@ import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral }) => {
 
-  console.log(idGeneral)
   const token = localStorage.getItem('token');
+  const role = localStorage?.getItem('role');
   const [objectGeneral, setObjectGeneral] = useState()
   const [tipoOpe, setTipoOpe] = useState()
   const [tipoProp, setTipoProp] = useState()
@@ -25,9 +25,9 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral 
     formState: { errors }
   } = useForm()
   const onSubmit = data => {
-    let idGeneralForm = objectGeneral?.id    
+    let idGeneralForm = objectGeneral?.id
     if (idGeneralForm) {
-      
+
       axios.put(`${URL}/${idGeneralForm}`, data, {
         headers: {
           'Authorization': 'Bearer ' + token
@@ -105,7 +105,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral 
             <Label className='form-label' for='numero_ofna'>
               id
             </Label>
-            <input className='form-control' type="text" value={idGeneral} {...register("numero_ofna")} disabled/>
+            <input className='form-control' type="text" value={idGeneral} {...register("numero_ofna")} disabled />
             {/* <Controller
               defaultValue=''
               control={control}
@@ -124,7 +124,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral 
               control={control}
               id='fecha_alta'
               name='fecha_alta'
-              
+
               render={({ field }) => <Input type='date' placeholder='fecha alta' invalid={errors.fecha_alta && true} {...field} />}
             />
           </div>
@@ -228,7 +228,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral 
                 <Input
                   type='text'
                   placeholder=''
-                  
+
                   invalid={errors.operacion && true}
                   {...field}
                 />
@@ -248,7 +248,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral 
                 <Input
                   type='text'
                   placeholder='si/no'
-                  
+
                   invalid={errors.aceptar_creditos && true}
                   {...field}
                 />
@@ -270,7 +270,7 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral 
                 <Input
                   type='textarea'
                   placeholder=''
-                  
+
                   invalid={errors.requisito_arrendamiento && true}
                   {...field}
                 />
@@ -279,12 +279,20 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral 
           </div>
 
           <div className='d-flex'>
-            <Button className='me-1' color='primary' type='submit'>
-              Enviar
-            </Button>
-            <Button outline color='secondary' type='reset' onClick={handleReset}>
-              Reset
-            </Button>
+
+            {
+              role == "1" ?
+                <>
+                  <Button className='me-1' color='primary' type='submit'>
+                    Enviar
+                  </Button>
+                  <Button outline color='secondary' type='reset' onClick={handleReset}>
+                    Reset
+                  </Button>
+                </>
+                : null
+            }
+
           </div>
         </Form>
       </CardBody>

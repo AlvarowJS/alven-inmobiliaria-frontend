@@ -21,6 +21,7 @@ const MySwal = withReactContent(Swal)
 const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
   const token = localStorage.getItem('token');
+  const role = localStorage?.getItem('role');
 
   const navigate = useNavigate()
 
@@ -231,7 +232,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
             <Label className='form-label' for='pais'>
               Pais
             </Label>
-            <input className='form-control' type="text" {...register("pais")} onInput={(e) => setPais(e.target.value)}  />
+            <input className='form-control' type="text" {...register("pais")} onInput={(e) => setPais(e.target.value)} />
 
           </div>
           <div className='mb-1'>
@@ -243,28 +244,28 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
               control={control}
               id='codigo_postal'
               name='codigo_postal'
-              render={({ field }) => <Input placeholder='10003' invalid={errors.codigo_postal && true} {...field}  />}
+              render={({ field }) => <Input placeholder='10003' invalid={errors.codigo_postal && true} {...field} />}
             />
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='estado'>
               Estado
             </Label>
-            <input className='form-control' type="text" {...register("estado")} onInput={(e) => setEstado(e.target.value)}  />
+            <input className='form-control' type="text" {...register("estado")} onInput={(e) => setEstado(e.target.value)} />
 
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='municipio'>
               Municipio
             </Label>
-            <input className='form-control' type="text" {...register("municipio")} onInput={(e) => setMunicipio(e.target.value)}  />
+            <input className='form-control' type="text" {...register("municipio")} onInput={(e) => setMunicipio(e.target.value)} />
 
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='colonia'>
               Colonia
             </Label>
-            <input className='form-control' type="text" {...register("colonia")} onInput={(e) => setColonia(e.target.value)}  />
+            <input className='form-control' type="text" {...register("colonia")} onInput={(e) => setColonia(e.target.value)} />
 
           </div>
 
@@ -274,7 +275,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='calle'>
                   Calle
                 </Label>
-                <input className='form-control' type="text" {...register("calle")} onInput={(e) => setCalle(e.target.value)}  />
+                <input className='form-control' type="text" {...register("calle")} onInput={(e) => setCalle(e.target.value)} />
 
               </div>
             </Col>
@@ -283,7 +284,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='numero'>
                   Número
                 </Label>
-                <input className='form-control' type="text" {...register("numero")} onInput={(e) => setNumero(e.target.value)}  />
+                <input className='form-control' type="text" {...register("numero")} onInput={(e) => setNumero(e.target.value)} />
               </div>
             </Col>
             <Col>
@@ -291,7 +292,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <Label className='form-label' for='numero_interior'>
                   Número Interior
                 </Label>
-                <input className='form-control' type="text" {...register("numero_interior")}  />
+                <input className='form-control' type="text" {...register("numero_interior")} />
               </div>
             </Col>
           </Row>
@@ -304,7 +305,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
                 <InputGroupText>
                   <input className='local_input' type="text" id="LAT"
-                    
+
                     value={lat}
                     onChange={handleLat}
                     {...register('LAT')}
@@ -321,7 +322,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                 <InputGroupText>
                   <input className='local_input' type="text" id="LON"
 
-                    
+
                     value={lng}
                     onChange={handleLong}
                     {...register('LON')}
@@ -340,7 +341,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
                     onChange={handleZoom}
                     value={zoom}
-                    
+
                     placeholder='Distancia en como se vera el mapa'
                     {...register('ZOOM')}
                   />
@@ -383,12 +384,22 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
             {/* </div> */}
           </Row>
           <div className='d-flex mt-2'>
-            <Button className='me-1' color='primary' type='submit'>
-              Enviar
-            </Button>
-            <Button outline color='secondary' type='reset' onClick={handleReset}>
-              Reset
-            </Button>
+
+
+            {
+              role == "1" ?
+                <>
+                  <Button className='me-1' color='primary' type='submit'>
+                    Enviar
+                  </Button>
+                  <Button outline color='secondary' type='reset' onClick={handleReset}>
+                    Reset
+                  </Button>
+                </>
+                : null
+            }
+
+
           </div>
         </Form>
       </CardBody>

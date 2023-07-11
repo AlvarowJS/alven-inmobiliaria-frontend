@@ -15,7 +15,7 @@ const MySwal = withReactContent(Swal)
 
 const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const token = localStorage.getItem('token');
-
+  const role = localStorage?.getItem('role');
   const navigate = useNavigate()
   const [objectPublicidad, setObjectPublicidad] = useState()
   const [estadoPropiedad, setEstadoPropiedad] = useState()
@@ -159,12 +159,18 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
             {/* <Button className='me-1' color='success' onClick={terminarEdicion} disabled={estadoPropiedad}>
               Terminar
             </Button> */}
-            <Button className='me-1' color='primary' type='submit'>
-              Enviar y Terminar
-            </Button>
-            <Button outline color='secondary' type='reset' onClick={handleReset}>
-              Reset
-            </Button>
+            {
+              role == "1" ?
+                <>
+                  <Button className='me-1' color='primary' type='submit'>
+                    Enviar y Terminar
+                  </Button>
+                  <Button outline color='secondary' type='reset' onClick={handleReset}>
+                    Reset
+                  </Button>
+                </>
+                : null
+            }
           </div>
         </Form>
       </CardBody>

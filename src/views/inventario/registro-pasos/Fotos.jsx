@@ -20,6 +20,7 @@ import { SortableContext, arrayMove } from '@dnd-kit/sortable'
 const Fotos = ({ idPropiedad, stepper }) => {
 
   const token = localStorage.getItem('token');
+  const role = localStorage?.getItem('role');
   const [fotos, setFotos] = useState()
   const { handleSubmit, control, register, reset, setError, formState: { errors } } = useForm()
   const [files, setFiles] = useState([])
@@ -148,12 +149,12 @@ const Fotos = ({ idPropiedad, stepper }) => {
   }, [estado])
 
   const handleDragEnd = (event) => {
-    const {active, over} = event
+    const { active, over } = event
     const oldIndex = fotos.findIndex(foto => foto.id === active.id)
     const newIndex = fotos.findIndex(foto => foto.id === over.id)
 
     const newOrder = arrayMove(fotos, oldIndex, newIndex)
-    
+
     setFotos(newOrder)
   }
 
@@ -170,65 +171,70 @@ const Fotos = ({ idPropiedad, stepper }) => {
         'Authorization': 'Bearer ' + token
       }
     })
-    .then(res => {
-      setFotos(res?.data)
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Imagenes Ordenadas',
-        showConfirmButton: false,
-        timer: 1500
+      .then(res => {
+        setFotos(res?.data)
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Imagenes Ordenadas',
+          showConfirmButton: false,
+          timer: 1500
+        })
       })
-    })
-    .catch(err => null)
+      .catch(err => null)
   }
 
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          Subir Fotos
+      {
+        role == "1" ?
+          <Card>
+            <CardHeader>
+              Subir Fotos
 
-        </CardHeader>
-        <CardBody className='border_upload'>
-          <form onSubmit={handleSubmit(submit)} className='local_upload'>
+            </CardHeader>
 
-            <div {...getRootProps({ className: 'dropzone' })}>
-              <input {...getInputProps()} />
+            <CardBody className='border_upload'>
+              <form onSubmit={handleSubmit(submit)} className='local_upload'>
+
+                <div {...getRootProps({ className: 'dropzone' })}>
+                  <input {...getInputProps()} />
 
 
-              <div className='d-flex align-items-center align-content-center flex-column'>
-                <DownloadCloud size={64} />
-                <h5 className='text_local'>Arrastra los archivos aquí o haga clic en cargar</h5>
+                  <div className='d-flex align-items-center align-content-center flex-column'>
+                    <DownloadCloud size={64} />
+                    <h5 className='text_local'>Arrastra los archivos aquí o haga clic en cargar</h5>
 
-              </div>
-              <div className="cuadrar__spinner">
-                {isLoading ? <div className='spinner'></div> : null}
+                  </div>
+                  <div className="cuadrar__spinner">
+                    {isLoading ? <div className='spinner'></div> : null}
 
-              </div>
+                  </div>
 
-            </div>
-            {files.length ? (
-              <Fragment>
-                <ListGroup className='my-2'>{fileList}</ListGroup>
-                <div className='d-flex justify-content-end'>
-                  <Button className='me-1' color='danger' outline onClick={handleRemoveAllFiles}>
-                    Remover todo
-                  </Button>
-                  {/* <Button color='primary' onClick={sendFile}>Upload Files</Button> */}
-                  <Button color='primary'>Subir Archivos</Button>
                 </div>
-              </Fragment>
-            ) : null}
-          </form>
+                {files.length ? (
+                  <Fragment>
+                    <ListGroup className='my-2'>{fileList}</ListGroup>
+                    <div className='d-flex justify-content-end'>
+                      <Button className='me-1' color='danger' outline onClick={handleRemoveAllFiles}>
+                        Remover todo
+                      </Button>
+                      {/* <Button color='primary' onClick={sendFile}>Upload Files</Button> */}
+                      <Button color='primary'>Subir Archivos</Button>
+                    </div>
+                  </Fragment>
+                ) : null}
+              </form>
 
-        </CardBody>
-        <Button className='w-25 mb-5 mx-5' color='primary' onClick={pasarSiguiente}>
-          Siguiente
-        </Button>
-      </Card>
+            </CardBody>
 
+            <Button className='w-25 mb-5 mx-5' color='primary' onClick={pasarSiguiente}>
+              Siguiente
+            </Button>
+          </Card>
+          : null
+      }
       <DndContext
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
@@ -236,19 +242,24 @@ const Fotos = ({ idPropiedad, stepper }) => {
         <SortableContext
           items={fotos || []}
         >
-        {
-          fotos && fotos?.map(foto => (
-            <FotoCard
-              key={foto?.id}
-              foto={foto}
-              setEstado={setEstado}
-            />
-          ))
-        }
+          {
+            fotos && fotos?.map(foto => (
+              <FotoCard
+                key={foto?.id}
+                foto={foto}
+                setEstado={setEstado}
+              />
+            ))
+          }
         </SortableContext>
       </DndContext>
-      
-      <Button onClick={ordernar}>Ordenar</Button>
+
+      {
+        role == "1" ?
+          <Button onClick={ordernar}>Ordenar</Button>
+          : null
+      }
+
     </>
   )
 }

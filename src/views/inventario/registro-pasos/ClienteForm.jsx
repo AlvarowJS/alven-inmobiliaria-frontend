@@ -14,6 +14,7 @@ const MySwal = withReactContent(Swal)
 const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
   const token = localStorage.getItem('token');
   const [activar, setActivar] = useState(false)
+  const role = localStorage?.getItem('role');
 
   const [options, setOptions] = useState()
   const [optionsAsesor, setOptionsAsesor] = useState()
@@ -332,7 +333,11 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
             </select>
           </div>
 
-          <button className='btn btn-primary mx-4 mb-2'>Enviar</button>
+          {
+            role == "1" ?
+              <button className='btn btn-primary mx-4 mb-2'>Enviar</button>
+              : null
+          }
         </form>
       </CardBody>
     </Card>
