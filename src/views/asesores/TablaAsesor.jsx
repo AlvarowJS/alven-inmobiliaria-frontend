@@ -66,7 +66,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             name: 'RFC',
             minWidth: '225px',
             selector: row => row.rfc
-        },
+        },   
         {
             sortable: true,
             name: 'Foto',
