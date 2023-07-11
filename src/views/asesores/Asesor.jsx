@@ -41,13 +41,14 @@ const Asesor = () => {
     setSelectedImage(null)
     setFotoAsesor(null)
     setModal(!modal)
-    
+
     if (objUpdate !== undefined) {
       reset(defaultValuesForm)
     }
   };
 
-  const updateAsesor = (id, data) => {       
+  const updateAsesor = (id, data) => {
+    console.log(data, "Asd")
     const f = new FormData()
     f.append('id', id)
     f.append('nombre', data.nombre)
@@ -57,13 +58,14 @@ const Asesor = () => {
     f.append('email', data.email)
     f.append('password', data.password)
     f.append('rfc', data.rfc)
+    f.append('role_id', data.user.role_id)
     f.append('contacto_emergencia', data.contacto_emergencia)
     f.append('foto', fotoAsesor)
     f.append('status', data.status)
     // f.append('publico', data.publico)
     f.append('publico', data.publico ? 1 : 0);
 
-    
+
     axios.post(`${URL_FOTO}`, f, {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -71,7 +73,7 @@ const Asesor = () => {
     })
       .then(res => {
         setEstado(true)
-        
+
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -85,9 +87,9 @@ const Asesor = () => {
 
   const crearAsesor = data => {
     setEstado(false)
-    console.log('entro al crear' )
+    console.log('entro al crear')
     const f = new FormData()
-    
+    console.log(data, "Asd")
     f.append('nombre', data.nombre)
     f.append('apellidos', data.apellidos)
     f.append('celular', data.celular)
@@ -95,6 +97,7 @@ const Asesor = () => {
     f.append('password', data.password)
     f.append('email', data.email)
     f.append('rfc', data.rfc)
+    f.append('role_id', data.user.role_id)
     f.append('contacto_emergencia', data.contacto_emergencia)
     f.append('foto', fotoAsesor)
     // f.append('publico', data.publico)
@@ -132,7 +135,7 @@ const Asesor = () => {
         setFotoAsesor(res?.data?.foto)
         const object = res?.data
         reset(object)
-        
+
       })
       .catch(err => null)
   }

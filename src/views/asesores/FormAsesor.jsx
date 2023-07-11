@@ -55,7 +55,7 @@ const FormAsesor = ({
                             placeholder="7468737"
                             required
                         />
-                    </div>                   
+                    </div>
 
                     <div className="form-group mx-4 mb-2">
                         <label htmlFor="celular">Celular</label>
@@ -100,6 +100,14 @@ const FormAsesor = ({
                     </div>
 
                     <div className="form-group mx-4 mb-2">
+                        <label htmlFor="role_id">Rol</label>
+                        <select className="form-select" id="role_id" {...register("user.role_id")}>
+                            <option value="2">Usuario</option>
+                            <option value="1">Administrador</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group mx-4 mb-2">
                         <label htmlFor="email">Email</label>
                         <input type="email" className="form-control" id="email"
                             {...register('email')}
@@ -107,11 +115,11 @@ const FormAsesor = ({
                             required
                         />
                     </div>
-                    
+
                     <div className="form-group mx-4 mb-2">
-                        <label htmlFor="password">Contraseña</label>                        
+                        <label htmlFor="password">Contraseña</label>
                         <input type="password" className="form-control" id="password"
-                            {...register('password')}                        
+                            {...register('password')}
                         />
                     </div>
 
