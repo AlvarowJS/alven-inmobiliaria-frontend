@@ -154,7 +154,13 @@ const TablaInventario = () => {
             }
         })
             .then(res => {
-                setFilter(res.data.filter(e => e.general?.numero_ofna.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
+                // setFilter(res.data.filter(e => e.general?.numero_ofna.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
+                console.log(res.data, "asd")
+                setFilter(res.data.filter(e =>
+                    e.publicidad?.encabezado.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
+                   
+                ));
+
             })
             .catch(err => { console.log(err) })
     }, [searchValue])
@@ -176,15 +182,18 @@ const TablaInventario = () => {
                 return (
                     <>
                         {
-                            row?.direccion?.calle == undefined ? 'Sin asignar' : row?.direccion?.numero
-                                + ' ' +
-                                row?.direccion?.colonia
-                                + ' ' +
-                                row?.direccion?.municipio
-                                + ' ' +
-                                row?.direccion?.estado
-                                + ' ' +
-                                row?.direccion?.pais
+                            (row?.direccion?.calle ?? '') +
+                            ' - ' +
+                            (row?.direccion?.numero ?? '') +
+                            ' - ' +
+                            (row?.direccion?.colonia ?? '') +
+                            ' - ' +
+                            (row?.direccion?.municipio ?? '') +
+                            ' - ' +
+                            (row?.direccion?.estado ?? '') +
+                            ' - ' +
+                            (row?.direccion?.pais ?? '')
+
                         }
                     </>
                 )
