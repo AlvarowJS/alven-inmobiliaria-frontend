@@ -158,7 +158,7 @@ const TablaInventario = () => {
                 console.log(res.data, "asd")
                 setFilter(res.data.filter(e =>
                     e.publicidad?.encabezado.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
-                   
+
                 ));
 
             })
@@ -432,22 +432,43 @@ const TablaInventario = () => {
                 <Card className='p-4'>
                     <Row>
                         <Col lg='6' className='d-flex align-items-center px-0 px-lg-1'>
-                            <Button className='mt-sm-0 mt-1' onClick={() => CambiarEstado('Todos')}>
+                            <Button
+                                className={'mt-sm-0 mt-1 mx-2'}
+                                color={nombreEstado == 'Todos' ? 'primary' : 'secondary'}
+                                onClick={() => CambiarEstado('Todos')}
+                            >
                                 Todos
                             </Button>
-                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('En Promocion')}>
+                            <Button
+                                className='mt-sm-0 mt-1 mx-2'
+                                color={nombreEstado == 'En Promocion' ? 'primary' : 'secondary'}
+                                style={{ whiteSpace: 'nowrap' }}
+                                onClick={() => CambiarEstado('En Promocion')}>
                                 En promoción
                             </Button>
-                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('Con Manifestación')}>
+                            <Button
+                                className='mt-sm-0 mt-1 mx-2'
+                                color={nombreEstado == 'Con Manifestación' ? 'primary' : 'secondary'}
+                                style={{ whiteSpace: 'nowrap' }}
+                                onClick={() => CambiarEstado('Con Manifestación')}>
                                 Con Manifestación
                             </Button>
-                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('Cancelada')}>
+                            <Button
+                                className='mt-sm-0 mt-1 mx-2'
+                                color={nombreEstado == 'Cancelada' ? 'primary' : 'secondary'}
+                                onClick={() => CambiarEstado('Cancelada')}>
                                 Cancelada
                             </Button>
-                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('Suspendida')}>
+                            <Button
+                                className='mt-sm-0 mt-1 mx-2'
+                                color={nombreEstado == 'Suspendida' ? 'primary' : 'secondary'}
+                                onClick={() => CambiarEstado('Suspendida')}>
                                 Suspendida
                             </Button>
-                            <Button className='mt-sm-0 mt-1 mx-2' onClick={() => CambiarEstado('Cerrada')}>
+                            <Button
+                                className='mt-sm-0 mt-1 mx-2'
+                                color={nombreEstado == 'Cerrada' ? 'primary' : 'secondary'}
+                                onClick={() => CambiarEstado('Cerrada')}>
                                 Cerrada
                             </Button>
                         </Col>
