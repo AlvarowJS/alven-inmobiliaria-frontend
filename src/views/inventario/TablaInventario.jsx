@@ -28,6 +28,7 @@ const TablaInventario = () => {
     const [store, setStore] = useState()
     const [estadoPropiedad, setEstadoPropiedad] = useState()
     const [nombreEstado, setNombreEstado] = useState()
+    const [contador, setContador] = useState()
 
     const dispatch = useDispatch()
 
@@ -42,6 +43,7 @@ const TablaInventario = () => {
         })
             .then(res => {
                 setEstadoPropiedad(res?.data)
+                setContador(res?.data.length)
             })
             .catch(err => { console.log(err) })
     }
@@ -155,7 +157,7 @@ const TablaInventario = () => {
         })
             .then(res => {
                 // setFilter(res.data.filter(e => e.general?.numero_ofna.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
-                console.log(res.data, "asd")
+                
                 setFilter(res.data.filter(e =>
                     e.publicidad?.encabezado.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
 
@@ -209,7 +211,7 @@ const TablaInventario = () => {
             sortable: true,
             name: 'Precio',
             minWidth: '120px',
-            selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : row?.publicidad?.precio_venta.toLocaleString() + '$'
+            selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : '$ ' + row?.publicidad?.precio_venta.toLocaleString()
         },
         {
             sortable: true,
@@ -314,7 +316,7 @@ const TablaInventario = () => {
         }
     ]
     useEffect(() => {
-
+        
         if (nombreEstado == 'Todos' || estadoPropiedad == undefined) {
 
             axios.get(URL, {
@@ -326,6 +328,7 @@ const TablaInventario = () => {
 
                     // Total de registros
                     let totalData = res?.data.length
+                    setContador(totalData)
                     let allData = res?.data
                     setGetTotalData(totalData)
 
@@ -474,9 +477,11 @@ const TablaInventario = () => {
                         </Col>
                     </Row>
                 </Card>
+                
                 <Card>
                     <CardHeader className='border-bottom'>
                         <CardTitle tag='h4'>Inventario</CardTitle>
+                        <h4>Total: {contador}</h4>
                     </CardHeader>
                     <Row className='mx-0 mt-1 mb-50'>
                         <Col sm='6'>

@@ -111,9 +111,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
   const crearCliente = () => {
     setActivar(!activar)
     if (activar) {
-      console.log("Crear usuario")
     } else {
-      console.log("seleccionar usuario")
     }
 
   }
@@ -122,7 +120,6 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
     // true = buscar por cliente 
 
     let idClienteActual = objectCliente?.id
-    console.log(idPropiedad, "asd")
     if (activar) {
       let actualizaCliente = {}
       actualizaCliente.cliente_id = idCliente

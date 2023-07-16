@@ -23,7 +23,6 @@ const VerticalLayout = (props) => {
   } else if (role === "1") {
     filteredNavigation = navigation; // Obtener el array completo
   }
-  console.log(filteredNavigation)
   return (
     <Layout menuData={filteredNavigation} {...props}>
       <Outlet />

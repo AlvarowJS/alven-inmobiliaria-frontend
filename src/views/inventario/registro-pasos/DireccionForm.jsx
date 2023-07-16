@@ -96,7 +96,6 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
   const buscarDireccion = () => {
     let direccionUnida = `${pais && pais} ${estado && estado} ${municipio && municipio} ${colonia && colonia} ${calle && calle} ${numero && numero}`
-    console.log(direccionUnida)
     const geocoder = new window.google.maps.Geocoder();
 
     geocoder.geocode({ address: direccionUnida }, (results, status) => {

@@ -48,7 +48,6 @@ const Asesor = () => {
   };
 
   const updateAsesor = (id, data) => {
-    console.log(data, "Asd")
     const f = new FormData()
     f.append('id', id)
     f.append('nombre', data.nombre)
@@ -87,9 +86,7 @@ const Asesor = () => {
 
   const crearAsesor = data => {
     setEstado(false)
-    console.log('entro al crear')
     const f = new FormData()
-    console.log(data, "Asd")
     f.append('nombre', data.nombre)
     f.append('apellidos', data.apellidos)
     f.append('celular', data.celular)

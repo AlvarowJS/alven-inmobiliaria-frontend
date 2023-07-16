@@ -93,7 +93,6 @@ const GeneralForm = ({ asesorObj, idPropiedad, stepper, objectGlobal, idGeneral 
     })
   }
 
-  console.log(tipoOpe)
   return (
     <Card>
       <CardHeader>

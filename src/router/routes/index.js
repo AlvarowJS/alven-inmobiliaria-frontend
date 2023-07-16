@@ -42,7 +42,6 @@ const AuthGuard = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
-    console.log(role, token, "login?")
     if (!token) {
       navigate("/login");
     } else {

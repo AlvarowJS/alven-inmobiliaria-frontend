@@ -3,7 +3,6 @@ import logo from './../../assets/images/logo/logo.png'
 import { Document, Page, Text, View, StyleSheet, Image, PDFDownloadLink } from '@react-pdf/renderer';
 import { File, FileText } from 'react-feather';
 const ExportarPdf = ({ propiedades, espacios }) => {
-    console.log(propiedades)
 
     const styles = StyleSheet.create({
         header: {
