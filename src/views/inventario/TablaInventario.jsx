@@ -101,7 +101,9 @@ const TablaInventario = () => {
             }
         })
     }
-
+    const verInventarioExterno = (id) => {
+        window.open(`https://alven-inmobiliaria.com.mx/#/propiedad-info/${id}`,'_blank')
+    }
     const registrarPropiedad = () => {
 
         axios.post(URL, null, {
@@ -157,7 +159,7 @@ const TablaInventario = () => {
         })
             .then(res => {
                 // setFilter(res.data.filter(e => e.general?.numero_ofna.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
-                
+
                 setFilter(res.data.filter(e =>
                     e.publicidad?.encabezado.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
 
@@ -301,7 +303,8 @@ const TablaInventario = () => {
                         </button> */}
                         {
                             role === "2" ?
-                                <button className='btn btn-warning mb-1 mt-1' onClick={() => updateInventarioById(row?.id)}>
+                                // <button className='btn btn-warning mb-1 mt-1' onClick={() => updateInventarioById(row?.id)}>
+                                <button className='btn btn-warning mb-1 mt-1' onClick={() => verInventarioExterno(row?.id)}>
                                     <Eye />
                                 </button>
                                 : null
@@ -310,13 +313,13 @@ const TablaInventario = () => {
                             <FileText />
                         </button>
 
-                    </div>
+                    </div >
                 )
             }
         }
     ]
     useEffect(() => {
-        
+
         if (nombreEstado == 'Todos' || estadoPropiedad == undefined) {
 
             axios.get(URL, {
@@ -477,7 +480,7 @@ const TablaInventario = () => {
                         </Col>
                     </Row>
                 </Card>
-                
+
                 <Card>
                     <CardHeader className='border-bottom'>
                         <CardTitle tag='h4'>Inventario</CardTitle>

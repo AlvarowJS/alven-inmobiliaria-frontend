@@ -12,6 +12,7 @@ const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente/'
 const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
     const navigate = useNavigate()
     let token = localStorage.getItem('token');
+    const role = localStorage?.getItem('role');
 
     const [idPropiedad, setIdPropiedad] = useState()
     const [currentPage, setCurrentPage] = useState(1)
@@ -59,7 +60,7 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
             sortable: true,
             name: 'Asesor',
             minWidth: '225px',
-            selector: row => row?.asesor?.nombre +' '+row?.asesor?.apellidos 
+            selector: row => row?.asesor?.nombre + ' ' + row?.asesor?.apellidos
             // cell: row => {
             //     return (
             //         <div className='local_buttons'>                    
@@ -99,12 +100,19 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
             cell: row => {
                 return (
                     <div className='local_buttons'>
+
                         <button className='btn btn-warning my-1' onClick={() => updateClienteById(row?.id)}>
                             <Edit />
                         </button>
-                        <button className='btn btn-danger mb-1' onClick={() => deleteClienteById(row?.id)}>
-                            <Trash />
-                        </button>
+                        {
+                            role == "1" ?
+                                <button className='btn btn-danger mb-1' onClick={() => deleteClienteById(row?.id)}>
+                                    <Trash />
+                                </button>
+                                : null
+
+                        }
+
 
                     </div>
                 )
