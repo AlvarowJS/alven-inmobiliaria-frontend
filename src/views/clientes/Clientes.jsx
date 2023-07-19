@@ -12,7 +12,6 @@ const MySwal = withReactContent(Swal)
 
 const Clientes = () => {
   const token = localStorage.getItem('token');
-
   const [modal, setModal] = useState(false)
   const [estado, setEstado] = useState(false)
   const [objUpdate, setObjUpdate] = useState()
