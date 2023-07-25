@@ -353,6 +353,31 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
               </div>
             </Col>
           </Row>
+
+          <Row>
+            <Col>
+              <div className='mb-1'>
+                <Label className='form-label' for='edad'>
+                  Edad del inmueble
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='edad'
+                  name='edad'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+
+                      invalid={errors.edad && true}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+            </Col>
+            <Col></Col>
+          </Row>
           <div className='d-flex'>
 
             {
