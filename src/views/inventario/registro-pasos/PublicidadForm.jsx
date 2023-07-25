@@ -6,6 +6,7 @@ import axios from 'axios'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/publicidad'
 const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/actualizar-propiedad'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+const URL_MAPA = 'https://backend.alven-inmobiliaria.com.mx/api/v1/publicidad-mapa'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -19,6 +20,8 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const navigate = useNavigate()
   const [objectPublicidad, setObjectPublicidad] = useState()
   const [estadoPropiedad, setEstadoPropiedad] = useState()
+  const [selectedImage, setSelectedImage] = useState()
+  const [fotoMapa, setFotoMapa] = useState()
 
   const {
     reset,
@@ -31,15 +34,40 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
 
   useEffect(() => {
-
+    
+    setSelectedImage(`https://backend.alven-inmobiliaria.com.mx/storage/${idPropiedad}/mapa/${objectGlobal?.publicidad?.mapa}`)
     setObjectPublicidad(objectGlobal?.publicidad)
     reset(objectGlobal?.publicidad)
   }, [])
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Leer el archivo y obtener la URL de la imagen
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    setFotoMapa(file)
+  };
+
   const onSubmit = data => {
     let idPublicidad = objectPublicidad?.id
+
     if (idPublicidad) {
-      axios.put(`${URL}/${idPublicidad}`, data, {
+      const f = new FormData()
+      f.append('id_propiedad', idPropiedad)
+      f.append('precio_venta', data.precio_venta)
+      f.append('encabezado', data.encabezado)
+      f.append('descripcion', data.descripcion)
+      f.append('video_url', data.video_url)
+      f.append('estado', data.estado)
+      f.append('mapa', fotoMapa)      
+      f.append('id', idPublicidad)
+      axios.post(URL_MAPA, f, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -57,9 +85,17 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
         })
         .catch(err => null)
     } else {
-      data.id_propiedad = idPropiedad
-
-      axios.post(URL, data, {
+      // data.id_propiedad = idPropiedad
+      // Append
+      const f = new FormData()
+      f.append('precio_venta', data.precio_venta)
+      f.append('encabezado', data.encabezado)
+      f.append('descripcion', data.descripcion)
+      f.append('video_url', data.video_url)
+      f.append('estado', data.estado)
+      f.append('mapa', fotoMapa)
+      f.append('id_propiedad', idPropiedad)
+      axios.post(URL, f, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -142,6 +178,27 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               name='video_url'
               render={({ field }) => <Input invalid={errors.video_url && true}  {...field} />}
             />
+          </div>
+          <div className='mb-1'>
+            <Label className='form-label' for='mapa'>
+              Imagen del Mapa
+            </Label>
+            <input type="file" className="form-control" id="mapa"
+              {...register('mapa')}
+              onChange={handleFileChange}
+
+            />
+          </div>
+          <div className="form-group mx-4 mb-2">
+            {
+              fotoMapa != null && selectedImage == null ?
+                <img src={`https://backend.alven-inmobiliaria.com.mx/storage/${idPropiedad}/mapa/${fotoMapa}`} alt="" style={{ width: "100%", height: "auto" }} /> : null
+            }
+            {selectedImage && (
+              <div className="preview-image">
+                <img src={selectedImage} alt="Preview" style={{ width: "100%", height: "400px", objectFit: "cover" }} />
+              </div>
+            )}
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='estado'>
