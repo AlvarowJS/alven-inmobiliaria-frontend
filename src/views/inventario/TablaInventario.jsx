@@ -102,7 +102,7 @@ const TablaInventario = () => {
         })
     }
     const verInventarioExterno = (id) => {
-        window.open(`https://alven-inmobiliaria.com.mx/#/propiedad-info/${id}`,'_blank')
+        window.open(`https://alven-inmobiliaria.com.mx/#/propiedad-info/${id}`, '_blank')
     }
     const registrarPropiedad = () => {
 
@@ -151,24 +151,35 @@ const TablaInventario = () => {
         setSearchValue(e.target.value)
     }
 
+    // useEffect(() => {
+    //     axios.get(URL, {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + token
+    //         }
+    //     })
+    //         .then(res => {
+
+    //             // setFilter(res.data.filter(e =>
+    //             //     e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
+    //             // ));
+
+
+    //         })
+    //         .catch(err => { console.log(err) })
+    // }, [searchValue])
     useEffect(() => {
-        axios.get(URL, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-            .then(res => {
-                // setFilter(res.data.filter(e => e.general?.numero_ofna.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
+      
+        setFilter(getData?.filter(e =>
+            e.publicidad?.encabezado &&
+            e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1            
+        ));
+        setContador((getData?.filter(e =>
+            e.publicidad?.encabezado &&
+            e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1            
+        ))?.length);
 
-                setFilter(res.data.filter(e =>
-                    e.publicidad?.encabezado.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
-
-                ));
-
-            })
-            .catch(err => { console.log(err) })
     }, [searchValue])
-
+    console.log(filter, "hola")
     // Columnas
     const serverSideColumns = [
         {
