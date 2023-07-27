@@ -198,6 +198,7 @@ const TablaInventario = () => {
             cell: row => {
                 return (
                     <>
+                        
                         {
                             (row?.direccion?.calle ?? '') +
                             ' - ' +
@@ -209,8 +210,12 @@ const TablaInventario = () => {
                             ' - ' +
                             (row?.direccion?.estado ?? '') +
                             ' - ' +
-                            (row?.direccion?.pais ?? '')
-
+                            (row?.direccion?.pais ?? '')                             
+                            
+                        }
+                        <br />
+                        {
+                            'Cod Postal: ' + (row?.direccion?.codigo_postal ?? '')
                         }
                     </>
                 )
@@ -233,6 +238,12 @@ const TablaInventario = () => {
             name: 'Tipo Operación',
             minWidth: '250px',
             selector: row => row?.general?.tipo_operacion == undefined ? 'Sin asignar' : row?.general?.tipo_operacion
+        },
+        {
+            sortable: true,
+            name: 'Status',
+            minWidth: '250px',
+            selector: row => row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado
         },
         {
             sortable: true,
