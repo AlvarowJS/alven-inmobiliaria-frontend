@@ -66,7 +66,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             name: 'RFC',
             minWidth: '225px',
             selector: row => row.rfc
-        },   
+        },
         {
             sortable: true,
             name: 'Foto',
@@ -74,7 +74,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             cell: row => {
                 return (
                     <>
-                    <img src={`https://backend.alven-inmobiliaria.com.mx/storage/asesor/${row?.foto}`} alt="" style={{ width: "120px", height: "80px" }} />
+                        <img src={`https://backend.alven-inmobiliaria.com.mx/storage/asesor/${row?.foto}`} alt="" style={{ width: "120px", height: "80px" }} />
                     </>
                 )
             }
@@ -98,18 +98,27 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             }
         }
     ]
+    // useEffect(() => {
+    //     axios.get(URL, {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + token
+    //         }
+    //     })
+    //         .then(res => { 
+    //             setFilter(res.data.filter(e => e.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
+    //         })
+    //         .catch(err => { console.log(err) })
+    // }, [searchValue])
+
     useEffect(() => {
-        axios.get(URL, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-            .then(res => { 
-                setFilter(res.data.filter(e => e.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
-            })
-            .catch(err => { console.log(err) })
+
+        setFilter(getData?.filter(e =>
+            e.nombre &&
+            (e.nombre + " " + e.apellidos).toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
+        ))
+
     }, [searchValue])
-    
+
     useEffect(() => {
 
         axios.get(URL, {
@@ -132,7 +141,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
                     let limite = cantidadPag * currentPage
                     let inicio = cantidadPag * (currentPage - 1)
 
-                    
+
                     let data = (res?.data).slice(inicio, limite)
                     setGetData(data)
                 } else {
@@ -199,7 +208,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
                                 value={rowsPerPage}
                                 onChange={e => handlePerPage(e)}
                             >
-                                
+
                                 <option value={5}>5</option>
                                 <option value={10}>10</option>
                                 <option value={25}>25</option>

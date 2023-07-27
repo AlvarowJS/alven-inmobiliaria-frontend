@@ -168,18 +168,20 @@ const TablaInventario = () => {
     //         .catch(err => { console.log(err) })
     // }, [searchValue])
     useEffect(() => {
-      
+        console.log(getData)
         setFilter(getData?.filter(e =>
-            e.publicidad?.encabezado &&
-            e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1            
+            // e.publicidad?.encabezado &&
+            // e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1            
+            (e.publicidad?.encabezado && e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
+            (e.cliente?.asesor?.nombre && e.cliente?.asesor?.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
+            (e.cliente?.asesor?.apellidos && e.cliente?.asesor?.apellidos.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1)
         ));
         setContador((getData?.filter(e =>
             e.publicidad?.encabezado &&
-            e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1            
+            e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
         ))?.length);
 
     }, [searchValue])
-    console.log(filter, "hola")
     // Columnas
     const serverSideColumns = [
         {

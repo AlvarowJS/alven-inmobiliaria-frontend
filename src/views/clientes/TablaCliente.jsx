@@ -16,7 +16,7 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
 
     const [idPropiedad, setIdPropiedad] = useState()
     const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerPage] = useState(3)
+    const [rowsPerPage, setRowsPerPage] = useState(5)
     const [searchValue, setSearchValue] = useState('')
     const [getData, setGetData] = useState()
     const [getTotalData, setGetTotalData] = useState()
@@ -46,16 +46,17 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
         },
         {
             sortable: true,
-            name: 'Apellido Materno',
-            minWidth: '155px',
-            selector: row => row.apellido_materno
-        },
-        {
-            sortable: true,
             name: 'Apellido Paterno',
             minWidth: '155px',
             selector: row => row.apellido_paterno
         },
+        {
+            sortable: true,
+            name: 'Apellido Materno',
+            minWidth: '155px',
+            selector: row => row.apellido_materno
+        },
+
         {
             sortable: true,
             name: 'Asesor',
@@ -119,16 +120,25 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
             }
         }
     ]
+    // useEffect(() => {
+    //     axios.get(URL, {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + token
+    //         }
+    //     })
+    //         .then(res => {
+
+    //             setFilter(res.data.filter(e => e?.nombre?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
+    //         })
+    //         .catch(err => { console.log(err) })
+    // }, [searchValue])
+
     useEffect(() => {
-        axios.get(URL, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-            .then(res => {
-                setFilter(res.data.filter(e => e.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1))
-            })
-            .catch(err => { console.log(err) })
+        setFilter(getData?.filter(e =>
+            e.nombre &&
+            (e.nombre + " " + e.apellido_paterno + " " + e.apellido_materno).toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
+        ))
+
     }, [searchValue])
 
     useEffect(() => {
@@ -221,9 +231,7 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
                                 value={rowsPerPage}
                                 onChange={e => handlePerPage(e)}
                             >
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={7}>7</option>
+                                <option value={5}>5</option>
                                 <option value={10}>10</option>
                                 <option value={25}>25</option>
                                 <option value={50}>50</option>
