@@ -168,14 +168,24 @@ const TablaInventario = () => {
     //         .catch(err => { console.log(err) })
     // }, [searchValue])
     useEffect(() => {
-        console.log(getData)
         setFilter(getData?.filter(e =>
-            // e.publicidad?.encabezado &&
-            // e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1            
             (e.publicidad?.encabezado && e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
             (e.cliente?.asesor?.nombre && e.cliente?.asesor?.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
-            (e.cliente?.asesor?.apellidos && e.cliente?.asesor?.apellidos.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1)
-        ));
+            (e.cliente?.asesor?.apellidos && e.cliente?.asesor?.apellidos.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
+            (
+                (e.direccion?.calle ?? '') +
+                ' ' +
+                (e.direccion?.numero ?? '') +
+                ' ' +
+                (e.direccion?.colonia ?? '') +
+                ' ' +
+                (e.direccion?.municipio ?? '') +
+                ' ' +
+                (e.direccion?.estado ?? '') +
+                ' ' +
+                (e.direccion?.pais ?? '')
+            ).toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1)
+        );
         setContador((getData?.filter(e =>
             e.publicidad?.encabezado &&
             e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
@@ -198,7 +208,7 @@ const TablaInventario = () => {
             cell: row => {
                 return (
                     <>
-                        
+
                         {
                             (row?.direccion?.calle ?? '') +
                             ' - ' +
@@ -210,8 +220,8 @@ const TablaInventario = () => {
                             ' - ' +
                             (row?.direccion?.estado ?? '') +
                             ' - ' +
-                            (row?.direccion?.pais ?? '')                             
-                            
+                            (row?.direccion?.pais ?? '')
+
                         }
                         <br />
                         {
