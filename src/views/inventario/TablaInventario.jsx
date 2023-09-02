@@ -168,14 +168,24 @@ const TablaInventario = () => {
     //         .catch(err => { console.log(err) })
     // }, [searchValue])
     useEffect(() => {
-        console.log(getData)
         setFilter(getData?.filter(e =>
-            // e.publicidad?.encabezado &&
-            // e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1            
             (e.publicidad?.encabezado && e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
             (e.cliente?.asesor?.nombre && e.cliente?.asesor?.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
-            (e.cliente?.asesor?.apellidos && e.cliente?.asesor?.apellidos.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1)
-        ));
+            (e.cliente?.asesor?.apellidos && e.cliente?.asesor?.apellidos.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
+            (
+                (e.direccion?.calle ?? '') +
+                ' ' +
+                (e.direccion?.numero ?? '') +
+                ' ' +
+                (e.direccion?.colonia ?? '') +
+                ' ' +
+                (e.direccion?.municipio ?? '') +
+                ' ' +
+                (e.direccion?.estado ?? '') +
+                ' ' +
+                (e.direccion?.pais ?? '')
+            ).toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1)
+        );
         setContador((getData?.filter(e =>
             e.publicidad?.encabezado &&
             e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
@@ -198,6 +208,7 @@ const TablaInventario = () => {
             cell: row => {
                 return (
                     <>
+
                         {
                             (row?.direccion?.calle ?? '') +
                             ' - ' +
@@ -211,6 +222,10 @@ const TablaInventario = () => {
                             ' - ' +
                             (row?.direccion?.pais ?? '')
 
+                        }
+                        <br />
+                        {
+                            'Cod Postal: ' + (row?.direccion?.codigo_postal ?? '')
                         }
                     </>
                 )
@@ -241,6 +256,12 @@ const TablaInventario = () => {
             name: 'Tipo Operación',
             minWidth: '250px',
             selector: row => row?.general?.tipo_operacion == undefined ? 'Sin asignar' : row?.general?.tipo_operacion
+        },
+        {
+            sortable: true,
+            name: 'Status',
+            minWidth: '250px',
+            selector: row => row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado
         },
         {
             sortable: true,
