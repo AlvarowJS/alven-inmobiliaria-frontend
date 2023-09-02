@@ -66,14 +66,24 @@ const Clientes = () => {
       .then(res => {
         setEstado(true)
         Swal.fire({
-          position: 'top-end',
+          position: 'center',
           icon: 'success',
           title: 'Cliente Registrado',
           showConfirmButton: false,
           timer: 1500
         })
       })
-      .catch(err => null)
+      .catch(err => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Número ya registrado',
+          text: `Por el asesor ${err.response.data.asesor}`,
+          showConfirmButton: false,
+          // timer: 2500
+        })
+
+      })
   }
 
   const updateClienteById = (id) => {

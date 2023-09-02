@@ -33,7 +33,6 @@ const FormCliente = ({
             <label htmlFor="nombre">Nombre</label>
             <input type="text" className="form-control" id="nombre"
               {...register('nombre')}
-              placeholder="Alvaro..."
               
             />
           </div>
@@ -42,7 +41,6 @@ const FormCliente = ({
             <label htmlFor="apellido_paterno">Apellido Paterno</label>
             <input type="text" className="form-control" id="apellido_paterno"
               {...register('apellido_paterno')}
-              placeholder="Rosas"
               
             />
           </div>
@@ -51,7 +49,6 @@ const FormCliente = ({
             <label htmlFor="apellido_materno">Apellido Materno</label>
             <input type="text" className="form-control" id="apellido_materno"
               {...register('apellido_materno')}
-              placeholder="Perez"
               
             />
           </div>
@@ -66,7 +63,7 @@ const FormCliente = ({
               }
             </select>
           </div>
-
+{/* 
           <div className="form-group mx-4 mb-2">
             <label htmlFor="cedula">Cedula</label>
             <input type="text" className="form-control" id="cedula"
@@ -74,13 +71,12 @@ const FormCliente = ({
               placeholder="7468737"
               
             />
-          </div>
+          </div> */}
 
           <div className="form-group mx-4 mb-2">
             <label htmlFor="email">Email</label>
             <input type="email" className="form-control" id="email"
               {...register('email')}
-              placeholder="ejemplo@gmail.com"
               
             />
           </div>
@@ -89,7 +85,6 @@ const FormCliente = ({
             <label htmlFor="celular">Celular</label>
             <input type="text" className="form-control" id="celular"
               {...register('celular')}
-              placeholder="99 442409"
               
             />
           </div>

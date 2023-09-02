@@ -70,12 +70,12 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
             //     )
             // }
         },
-        {
-            sortable: true,
-            name: 'Cedula',
-            minWidth: '125px',
-            selector: row => row.cedula
-        },
+        // {
+        //     sortable: true,
+        //     name: 'Cedula',
+        //     minWidth: '125px',
+        //     selector: row => row.cedula
+        // },
         {
             sortable: true,
             name: 'Email',
