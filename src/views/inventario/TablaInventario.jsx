@@ -19,8 +19,8 @@ const TablaInventario = () => {
     const navigate = useNavigate()
     const [estado, setEstado] = useState(false)
     const [idPropiedad, setIdPropiedad] = useState()
-    const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerPage] = useState(5)
+    // const [currentPage, setCurrentPage] = useState(1)
+    // const [rowsPerPage, setRowsPerPage] = useState(5)
     const [searchValue, setSearchValue] = useState('')
     const [filter, setFilter] = useState()
     const [getData, setGetData] = useState()
@@ -226,7 +226,15 @@ const TablaInventario = () => {
             sortable: true,
             name: 'Precio',
             minWidth: '120px',
-            selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : '$ ' + row?.publicidad?.precio_venta.toLocaleString()
+            selector: row => row?.publicidad?.precio_venta,
+            cell: row => {
+                return (
+                    <>
+                        {row?.publicidad?.precio_venta == undefined ? '00.00' : '$ ' + row?.publicidad?.precio_venta.toLocaleString()}
+                    </>
+                )
+            }
+            // selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : '$ ' + row?.publicidad?.precio_venta.toLocaleString()
         },
         {
             sortable: true,
@@ -238,6 +246,7 @@ const TablaInventario = () => {
             sortable: true,
             name: 'Asignación',
             minWidth: '250px',
+            selector: row => row?.cliente?.asesor?.nombre,
             cell: row => {
                 return (
                     <>
@@ -347,22 +356,19 @@ const TablaInventario = () => {
                     setContador(totalData)
                     let allData = res?.data
                     setGetTotalData(totalData)
+                    setGetData(allData)
+                    // if (totalData > (allData).slice(0, rowsPerPage).length) {
 
-                    // Con la sigueinte logica evitara errores
-                    if (totalData > (allData).slice(0, rowsPerPage).length) {
+                    //     let count = Math.ceil(totalData / rowsPerPage)
+                    //     let cantidadPag = Math.ceil(totalData / count)
+                    //     let limite = cantidadPag * currentPage
+                    //     let inicio = cantidadPag * (currentPage - 1)
 
-                        //Cantidad enumaraciones
-                        let count = Math.ceil(totalData / rowsPerPage)
-                        let cantidadPag = Math.ceil(totalData / count)
-                        let limite = cantidadPag * currentPage
-                        let inicio = cantidadPag * (currentPage - 1)
-
-                        // console.log(currentPage-1, limite, "currente y limite")
-                        let data = (allData).slice(inicio, limite)
-                        setGetData(data)
-                    } else {
-                        setGetData((allData).slice(0, rowsPerPage))
-                    }
+                    //     let data = (allData).slice(inicio, limite)
+                    //     setGetData(data)
+                    // } else {
+                    //     setGetData((allData).slice(0, rowsPerPage))
+                    // }
 
                 })
                 .catch(err => { console.log(err) })
@@ -370,25 +376,25 @@ const TablaInventario = () => {
             let totalData = estadoPropiedad.length
             let allData = estadoPropiedad
             setGetTotalData(totalData)
+            setGetData(allData)
+            // if (totalData > (allData).slice(0, rowsPerPage).length) {
 
-            // Con la sigueinte logica evitara errores
-            if (totalData > (allData).slice(0, rowsPerPage).length) {
+            //     let count = Math.ceil(totalData / rowsPerPage)
+            //     let cantidadPag = Math.ceil(totalData / count)
+            //     let limite = cantidadPag * currentPage
+            //     let inicio = cantidadPag * (currentPage - 1)
 
-                //Cantidad enumaraciones
-                let count = Math.ceil(totalData / rowsPerPage)
-                let cantidadPag = Math.ceil(totalData / count)
-                let limite = cantidadPag * currentPage
-                let inicio = cantidadPag * (currentPage - 1)
-
-                // console.log(currentPage-1, limite, "currente y limite")
-                let data = (allData).slice(inicio, limite)
-                setGetData(data)
-            } else {
-                setGetData((allData).slice(0, rowsPerPage))
-            }
+            //     let data = (allData).slice(inicio, limite)
+            //     setGetData(data)
+            // } else {
+            //     setGetData((allData).slice(0, rowsPerPage))
+            // }
         }
 
-    }, [rowsPerPage, currentPage, estado, estadoPropiedad])
+    }, [
+        // rowsPerPage, 
+        // currentPage, 
+        estado, estadoPropiedad])
 
     const handlePerPage = e => {
         setRowsPerPage(parseInt(e.target.value))
@@ -399,35 +405,35 @@ const TablaInventario = () => {
     }
 
 
-    const CustomPagination = () => {
+    // const CustomPagination = () => {
 
-        const count = Math.ceil(getTotalData / rowsPerPage)
+    //     const count = Math.ceil(getTotalData / rowsPerPage)
 
-        return (
-            <ReactPaginate
-                previousLabel={''}
-                nextLabel={''}
-                breakLabel='...'
-                pageCount={Math.ceil(count) || 1}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={2}
-                activeClassName='active'
-                forcePage={currentPage !== 0 ? currentPage - 1 : 0}
-                onPageChange={page => handlePagination(page)}
-                pageClassName='page-item'
-                breakClassName='page-item'
-                nextLinkClassName='page-link'
-                pageLinkClassName='page-link'
-                breakLinkClassName='page-link'
-                previousLinkClassName='page-link'
-                nextClassName='page-item next-item'
-                previousClassName='page-item prev-item'
-                containerClassName={
-                    'pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1'
-                }
-            />
-        )
-    }
+    //     return (
+    //         <ReactPaginate
+    //             previousLabel={''}
+    //             nextLabel={''}
+    //             breakLabel='...'
+    //             pageCount={Math.ceil(count) || 1}
+    //             marginPagesDisplayed={2}
+    //             pageRangeDisplayed={2}
+    //             activeClassName='active'
+    //             forcePage={currentPage !== 0 ? currentPage - 1 : 0}
+    //             onPageChange={page => handlePagination(page)}
+    //             pageClassName='page-item'
+    //             breakClassName='page-item'
+    //             nextLinkClassName='page-link'
+    //             pageLinkClassName='page-link'
+    //             breakLinkClassName='page-link'
+    //             previousLinkClassName='page-link'
+    //             nextClassName='page-item next-item'
+    //             previousClassName='page-item prev-item'
+    //             containerClassName={
+    //                 'pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1'
+    //             }
+    //         />
+    //     )
+    // }
     return (
         <>
             <Fragment>
@@ -501,7 +507,7 @@ const TablaInventario = () => {
                     </CardHeader>
                     <Row className='mx-0 mt-1 mb-50'>
                         <Col sm='6'>
-                            <div className='d-flex align-items-center'>
+                            {/* <div className='d-flex align-items-center'>
                                 <Label for='sort-select'>Mostrar</Label>
                                 <Input
                                     className='dataTable-select'
@@ -519,7 +525,7 @@ const TablaInventario = () => {
                                     <option value={100}>100</option>
                                 </Input>
                                 <Label for='sort-select'>entradas</Label>
-                            </div>
+                            </div> */}
                         </Col>
                         <Col className='d-flex align-items-center justify-content-sm-end mt-sm-0 mt-1' sm='6'>
                             <Label className='me-1' for='search-input'>
@@ -538,12 +544,12 @@ const TablaInventario = () => {
                     <div className='react-dataTable'>
                         <DataTable
                             noHeader
-                            pagination
-                            paginationServer
+                            // pagination
+                            // paginationServer
                             className='react-dataTable'
                             columns={serverSideColumns}
                             sortIcon={<ChevronDown size={10} />}
-                            paginationComponent={CustomPagination}
+                            // paginationComponent={CustomPagination}
                             // data={getData}
                             data={searchValue ? filter : getData}
                         />
