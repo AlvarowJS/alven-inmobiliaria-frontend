@@ -27,7 +27,7 @@ const TablaInventario = () => {
     const [getTotalData, setGetTotalData] = useState()
     const [store, setStore] = useState()
     const [estadoPropiedad, setEstadoPropiedad] = useState()
-    const [nombreEstado, setNombreEstado] = useState()
+    const [nombreEstado, setNombreEstado] = useState('Todos')
     const [contador, setContador] = useState()
 
     const dispatch = useDispatch()
