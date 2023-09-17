@@ -253,6 +253,20 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
+            name: 'Días',
+            minWidth: '100px',
+            selector: row => row?.general?.fecha_alta,
+            cell: row => {
+                return (
+                    <>
+                        {Math.abs(Math.floor((new Date(row?.general?.fecha_alta) - new Date()) / (1000 * 60 * 60 * 24)))}
+                    </>
+                )
+            }
+            // selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : '$ ' + row?.publicidad?.precio_venta.toLocaleString()
+        },
+        {
+            sortable: true,
             name: 'Tipo Operación',
             minWidth: '250px',
             selector: row => row?.general?.tipo_operacion == undefined ? 'Sin asignar' : row?.general?.tipo_operacion

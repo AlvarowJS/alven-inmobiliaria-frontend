@@ -3,9 +3,13 @@ import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col,
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import { X, Plus } from 'react-feather'
+
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/publicidad'
 const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/actualizar-propiedad'
 const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+import Repeater from '@components/repeater'
+
 const URL_MAPA = 'https://backend.alven-inmobiliaria.com.mx/api/v1/publicidad-mapa'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -22,6 +26,17 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const [estadoPropiedad, setEstadoPropiedad] = useState()
   const [selectedImage, setSelectedImage] = useState()
   const [fotoMapa, setFotoMapa] = useState()
+  const [count, setCount] = useState(1)
+  const [formArray, setFormArray] = useState([]);
+
+  const increaseCount = () => {
+    setCount(count + 1)
+  }
+
+  const deleteForm = e => {
+    e.preventDefault()
+    e.target.closest('form').remove()
+  }
 
   const {
     reset,
@@ -34,9 +49,10 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
 
   useEffect(() => {
-    
+
     setSelectedImage(`https://backend.alven-inmobiliaria.com.mx/storage/${idPropiedad}/mapa/${objectGlobal?.publicidad?.mapa}`)
     setObjectPublicidad(objectGlobal?.publicidad)
+    setEstadoPropiedad(objectGlobal?.publicidad?.estado)
     reset(objectGlobal?.publicidad)
   }, [])
 
@@ -53,7 +69,18 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
     }
     setFotoMapa(file)
   };
+  console.log(estadoPropiedad, "?")
 
+
+  const handleChange = (index, field, value) => {
+    const updatedFormData = [...formArray];
+    updatedFormData[index] = {
+      ...updatedFormData[index],
+      [field]: value,
+    };
+    setFormArray(updatedFormData);
+  };
+  console.log(formArray)
   const onSubmit = data => {
     let idPublicidad = objectPublicidad?.id
 
@@ -65,7 +92,12 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       f.append('descripcion', data.descripcion)
       f.append('video_url', data.video_url)
       f.append('estado', data.estado)
-      f.append('mapa', fotoMapa)      
+      f.append('mapa', fotoMapa)
+      f.append('fecha_cierre', data.fecha_cierre)
+      f.append('precio_cierre', data.precio_cierre)
+      f.append('asesor_cierre', data.asesor_cierre)
+      const enlacesJson = JSON.stringify(formArray);
+      f.append('enlaces', enlacesJson);
       f.append('id', idPublicidad)
       axios.post(URL_MAPA, f, {
         headers: {
@@ -94,6 +126,11 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       f.append('video_url', data.video_url)
       f.append('estado', data.estado)
       f.append('mapa', fotoMapa)
+      f.append('fecha_cierre', data.fecha_cierre)
+      f.append('precio_cierre', data.precio_cierre)
+      f.append('asesor_cierre', data.asesor_cierre)
+      const enlacesJson = JSON.stringify(formArray);
+      f.append('enlaces', enlacesJson);
       f.append('id_propiedad', idPropiedad)
       axios.post(URL, f, {
         headers: {
@@ -121,7 +158,11 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       encabezado: '',
       descripcion: '',
       video_url: '',
-      estado: ''
+      estado: '',
+      fecha_cierre: '',
+      precio_cierre: '',
+      asesor_cierre: '',
+
     })
   }
   return (
@@ -179,6 +220,59 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               render={({ field }) => <Input invalid={errors.video_url && true}  {...field} />}
             />
           </div>
+
+          <Card>
+            <CardHeader>
+              <h4 className='card-title'>Ligas del Inmueble</h4>
+            </CardHeader>
+
+            <CardBody>
+              <Repeater count={count}>
+                {i => (
+                  <Form key={i}>
+                    <Row className='justify-content-between align-items-center'>
+                      <Col md={4} className='mb-md-0 mb-1'>
+                        <Label className='form-label' for={`item-name-${i}`}>
+                          Red Social
+                        </Label>
+                        <Input
+                          type='text'
+                          value={formArray[i]?.red_social || ''}
+                          onChange={e => handleChange(i, 'red_social', e.target.value)}
+                        />
+                      </Col>
+                      <Col md={2} className='mb-md-0 mb-1'>
+                        <Label className='form-label' for={`cost-${i}`}>
+                          Enlace
+                        </Label>
+                        <Input
+                          type='text'
+                          id={`cost-${i}`}
+                          value={formArray[i]?.enlace || ''}
+                          onChange={e => handleChange(i, 'enlace', e.target.value)}
+                        />
+                      </Col>
+
+                      <Col md={2}>
+                        <Button color='danger' className='text-nowrap px-1' onClick={deleteForm} outline>
+                          <X size={14} className='me-50' />
+                          <span>Quitar</span>
+                        </Button>
+                      </Col>
+                      <Col sm={12}>
+                        <hr />
+                      </Col>
+                    </Row>
+                  </Form>
+                )}
+              </Repeater>
+              <Button className='btn-icon' color='primary' onClick={increaseCount}>
+                <Plus size={14} />
+                <span className='align-middle ms-25'>Agregar</span>
+              </Button>
+            </CardBody>
+          </Card>
+
           <div className='mb-1'>
             <Label className='form-label' for='mapa'>
               Imagen del Mapa
@@ -204,7 +298,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
             <Label className='form-label' for='estado'>
               Status
             </Label>
-            <select className="form-select" id="estado" {...register("estado")} >
+            <select className="form-select" id="estado" {...register("estado")} onChange={(e) => setEstadoPropiedad(e.target.value)}>
               <option value="En Promocion">En Promoción</option>
               <option value="Con Manifestacion">Con Manifestación</option>
               <option value="Cancelada">Cancelada </option>
@@ -212,6 +306,52 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
               <option value="Cerrada">Cerrada</option>
             </select>
           </div>
+          {
+            estadoPropiedad == 'Cerrada' ?
+              (
+                <>
+                  <div className='mb-1'>
+                    <Label className='form-label' for='precio_cierre'>
+                      Precio de Cierre
+                    </Label>
+                    <Controller
+                      defaultValue=''
+                      control={control}
+                      id='precio_cierre'
+                      name='precio_cierre'
+                      render={({ field }) => <Input invalid={errors.precio_cierre && true}  {...field} />}
+                    />
+                  </div>
+                  <div className='mb-1'>
+                    <Label className='form-label' for='fecha_cierre'>
+                      Fecha de Cierre
+                    </Label>
+                    <Controller
+                      defaultValue=''
+                      control={control}
+                      id='fecha_cierre'
+                      name='fecha_cierre'
+
+                      render={({ field }) => <Input invalid={errors.fecha_cierre && true}  {...field} type='date' />}
+                    />
+                  </div>
+                  <div className='mb-1'>
+                    <Label className='form-label' for='asesor_cierre'>
+                      Asesor de Cierre
+                    </Label>
+                    <Controller
+                      defaultValue=''
+                      control={control}
+                      id='asesor_cierre'
+                      name='asesor_cierre'
+                      render={({ field }) => <Input invalid={errors.asesor_cierre && true}  {...field} />}
+                    />
+                  </div>
+                </>
+              ) :
+              null
+          }
+
           <div className='d-flex'>
             {/* <Button className='me-1' color='success' onClick={terminarEdicion} disabled={estadoPropiedad}>
               Terminar

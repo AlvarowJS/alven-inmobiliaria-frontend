@@ -61,7 +61,17 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
             sortable: true,
             name: 'Asesor',
             minWidth: '225px',
-            selector: row => row?.asesor?.nombre + ' ' + row?.asesor?.apellidos
+            selector: row => {
+                const nombre = row?.asesor?.nombre;
+                const apellidos = row?.asesor?.apellidos;
+              
+                if (nombre === undefined && apellidos === undefined) {
+                  return "sin asesor";
+                }
+                // row?.asesor?.nombre + ' ' + row?.asesor?.apellidos
+                return nombre + ' ' + apellidos;
+            }
+            
             // cell: row => {
             //     return (
             //         <div className='local_buttons'>                    
@@ -90,10 +100,17 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById }) => {
         },
         {
             sortable: true,
+            name: 'Interesado',
+            minWidth: '175px',
+            selector: row => row.interesado
+        },
+        {
+            sortable: true,
             name: 'Medio de contacto',
-            minWidth: '225px',
+            minWidth: '175px',
             selector: row => row.medio_contacto
         },
+        
         {
             name: 'Acciones',
             sortable: true,

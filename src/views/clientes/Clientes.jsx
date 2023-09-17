@@ -46,14 +46,23 @@ const Clientes = () => {
       .then(res => {
         setEstado(true)
         Swal.fire({
-          position: 'top-end',
+          position: 'center',
           icon: 'success',
           title: 'Cliente Actualizado',
           showConfirmButton: false,
           timer: 1500
         })
       })
-      .catch(err => null)
+      .catch(err => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Este número ya esta registrado',
+          text: `Por el asesor ${err.response.data.asesor}`,
+          showConfirmButton: false,
+          // timer: 2500
+        })
+      })
   }
 
   const crearCliente = data => {
@@ -99,8 +108,11 @@ const Clientes = () => {
         const object = res?.data
         reset(object)
 
+
       })
-      .catch(err => null)
+      .catch(err => {
+
+      })
   }
 
   const deleteClienteById = (id) => {

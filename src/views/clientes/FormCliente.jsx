@@ -30,10 +30,18 @@ const FormCliente = ({
       <ModalBody>
         <form onSubmit={handleSubmit(submit)}>
           <div className="form-group mx-4 mb-2">
+            <label htmlFor="celular">Celular</label>
+            <input type="text" className="form-control" id="celular"
+              {...register('celular')}
+
+            />
+          </div>
+
+          <div className="form-group mx-4 mb-2">
             <label htmlFor="nombre">Nombre</label>
             <input type="text" className="form-control" id="nombre"
               {...register('nombre')}
-              
+
             />
           </div>
 
@@ -41,7 +49,7 @@ const FormCliente = ({
             <label htmlFor="apellido_paterno">Apellido Paterno</label>
             <input type="text" className="form-control" id="apellido_paterno"
               {...register('apellido_paterno')}
-              
+
             />
           </div>
 
@@ -49,13 +57,14 @@ const FormCliente = ({
             <label htmlFor="apellido_materno">Apellido Materno</label>
             <input type="text" className="form-control" id="apellido_materno"
               {...register('apellido_materno')}
-              
+
             />
           </div>
 
           <div className="form-group mx-4 mb-2">
             <label htmlFor="nombre_tarifa">Seleccionar al Asesor</label>
             <select className="form-select" id="asesor_id" {...register("asesor_id")}>
+            <option key="" value="">Sin asesor</option>
               {
                 options?.map(option => (
                   <option key={option.id} value={option.id}>{option.nombre} {option.apellidos}</option>
@@ -63,29 +72,20 @@ const FormCliente = ({
               }
             </select>
           </div>
-{/* 
+
           <div className="form-group mx-4 mb-2">
-            <label htmlFor="cedula">Cedula</label>
-            <input type="text" className="form-control" id="cedula"
-              {...register('cedula')}
-              placeholder="7468737"
-              
+            <label htmlFor="interesado">Interesado en</label>
+            <input type="text" className="form-control" id="interesado"
+              {...register('interesado')}
+
             />
-          </div> */}
+          </div>
 
           <div className="form-group mx-4 mb-2">
             <label htmlFor="email">Email</label>
             <input type="email" className="form-control" id="email"
               {...register('email')}
-              
-            />
-          </div>
 
-          <div className="form-group mx-4 mb-2">
-            <label htmlFor="celular">Celular</label>
-            <input type="text" className="form-control" id="celular"
-              {...register('celular')}
-              
             />
           </div>
 
@@ -94,7 +94,7 @@ const FormCliente = ({
             <input type="text" className="form-control" id="medio_contacto"
               {...register('medio_contacto')}
               placeholder="celular, email, telefono..."
-              
+
             />
           </div>
 

@@ -115,6 +115,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
     }
 
   }
+  console.log(activar)
   const submit = (data) => {
     // false = registrar cliente
     // true = buscar por cliente 
@@ -176,7 +177,15 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
             })
             stepper.next()
           })
-          .catch(err => null)
+          .catch(err => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Numero ya registrado',
+              text: `Por el cliente ${err.response.data.cliente}`,
+              showConfirmButton: false,
+            })
+          })
       }
     }
   }
@@ -256,10 +265,9 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
 
             <Col>
               <div className="form-group mx-4 mb-2">
-                <label htmlFor="cedula">Cédula</label>
-                <input type="text" className="form-control" id="cedula"
-                  {...register('cedula')}
-                  placeholder="7468737"
+                <label htmlFor="interesado">Interesado En</label>
+                <input type="text" className="form-control" id="interesado"
+                  {...register('interesado')}
                   disabled={activar}
                 />
               </div>
@@ -312,6 +320,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
           <div className="form-group mx-4 mb-2">
             <label htmlFor="asesor_id">Seleccionar al Asesor</label>
             <select className="form-select" id="asesor_id" {...register("asesor_id")} disabled={activar}>
+              <option key="" value="">Sin asesor</option>
               {
                 optionsAsesor?.map(optionAsesor => (
                   <option key={optionAsesor.id} value={optionAsesor.id}>{optionAsesor.nombre} {optionAsesor.apellidos}</option>
