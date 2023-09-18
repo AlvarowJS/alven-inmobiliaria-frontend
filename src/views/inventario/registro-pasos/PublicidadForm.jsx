@@ -32,10 +32,16 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const increaseCount = () => {
     setCount(count + 1)
   }
-
-  const deleteForm = e => {
+  
+  const deleteForm = (e, id) => {
+    // formArray.splice(id, 1)
     e.preventDefault()
     e.target.closest('form').remove()
+    const newArray = formArray.filter((_, index) => index !== id);
+    setFormArray(newArray);
+
+  
+    
   }
 
   const {
@@ -50,9 +56,13 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
   useEffect(() => {
 
+    // console.log(objectGlobal?.publicidad?.ligas.length == undefined ? 0 : objectGlobal?.publicidad?.ligas, "asafsf")
     setSelectedImage(`https://backend.alven-inmobiliaria.com.mx/storage/${idPropiedad}/mapa/${objectGlobal?.publicidad?.mapa}`)
     setObjectPublicidad(objectGlobal?.publicidad)
     setEstadoPropiedad(objectGlobal?.publicidad?.estado)
+    setFormArray(objectGlobal?.publicidad?.ligas == undefined ? [] : objectGlobal?.publicidad?.ligas)
+    // setCount((objectGlobal?.publicidad?.ligas).length == undefined ? 0 : objectGlobal?.publicidad?.ligas)
+    setCount(objectGlobal?.publicidad?.ligas == undefined ? 1 : (objectGlobal?.publicidad?.ligas).length)
     reset(objectGlobal?.publicidad)
   }, [])
 
@@ -68,8 +78,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       reader.readAsDataURL(file);
     }
     setFotoMapa(file)
-  };
-  console.log(estadoPropiedad, "?")
+  };  
 
 
   const handleChange = (index, field, value) => {
@@ -80,7 +89,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
     };
     setFormArray(updatedFormData);
   };
-  console.log(formArray)
+  console.log(formArray, "?")
   const onSubmit = data => {
     let idPublicidad = objectPublicidad?.id
 
@@ -93,9 +102,9 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       f.append('video_url', data.video_url)
       f.append('estado', data.estado)
       f.append('mapa', fotoMapa)
-      f.append('fecha_cierre', data.fecha_cierre)
-      f.append('precio_cierre', data.precio_cierre)
-      f.append('asesor_cierre', data.asesor_cierre)
+      f.append('fecha_cierre', data.fecha_cierre ?? '')
+      f.append('precio_cierre', data.precio_cierre ?? '')
+      f.append('asesor_cierre', data.asesor_cierre ?? '')
       const enlacesJson = JSON.stringify(formArray);
       f.append('enlaces', enlacesJson);
       f.append('id', idPublicidad)
@@ -126,9 +135,9 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       f.append('video_url', data.video_url)
       f.append('estado', data.estado)
       f.append('mapa', fotoMapa)
-      f.append('fecha_cierre', data.fecha_cierre)
-      f.append('precio_cierre', data.precio_cierre)
-      f.append('asesor_cierre', data.asesor_cierre)
+      f.append('fecha_cierre', data.fecha_cierre ?? '')
+      f.append('precio_cierre', data.precio_cierre ?? '')
+      f.append('asesor_cierre', data.asesor_cierre ?? '')
       const enlacesJson = JSON.stringify(formArray);
       f.append('enlaces', enlacesJson);
       f.append('id_propiedad', idPropiedad)
@@ -254,7 +263,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
                       </Col>
 
                       <Col md={2}>
-                        <Button color='danger' className='text-nowrap px-1' onClick={deleteForm} outline>
+                        <Button color='danger' className='text-nowrap px-1' onClick={(e) => deleteForm(e, i)} outline>
                           <X size={14} className='me-50' />
                           <span>Quitar</span>
                         </Button>
