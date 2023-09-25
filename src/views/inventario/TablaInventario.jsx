@@ -259,7 +259,7 @@ const TablaInventario = () => {
             cell: row => {
                 return (
                     <>
-                        {Math.abs(Math.floor((new Date(row?.general?.fecha_alta) - new Date()) / (1000 * 60 * 60 * 24)))}
+                        {Math.abs(Math.ceil((new Date(row?.general?.fecha_alta) - new Date()) / (1000 * 60 * 60 * 24)))}
                     </>
                 )
             }

@@ -27,22 +27,21 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const [selectedImage, setSelectedImage] = useState()
   const [fotoMapa, setFotoMapa] = useState()
   const [count, setCount] = useState(1)
-  const [formArray, setFormArray] = useState([]);
+  const [formArray, setFormArray] = useState([])
+  const [formArrayBack, setFormArrayBack] = useState([])
 
   const increaseCount = () => {
+    setFormArray([...formArray, { red_social: '', enlace: '' }]);
     setCount(count + 1)
   }
-  
-  const deleteForm = (e, id) => {
-    // formArray.splice(id, 1)
-    e.preventDefault()
-    e.target.closest('form').remove()
-    const newArray = formArray.filter((_, index) => index !== id);
-    setFormArray(newArray);
 
-  
-    
+  const deleteForm = (index) => {
+    const updatedFormData = [...formArray];
+    updatedFormData.splice(index, 1);
+    setFormArray(updatedFormData);
+    setCount(count - 1);
   }
+
 
   const {
     reset,
@@ -61,6 +60,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
     setObjectPublicidad(objectGlobal?.publicidad)
     setEstadoPropiedad(objectGlobal?.publicidad?.estado)
     setFormArray(objectGlobal?.publicidad?.ligas == undefined ? [] : objectGlobal?.publicidad?.ligas)
+    setFormArrayBack(objectGlobal?.publicidad?.ligas == undefined ? [] : objectGlobal?.publicidad?.ligas)
     // setCount((objectGlobal?.publicidad?.ligas).length == undefined ? 0 : objectGlobal?.publicidad?.ligas)
     setCount(objectGlobal?.publicidad?.ligas == undefined ? 1 : (objectGlobal?.publicidad?.ligas).length)
     reset(objectGlobal?.publicidad)
@@ -78,7 +78,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       reader.readAsDataURL(file);
     }
     setFotoMapa(file)
-  };  
+  };
 
 
   const handleChange = (index, field, value) => {
@@ -89,7 +89,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
     };
     setFormArray(updatedFormData);
   };
-  console.log(formArray, "?")
+
   const onSubmit = data => {
     let idPublicidad = objectPublicidad?.id
 
@@ -236,45 +236,57 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
             </CardHeader>
 
             <CardBody>
-              <Repeater count={count}>
-                {i => (
-                  <Form key={i}>
-                    <Row className='justify-content-between align-items-center'>
-                      <Col md={4} className='mb-md-0 mb-1'>
-                        <Label className='form-label' for={`item-name-${i}`}>
-                          Red Social
-                        </Label>
-                        <Input
-                          type='text'
-                          value={formArray[i]?.red_social || ''}
-                          onChange={e => handleChange(i, 'red_social', e.target.value)}
-                        />
-                      </Col>
-                      <Col md={2} className='mb-md-0 mb-1'>
-                        <Label className='form-label' for={`cost-${i}`}>
-                          Enlace
-                        </Label>
-                        <Input
-                          type='text'
-                          id={`cost-${i}`}
-                          value={formArray[i]?.enlace || ''}
-                          onChange={e => handleChange(i, 'enlace', e.target.value)}
-                        />
-                      </Col>
+              {/* <Repeater count={count}> */}
+              {
+                formArray.map((formData, index) => (
 
-                      <Col md={2}>
-                        <Button color='danger' className='text-nowrap px-1' onClick={(e) => deleteForm(e, i)} outline>
-                          <X size={14} className='me-50' />
-                          <span>Quitar</span>
-                        </Button>
-                      </Col>
-                      <Col sm={12}>
-                        <hr />
-                      </Col>
-                    </Row>
-                  </Form>
-                )}
-              </Repeater>
+                  //i => (
+                  // <Form key={i}>
+                  <Row className='justify-content-between align-items-center'>
+                    <Col md={4} className='mb-md-0 mb-1'>
+                      <Label className='form-label' >
+                        Red Social
+                      </Label>
+                      <Input
+                        type='text'
+                        // value={formArray[i]?.red_social || ''}
+                        value={formData.red_social || ''}
+
+                        onChange={e => handleChange(index, 'red_social', e.target.value)}
+                      />
+                    </Col>
+                    <Col md={2} className='mb-md-0 mb-1'>
+                      <Label className='form-label'>
+                        Enlace
+                      </Label>
+                      <Input
+                        type='text'
+                        // value={formArray[i]?.enlace || ''}
+                        value={formData.enlace || ''}
+                        onChange={e => handleChange(index, 'enlace', e.target.value)}
+                      />
+                    </Col>
+
+                    <Col md={2}>
+                      <Button color='danger' className='text-nowrap px-1'
+                        onClick={
+                          () => deleteForm(index)
+                          // (e) => deleteForm(e)
+                        }
+                        outline>
+                        <X size={14} className='me-50' />
+                        <span>Quitar</span>
+                      </Button>
+                    </Col>
+                    <Col sm={12}>
+                      <hr />
+                    </Col>
+                  </Row>
+                ))
+                // </Form>
+                //)
+              }
+              {/* </Repeater> */}
               <Button className='btn-icon' color='primary' onClick={increaseCount}>
                 <Plus size={14} />
                 <span className='align-middle ms-25'>Agregar</span>
