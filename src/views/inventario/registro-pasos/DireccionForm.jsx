@@ -31,6 +31,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const [colonia, setColonia] = useState()
   const [calle, setCalle] = useState()
   const [numero, setNumero] = useState()
+  const [mapa, setMapa] = useState()
 
   const [mapaCapturado, setMapaCapturado] = useState(null);
   const [objectDirection, setObjectDirection] = useState()
@@ -75,6 +76,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
     setColonia(objectGlobal?.direccion?.colonia)
     setCalle(objectGlobal?.direccion?.calle)
     setNumero(objectGlobal?.direccion?.numero)
+    setMapa(objectGlobal?.direccion?.mapa)
 
     reset(objectGlobal?.direccion)
     setLat(parseFloat(objectGlobal?.direccion?.LAT) ? parseFloat(objectGlobal?.direccion?.LAT) : lat)
@@ -95,23 +97,25 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
   } = useForm()
 
   const buscarDireccion = () => {
-    let direccionUnida = `${pais && pais} ${estado && estado} ${municipio && municipio} ${colonia && colonia} ${calle && calle} ${numero && numero}`
-    const geocoder = new window.google.maps.Geocoder();
+    // Cuando funcionaba con coordenadas
+    // let direccionUnida = `${pais && pais} ${estado && estado} ${municipio && municipio} ${colonia && colonia} ${calle && calle} ${numero && numero}`
+    // const geocoder = new window.google.maps.Geocoder();
 
-    geocoder.geocode({ address: direccionUnida }, (results, status) => {
-      if (status === 'OK') {
-        if (results[0]) {
+    // geocoder.geocode({ address: direccionUnida }, (results, status) => {
+    //   if (status === 'OK') {
+    //     if (results[0]) {
 
-          const { lat, lng } = results[0].geometry.location;
-          // Utiliza las coordenadas obtenidas (lat y lng) como nuevo centro del mapa
-          setLat(lat);
-          setLng(lng);
-          setZoom(15);
-        }
-      } else {
-        console.error('Error al buscar la dirección:', status);
-      }
-    });
+    //       const { lat, lng } = results[0].geometry.location;
+    //       // Utiliza las coordenadas obtenidas (lat y lng) como nuevo centro del mapa
+    //       setLat(lat);
+    //       setLng(lng);
+    //       setZoom(15);
+    //     }
+    //   } else {
+    //     console.error('Error al buscar la dirección:', status);
+    //   }
+    // });
+    setMapa(mapa)
   };
 
   const onSubmit = data => {
@@ -215,7 +219,8 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
       municipio: '',
       numero: '',
       numero_interior: '',
-      pais: ''
+      pais: '',
+      mapa: '',
     })
   }
 
@@ -348,6 +353,15 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
               </div>
 
             </Col>
+            <div className='mb-1'>
+              <Label className='form-label' for='mapa'>
+                Mapa Embebido
+              </Label>
+              <input className='form-control' type="text" {...register("mapa")}
+                onInput={(e) => setMapa(e.target.value)}
+              />
+
+            </div>
           </Row>
           <Row className='mb-2'>
             <Col>
@@ -358,10 +372,14 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
           </Row>
           <Row className='px-4 '>
-
-            {/* <div id="map-container"> */}
-            {lat && lng && (
-
+            <div style={{
+              textAlign: 'center',
+              width: '100%',
+              overflowX: 'auto'
+            }}>
+              <div dangerouslySetInnerHTML={{ __html: mapa }} />
+            </div>
+            {/* {lat && lng && (
               <LoadScript
                 googleMapsApiKey="AIzaSyCq_n_0fxE6-qDWeqeFZBfahzXrGDy0U_Q"
               >
@@ -374,13 +392,10 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   }}
                   zoom={zoom}
                 >
-                  {/* {direccion && ( */}
                   <Marker position={{ lat: lat, lng: lng }} />
-                  {/* )} */}
                 </GoogleMap>
               </LoadScript>
-            )}
-            {/* </div> */}
+            )} */}
           </Row>
           <div className='d-flex mt-2'>
 

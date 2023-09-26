@@ -8,8 +8,10 @@ import { ChevronDown, Delete, Edit, Eye, File, FileText, Trash } from 'react-fea
 import { useNavigate } from 'react-router-dom'
 const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
 const URL_FILTER = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedad-filtrado'
+const URL_ASESOR = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import DescargarReporte from './DescargarReporte'
 
 const MySwal = withReactContent(Swal)
 
@@ -18,6 +20,7 @@ const TablaInventario = () => {
     const role = localStorage?.getItem('role');
     const navigate = useNavigate()
     const [estado, setEstado] = useState(false)
+    const [modal, setModal] = useState(false)
     const [idPropiedad, setIdPropiedad] = useState()
     // const [currentPage, setCurrentPage] = useState(1)
     // const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -29,8 +32,22 @@ const TablaInventario = () => {
     const [estadoPropiedad, setEstadoPropiedad] = useState()
     const [nombreEstado, setNombreEstado] = useState('Todos')
     const [contador, setContador] = useState()
+    const [asesorObj, setAsesorObj] = useState()
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+
+        axios.get(`${URL_ASESOR}`, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(res => {
+                setAsesorObj(res?.data)
+            })
+            .catch(err => null)
+    }, [])
 
     const CambiarEstado = (status) => {
         setNombreEstado(status)
@@ -138,8 +155,10 @@ const TablaInventario = () => {
         //     console.log('entro al else')
         //     navigate('/registrar-propiedad')
         // }
+    }
 
-
+    const descargarReporte = () => {
+        setModal(!modal)
     }
 
     const descargarPdf = (id) => {
@@ -474,12 +493,21 @@ const TablaInventario = () => {
             <Fragment>
                 {
                     role === "1" ?
-                        <Card className='p-4'>
+                        <Card className='px-4 py-1'>
                             <Row>
                                 <Col lg='6' className='d-flex align-items-center px-0 px-lg-1'>
 
                                     <Button className='mt-sm-0 mt-1' color='primary' onClick={registrarPropiedad}>
                                         Agregar Propiedad
+                                    </Button>
+
+
+                                </Col>
+                                <Col lg='6' className='d-flex align-items-center px-0 px-lg-1'>
+
+                                    <Button className='mt-sm-0 mt-1 btn-success' onClick={descargarReporte}>
+                                        Descargar Reporte
+                                        <FileText />
                                     </Button>
 
 
@@ -590,6 +618,13 @@ const TablaInventario = () => {
                         />
                     </div>
                 </Card>
+
+                <DescargarReporte
+                    descargarReporte={descargarReporte}
+                    modal={modal}
+                    setModal={setModal}
+                    asesorObj={asesorObj}
+                />
             </Fragment>
         </>
     )
