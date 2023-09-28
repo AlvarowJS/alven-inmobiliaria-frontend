@@ -140,7 +140,7 @@ const RegistrarPropiedad = () => {
             id: 'publicidad',
             title: 'Publicidad',
             icon: <Eye size={18} />,
-            content: <PublicidadForm stepper={stepper} objectGlobal={objectGlobal} idPropiedad={id.id} type='wizard-modern' />
+            content: <PublicidadForm stepper={stepper} asesorObj={asesorObj} objectGlobal={objectGlobal} idPropiedad={id.id} type='wizard-modern' />
         }
 
     ]

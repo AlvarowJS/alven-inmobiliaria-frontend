@@ -18,7 +18,7 @@ const MySwal = withReactContent(Swal)
 
 // const idPropiedad = localStorage.getItem('id');
 
-const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
+const PublicidadForm = ({ stepper, idPropiedad, objectGlobal, asesorObj }) => {
   const token = localStorage.getItem('token');
   const role = localStorage?.getItem('role');
   const navigate = useNavigate()
@@ -267,7 +267,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
                         onChange={e => handleChange(index, 'red_social', e.target.value)}
                       />
                     </Col>
-                    <Col md={2} className='mb-md-0 mb-1'>
+                    <Col md={6} className='mb-md-0 mb-1'>
                       <Label className='form-label'>
                         Enlace
                       </Label>
@@ -370,79 +370,88 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
                   />
                 </div>
               ) :
-              estadoPropiedad == "Cancelada" ? (
-                <div className='mb-1'>
-                  <Label className='form-label' for='fecha_cancelada'>
-                    Fecha Cancelada
-                  </Label>
-                  <Controller
-                    defaultValue=''
-                    control={control}
-                    id='fecha_cancelada'
-                    name='fecha_cancelada'
-  
-                    render={({ field }) => <Input invalid={errors.fecha_cancelada && true}  {...field} type='date' />}
-                  />
-                </div>
-              ) :
-              estadoPropiedad == "Suspendida" ? (
-                <div className='mb-1'>
-                  <Label className='form-label' for='fecha_suspendida'>
-                    Fecha Suspendida
-                  </Label>
-                  <Controller
-                    defaultValue=''
-                    control={control}
-                    id='fecha_suspendida'
-                    name='fecha_suspendida'
-  
-                    render={({ field }) => <Input invalid={errors.fecha_suspendida && true}  {...field} type='date' />}
-                  />
-                </div>
-              ) :
-                estadoPropiedad == 'Cerrada' ?
-                  (
-                    <>
-                      <div className='mb-1'>
-                        <Label className='form-label' for='precio_cierre'>
-                          Precio de Cierre
-                        </Label>
-                        <Controller
-                          defaultValue=''
-                          control={control}
-                          id='precio_cierre'
-                          name='precio_cierre'
-                          render={({ field }) => <Input invalid={errors.precio_cierre && true}  {...field} />}
-                        />
-                      </div>
-                      <div className='mb-1'>
-                        <Label className='form-label' for='fecha_cierre'>
-                          Fecha de Cierre
-                        </Label>
-                        <Controller
-                          defaultValue=''
-                          control={control}
-                          id='fecha_cierre'
-                          name='fecha_cierre'
+                estadoPropiedad == "Cancelada" ? (
+                  <div className='mb-1'>
+                    <Label className='form-label' for='fecha_cancelada'>
+                      Fecha Cancelada
+                    </Label>
+                    <Controller
+                      defaultValue=''
+                      control={control}
+                      id='fecha_cancelada'
+                      name='fecha_cancelada'
 
-                          render={({ field }) => <Input invalid={errors.fecha_cierre && true}  {...field} type='date' />}
-                        />
-                      </div>
-                      <div className='mb-1'>
-                        <Label className='form-label' for='asesor_cierre'>
-                          Asesor de Cierre
-                        </Label>
-                        <Controller
+                      render={({ field }) => <Input invalid={errors.fecha_cancelada && true}  {...field} type='date' />}
+                    />
+                  </div>
+                ) :
+                  estadoPropiedad == "Suspendida" ? (
+                    <div className='mb-1'>
+                      <Label className='form-label' for='fecha_suspendida'>
+                        Fecha Suspendida
+                      </Label>
+                      <Controller
+                        defaultValue=''
+                        control={control}
+                        id='fecha_suspendida'
+                        name='fecha_suspendida'
+
+                        render={({ field }) => <Input invalid={errors.fecha_suspendida && true}  {...field} type='date' />}
+                      />
+                    </div>
+                  ) :
+                    estadoPropiedad == 'Cerrada' ?
+                      (
+                        <>
+                          <div className='mb-1'>
+                            <Label className='form-label' for='precio_cierre'>
+                              Precio de Cierre
+                            </Label>
+                            <Controller
+                              defaultValue=''
+                              control={control}
+                              id='precio_cierre'
+                              name='precio_cierre'
+                              render={({ field }) => <Input invalid={errors.precio_cierre && true}  {...field} />}
+                            />
+                          </div>
+                          <div className='mb-1'>
+                            <Label className='form-label' for='fecha_cierre'>
+                              Fecha de Cierre
+                            </Label>
+                            <Controller
+                              defaultValue=''
+                              control={control}
+                              id='fecha_cierre'
+                              name='fecha_cierre'
+
+                              render={({ field }) => <Input invalid={errors.fecha_cierre && true}  {...field} type='date' />}
+                            />
+                          </div>
+                          <div className='mb-1'>
+                            <Label className='form-label' for='asesor_cierre'>
+                              Asesor de Cierre
+                            </Label>
+                            {/* <Controller
                           defaultValue=''
                           control={control}
                           id='asesor_cierre'
                           name='asesor_cierre'
                           render={({ field }) => <Input invalid={errors.asesor_cierre && true}  {...field} />}
-                        />
-                      </div>
-                    </>
-                  ) :
-                  null
+                        /> */}
+                            <select className="form-select" id="asesor_cierre" {...register("asesor_cierre")}>
+                              <option key="" value="">Sin asesor</option>
+                              {
+
+                                asesorObj?.map(option => (
+                                  <option key={option.id} value={option.nombre + ' ' + option.apellidos}>{option.nombre} {option.apellidos}</option>
+                                ))
+                              }
+                            </select>
+                          </div>
+                        </>
+                      ) :
+                      null
           }
 
           <div className='d-flex'>
