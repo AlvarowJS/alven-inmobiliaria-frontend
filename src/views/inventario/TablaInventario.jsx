@@ -504,11 +504,14 @@ const TablaInventario = () => {
 
                                 </Col>
                                 <Col lg='6' className='d-flex align-items-center px-0 px-lg-1'>
+                                    {
+                                        role == "1" ?
+                                            <Button className='mt-sm-0 mt-1 btn-success' onClick={descargarReporte}>
+                                                Descargar Reporte
+                                                <FileText />
+                                            </Button> : null
+                                    }
 
-                                    <Button className='mt-sm-0 mt-1 btn-success' onClick={descargarReporte}>
-                                        Descargar Reporte
-                                        <FileText />
-                                    </Button>
 
 
                                 </Col>
