@@ -102,6 +102,10 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       f.append('video_url', data.video_url)
       f.append('estado', data.estado)
       f.append('mapa', fotoMapa)
+      f.append('fecha_promocion', data.fecha_promocion ?? '')
+      f.append('fecha_manifestacion', data.fecha_manifestacion ?? '')
+      f.append('fecha_suspendida', data.fecha_suspendida ?? '')
+      f.append('fecha_cancelada', data.fecha_cancelada ?? '')
       f.append('fecha_cierre', data.fecha_cierre ?? '')
       f.append('precio_cierre', data.precio_cierre ?? '')
       f.append('asesor_cierre', data.asesor_cierre ?? '')
@@ -135,6 +139,10 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       f.append('video_url', data.video_url)
       f.append('estado', data.estado)
       f.append('mapa', fotoMapa)
+      f.append('fecha_promocion', data.fecha_promocion ?? '')
+      f.append('fecha_manifestacion', data.fecha_manifestacion ?? '')
+      f.append('fecha_suspendida', data.fecha_suspendida ?? '')
+      f.append('fecha_cancelada', data.fecha_cancelada ?? '')
       f.append('fecha_cierre', data.fecha_cierre ?? '')
       f.append('precio_cierre', data.precio_cierre ?? '')
       f.append('asesor_cierre', data.asesor_cierre ?? '')
@@ -168,6 +176,10 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
       descripcion: '',
       video_url: '',
       estado: '',
+      fecha_promocion: '',
+      fecha_manifestacion: '',
+      fecha_suspendida: '',
+      fecha_cancelada: '',
       fecha_cierre: '',
       precio_cierre: '',
       asesor_cierre: '',
@@ -328,49 +340,109 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal }) => {
             </select>
           </div>
           {
-            estadoPropiedad == 'Cerrada' ?
-              (
-                <>
-                  <div className='mb-1'>
-                    <Label className='form-label' for='precio_cierre'>
-                      Precio de Cierre
-                    </Label>
-                    <Controller
-                      defaultValue=''
-                      control={control}
-                      id='precio_cierre'
-                      name='precio_cierre'
-                      render={({ field }) => <Input invalid={errors.precio_cierre && true}  {...field} />}
-                    />
-                  </div>
-                  <div className='mb-1'>
-                    <Label className='form-label' for='fecha_cierre'>
-                      Fecha de Cierre
-                    </Label>
-                    <Controller
-                      defaultValue=''
-                      control={control}
-                      id='fecha_cierre'
-                      name='fecha_cierre'
+            estadoPropiedad == "En Promocion" ? (
+              <div className='mb-1'>
+                <Label className='form-label' for='fecha_promocion'>
+                  Fecha de Promoción
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='fecha_promocion'
+                  name='fecha_promocion'
 
-                      render={({ field }) => <Input invalid={errors.fecha_cierre && true}  {...field} type='date' />}
-                    />
-                  </div>
-                  <div className='mb-1'>
-                    <Label className='form-label' for='asesor_cierre'>
-                      Asesor de Cierre
-                    </Label>
-                    <Controller
-                      defaultValue=''
-                      control={control}
-                      id='asesor_cierre'
-                      name='asesor_cierre'
-                      render={({ field }) => <Input invalid={errors.asesor_cierre && true}  {...field} />}
-                    />
-                  </div>
-                </>
+                  render={({ field }) => <Input invalid={errors.fecha_promocion && true}  {...field} type='date' />}
+                />
+              </div>
+            ) :
+              estadoPropiedad == "Con Manifestacion" ? (
+                <div className='mb-1'>
+                  <Label className='form-label' for='fecha_manifestacion'>
+                    Fecha con Manifestación
+                  </Label>
+                  <Controller
+                    defaultValue=''
+                    control={control}
+                    id='fecha_manifestacion'
+                    name='fecha_manifestacion'
+
+                    render={({ field }) => <Input invalid={errors.fecha_manifestacion && true}  {...field} type='date' />}
+                  />
+                </div>
               ) :
-              null
+              estadoPropiedad == "Cancelada" ? (
+                <div className='mb-1'>
+                  <Label className='form-label' for='fecha_cancelada'>
+                    Fecha Cancelada
+                  </Label>
+                  <Controller
+                    defaultValue=''
+                    control={control}
+                    id='fecha_cancelada'
+                    name='fecha_cancelada'
+  
+                    render={({ field }) => <Input invalid={errors.fecha_cancelada && true}  {...field} type='date' />}
+                  />
+                </div>
+              ) :
+              estadoPropiedad == "Suspendida" ? (
+                <div className='mb-1'>
+                  <Label className='form-label' for='fecha_suspendida'>
+                    Fecha Suspendida
+                  </Label>
+                  <Controller
+                    defaultValue=''
+                    control={control}
+                    id='fecha_suspendida'
+                    name='fecha_suspendida'
+  
+                    render={({ field }) => <Input invalid={errors.fecha_suspendida && true}  {...field} type='date' />}
+                  />
+                </div>
+              ) :
+                estadoPropiedad == 'Cerrada' ?
+                  (
+                    <>
+                      <div className='mb-1'>
+                        <Label className='form-label' for='precio_cierre'>
+                          Precio de Cierre
+                        </Label>
+                        <Controller
+                          defaultValue=''
+                          control={control}
+                          id='precio_cierre'
+                          name='precio_cierre'
+                          render={({ field }) => <Input invalid={errors.precio_cierre && true}  {...field} />}
+                        />
+                      </div>
+                      <div className='mb-1'>
+                        <Label className='form-label' for='fecha_cierre'>
+                          Fecha de Cierre
+                        </Label>
+                        <Controller
+                          defaultValue=''
+                          control={control}
+                          id='fecha_cierre'
+                          name='fecha_cierre'
+
+                          render={({ field }) => <Input invalid={errors.fecha_cierre && true}  {...field} type='date' />}
+                        />
+                      </div>
+                      <div className='mb-1'>
+                        <Label className='form-label' for='asesor_cierre'>
+                          Asesor de Cierre
+                        </Label>
+                        <Controller
+                          defaultValue=''
+                          control={control}
+                          id='asesor_cierre'
+                          name='asesor_cierre'
+                          render={({ field }) => <Input invalid={errors.asesor_cierre && true}  {...field} />}
+                        />
+                      </div>
+                    </>
+                  ) :
+                  null
           }
 
           <div className='d-flex'>
