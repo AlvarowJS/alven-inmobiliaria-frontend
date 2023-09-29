@@ -15,14 +15,13 @@ const ExportarPdfAsesor = ({
     } = useForm()
 
     const onSubmit = data => {
-        console.log(data)
         const idUser = localStorage?.getItem('id');        
         window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${idAsesor},${idUser}/${data.asesor}`)
     }
     return (
         <Modal isOpen={modalPdf} toggle={descargarPdf} size='lg'>
             <ModalHeader toggle={descargarPdf}>
-                Descargar Reporte
+                Descargar Ficha Técnica
             </ModalHeader>
             <ModalBody>
                 <Form onSubmit={handleSubmit(onSubmit)}>
