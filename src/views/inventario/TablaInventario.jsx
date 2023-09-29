@@ -12,6 +12,7 @@ const URL_ASESOR = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import DescargarReporte from './DescargarReporte'
+import ExportarPdfAsesor from './ExportarPdfAsesor'
 
 const MySwal = withReactContent(Swal)
 
@@ -21,7 +22,9 @@ const TablaInventario = () => {
     const navigate = useNavigate()
     const [estado, setEstado] = useState(false)
     const [modal, setModal] = useState(false)
+    const [modalPdf, setModalPdf] = useState(false)
     const [idPropiedad, setIdPropiedad] = useState()
+    const [idAsesor, setIdAsesor] = useState()
     // const [currentPage, setCurrentPage] = useState(1)
     // const [rowsPerPage, setRowsPerPage] = useState(5)
     const [searchValue, setSearchValue] = useState('')
@@ -118,9 +121,7 @@ const TablaInventario = () => {
             }
         })
     }
-    const verInventarioExterno = (id) => {
-        window.open(`https://alven-inmobiliaria.com.mx/#/propiedad-info/${id}`, '_blank')
-    }
+
     const registrarPropiedad = () => {
 
         axios.post(URL, null, {
@@ -161,9 +162,16 @@ const TablaInventario = () => {
         setModal(!modal)
     }
 
+
+    const verInventarioExterno = (id) => {        
+        window.open(`https://alven-inmobiliaria.com.mx/#/propiedad-info/${id}`, '_blank')
+    }
+
     const descargarPdf = (id) => {
-        const idUser = localStorage?.getItem('id');
-        window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id},${idUser}`)
+        setModalPdf(!modalPdf)
+        setIdAsesor(id)
+        // const idUser = localStorage?.getItem('id');        
+        // window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id},${idUser}`)
     }
 
     const handleFilter = e => {
@@ -627,6 +635,14 @@ const TablaInventario = () => {
                     modal={modal}
                     setModal={setModal}
                     asesorObj={asesorObj}
+                />
+
+                <ExportarPdfAsesor
+                    descargarPdf={descargarPdf}
+                    idAsesor={idAsesor}
+                    modalPdf={modalPdf}
+                    setModalPdf={setModalPdf}
+
                 />
             </Fragment>
         </>
