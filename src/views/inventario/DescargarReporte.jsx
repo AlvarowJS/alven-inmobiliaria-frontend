@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 
+
 const DescargarReporte = ({
     modal, descargarReporte, asesorObj
 }) => {
@@ -13,6 +14,8 @@ const DescargarReporte = ({
         handleSubmit,
         formState: { errors }
     } = useForm()
+    
+
     const statusList = ['todos', 'En Promocion', 'Con manifestacion', 'Cancelada', 'Suspendida', 'Cerrada']
 
     // const descargarReporteExcel = () => {
@@ -21,7 +24,7 @@ const DescargarReporte = ({
 
     const onSubmit = data => {
         console.log(data)
-        window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportexcel/${data.status}/${data.asesor}`)
+        window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportexcel/${data.status}/${data.asesor}/${data.fecha_inicio}/${data.fecha_fin}`)
     }
     return (
         <Modal isOpen={modal} toggle={descargarReporte} size='lg'>
@@ -52,6 +55,17 @@ const DescargarReporte = ({
                             ))
                         }
                     </select>
+                    <div>
+                        <Label className='form-label mt-2' for='fecha_inicio'>
+                            Fecha Inicio
+                        </Label>
+                        <input className='form-control' type="date" {...register("fecha_inicio")} required/>
+
+                        <Label className='form-label mt-2' for='fecha_inicio'>
+                            Fecha Fin
+                        </Label>
+                        <input className='form-control' type="date" {...register("fecha_fin")} required/>
+                    </div>
                     <button className='btn btn-success my-2 mb-2' onClick={() => descargarReporteExcel}>Descargar</button>
                 </Form>
             </ModalBody>
