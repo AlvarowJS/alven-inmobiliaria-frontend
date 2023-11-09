@@ -163,7 +163,7 @@ const TablaInventario = () => {
     }
 
 
-    const verInventarioExterno = (id) => {        
+    const verInventarioExterno = (id) => {
         window.open(`https://alven-inmobiliaria.com.mx/#/propiedad-info/${id}`, '_blank')
     }
 
@@ -342,7 +342,29 @@ const TablaInventario = () => {
                 )
             }
         },
+        {
+            sortable: false,
+            name: 'Ligas',
+            minWidth: '250px',
+            cell: row => {
+                return (
+                    <div className='d-flex flex-column'>
+                        {
+                            row?.publicidad?.ligas?.map(liga => (
+                                // <div className='d-flex flex-column'>
+                                    <>
+                                        {liga.red_social} :
+                                        <a className='text-info'> {liga.enlace}</a>
+                                        <br />
+                                    </>
+                                // </div>
 
+                            ))
+                        }
+                    </div>
+                )
+            }
+        },
         {
             sortable: true,
             name: 'Estado',
