@@ -200,7 +200,7 @@ const TablaMensajes = ({ deleteMensajeById, estado }) => {
 
             <Card>
                 <CardHeader className='border-bottom'>
-                    <CardTitle tag='h4'>Administrar Clientes</CardTitle>
+                    <CardTitle tag='h4'>Administrar Mensajes</CardTitle>
                 </CardHeader>
                 <Row className='mx-0 mt-1 mb-50'>
                     <Col sm='6'>
