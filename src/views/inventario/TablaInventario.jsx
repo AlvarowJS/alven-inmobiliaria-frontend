@@ -225,6 +225,7 @@ const TablaInventario = () => {
             sortable: true,
             name: 'ID',
             minWidth: '25px',
+            maxWidth: '75px',
             selector: row => row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna
         },
         {
@@ -267,7 +268,7 @@ const TablaInventario = () => {
         {
             sortable: true,
             name: 'Precio',
-            minWidth: '120px',
+            // minWidth: '120px',
             selector: row => row?.publicidad?.precio_venta,
             cell: row => {
                 return (
@@ -281,7 +282,8 @@ const TablaInventario = () => {
         {
             sortable: true,
             name: 'Días',
-            minWidth: '100px',
+            minWidth: '10px',
+            maxWidth: '80px',
             selector: row => row?.general?.fecha_alta,
             cell: row => {
                 return (
@@ -294,20 +296,20 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
-            name: 'Tipo Operación',
-            minWidth: '250px',
+            name: 'Tipo\nOperación',
+            // minWidth: '250px',
             selector: row => row?.general?.tipo_operacion == undefined ? 'Sin asignar' : row?.general?.tipo_operacion
         },
         {
             sortable: true,
             name: 'Status',
-            minWidth: '250px',
+            // minWidth: '250px',
             selector: row => row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado
         },
         {
             sortable: true,
             name: 'Asignación',
-            minWidth: '250px',
+            // minWidth: '250px',
             selector: row => row?.cliente?.asesor?.nombre,
             cell: row => {
                 return (
@@ -317,6 +319,7 @@ const TablaInventario = () => {
                                 + ' ' +
                                 row?.cliente?.asesor?.apellidos
                         }
+                        <br />
                         <br />
                         Dueño: {
                             row?.cliente?.nombre == undefined ? 'Sin asignar' : row?.cliente?.nombre
@@ -332,7 +335,7 @@ const TablaInventario = () => {
         {
             sortable: true,
             name: 'Foto',
-            minWidth: '250px',
+            minWidth: '140px',
             cell: row => {
                 return (
                     <>
