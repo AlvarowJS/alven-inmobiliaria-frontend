@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Breadcrumb, Col, Card, Row, Button } from 'reactstrap'
-import axios from 'axios'
 import { useForm } from 'react-hook-form'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/medios'
+const URL = '/v1/medios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaMedio from './TablaMedio'
 import FormMedio from './FormMedio'
+import alvenApi from '../../api/alvenApi'
 const MySwal = withReactContent(Swal)
 const Medio = () => {
     const token = localStorage.getItem('token');
@@ -29,7 +29,7 @@ const Medio = () => {
 
     const updateMedio = (id, data) => {
         setEstado(false)
-        axios.patch(`${URL}/${id}`, data, {
+        alvenApi.patch(`${URL}/${id}`, data, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -49,7 +49,7 @@ const Medio = () => {
 
     const crearMedio = data => {
         setEstado(false)
-        axios.post(URL, data, {
+        alvenApi.post(URL, data, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -70,7 +70,7 @@ const Medio = () => {
     const updateMedioById = (id) => {
         setEstado(false)
         toggle.call()
-        axios.get(`${URL}/${id}`, {
+        alvenApi.get(`${URL}/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -100,7 +100,7 @@ const Medio = () => {
             buttonsStyling: false
         }).then(function (result) {
             if (result.value) {
-                axios.delete(`${URL}/${id}`, {
+                alvenApi.delete(`${URL}/${id}`, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }

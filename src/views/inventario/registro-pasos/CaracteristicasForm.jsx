@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import axios from 'axios';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import alvenApi from '../../../api/alvenApi';
 const MySwal = withReactContent(Swal)
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/caracteristica'
-const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+const URL = '/v1/caracteristica'
+const URL_PROPIEDAD = '/v1/propiedades'
 const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
   const token = localStorage.getItem('token');
   const role = localStorage?.getItem('role');
@@ -58,7 +58,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
     let idCaracteristica = objectCaracteristica?.id
 
     if (idCaracteristica) {
-      axios.put(`${URL}/${idCaracteristica}`, data, {
+      alvenApi.put(`${URL}/${idCaracteristica}`, data, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -77,7 +77,7 @@ const CaracteristicasForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
     } else {
       data.id_propiedad = idPropiedad
-      axios.post(URL, data, {
+      alvenApi.post(URL, data, {
         headers: {
           'Authorization': 'Bearer ' + token
         }

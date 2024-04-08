@@ -2,13 +2,13 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Breadcrumb, Col, Card, Row, Button } from 'reactstrap'
 import TablaAsesor from './TablaAsesor'
 import FormAsesor from './FormAsesor'
-import axios from 'axios'
 import { useForm } from 'react-hook-form'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
-const URL_FOTO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor-foto'
+const URL = '/v1/asesor'
+const URL_FOTO = '/v1/asesor-foto'
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import alvenApi from '../../api/alvenApi'
 const MySwal = withReactContent(Swal)
 const Asesor = () => {
 
@@ -65,7 +65,7 @@ const Asesor = () => {
     f.append('publico', data.publico ? 1 : 0);
 
 
-    axios.post(`${URL_FOTO}`, f, {
+    alvenApi.post(`${URL_FOTO}`, f, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -101,7 +101,7 @@ const Asesor = () => {
     f.append('publico', data.publico ? 1 : 0);
 
     f.append('status', data.status)
-    axios.post(URL, f, {
+    alvenApi.post(URL, f, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -122,7 +122,7 @@ const Asesor = () => {
   const updateAsesorById = (id) => {
     setEstado(false)
     toggle.call()
-    axios.get(`${URL}/${id}`, {
+    alvenApi.get(`${URL}/${id}`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -153,7 +153,7 @@ const Asesor = () => {
       buttonsStyling: false
     }).then(function (result) {
       if (result.value) {
-        axios.delete(`${URL}/${id}`, {
+        alvenApi.delete(`${URL}/${id}`, {
           headers: {
             'Authorization': 'Bearer ' + token
           }

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 

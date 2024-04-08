@@ -24,7 +24,7 @@ const DescargarReporte = ({
 
     const onSubmit = data => {
         console.log(data)
-        window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportexcel/${data.status}/${data.asesor}/${data.fecha_inicio}/${data.fecha_fin}`)
+        window.open(`http://127.0.0.1:8000/api/v1/exportexcel/${data.status}/${data.asesor}/${data.fecha_inicio}/${data.fecha_fin}`)
     }
     return (
         <Modal isOpen={modal} toggle={descargarReporte} size='lg'>

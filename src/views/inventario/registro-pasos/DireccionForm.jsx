@@ -11,11 +11,11 @@ const containerStyle = {
   width: '100%',
   height: '400px'
 };
-import axios from 'axios';
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/direccion'
+const URL = '/v1/direccion'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import html2canvas from 'html2canvas';
+import alvenApi from '../../../api/alvenApi';
 const MySwal = withReactContent(Swal)
 
 const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
@@ -125,7 +125,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
     data.LON = lng
     data.ZOOM = zoom
     if (idDireccion) {
-      axios.put(`${URL}/${idDireccion}`, data, {
+      alvenApi.put(`${URL}/${idDireccion}`, data, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -144,7 +144,7 @@ const DireccionForm = ({ stepper, idPropiedad, objectGlobal }) => {
 
     } else {
       data.id_propiedad = idPropiedad
-      axios.post(URL, data, {
+      alvenApi.post(URL, data, {
         headers: {
           'Authorization': 'Bearer ' + token
         }

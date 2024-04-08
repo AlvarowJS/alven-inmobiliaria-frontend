@@ -7,16 +7,16 @@ import { useForm, Controller } from 'react-hook-form'
 import { useDropzone } from 'react-dropzone'
 import { FileText, X, DownloadCloud } from 'react-feather'
 import './../style/style.css'
-const URL_FOTOS = 'https://backend.alven-inmobiliaria.com.mx/api/v1/fotos'
-const URL_ORDER = 'https://backend.alven-inmobiliaria.com.mx/api/v1/ordernar-fotos'
-const URL_PROPIEDADES = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-import axios from 'axios'
+const URL_FOTOS = '/v1/fotos'
+const URL_ORDER = '/v1/ordernar-fotos'
+const URL_PROPIEDADES = '/v1/propiedades'
 import FotoCard from '../fotos/FotoCard'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 import { DndContext, closestCenter } from '@dnd-kit/core'
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
+import alvenApi from '../../../api/alvenApi'
 const Fotos = ({ idPropiedad, stepper }) => {
 
   const token = localStorage.getItem('token');
@@ -88,7 +88,7 @@ const Fotos = ({ idPropiedad, stepper }) => {
 
   const createDir = newDir => {
     setIsLoading(true)
-    axios.post(URL_FOTOS, newDir, {
+    alvenApi.post(URL_FOTOS, newDir, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -136,7 +136,7 @@ const Fotos = ({ idPropiedad, stepper }) => {
 
   useEffect(() => {
     setEstado(true)
-    axios.get(`${URL_FOTOS}/${idPropiedad}`, {
+    alvenApi.get(`${URL_FOTOS}/${idPropiedad}`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -166,7 +166,7 @@ const Fotos = ({ idPropiedad, stepper }) => {
         orden: i
       })
     }
-    axios.post(URL_ORDER, datosOrden, {
+    alvenApi.post(URL_ORDER, datosOrden, {
       headers: {
         'Authorization': 'Bearer ' + token
       }

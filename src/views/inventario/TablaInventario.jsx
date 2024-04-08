@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
@@ -6,13 +5,14 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } fr
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Eye, File, FileText, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const URL_FILTER = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedad-filtrado'
-const URL_ASESOR = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
+const URL = '/v1/propiedades'
+const URL_FILTER = '/v1/propiedad-filtrado'
+const URL_ASESOR = '/v1/asesor'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import DescargarReporte from './DescargarReporte'
 import ExportarPdfAsesor from './ExportarPdfAsesor'
+import alvenApi from '../../api/alvenApi'
 
 const MySwal = withReactContent(Swal)
 
@@ -41,7 +41,7 @@ const TablaInventario = () => {
 
     useEffect(() => {
 
-        axios.get(`${URL_ASESOR}`, {
+        alvenApi.get(`${URL_ASESOR}`, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -56,7 +56,7 @@ const TablaInventario = () => {
         setNombreEstado(status)
         let objStatus = {}
         objStatus.estado = status
-        axios.post(URL_FILTER, objStatus, {
+        alvenApi.post(URL_FILTER, objStatus, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -93,7 +93,7 @@ const TablaInventario = () => {
             buttonsStyling: false
         }).then(function (result) {
             if (result.value) {
-                axios.delete(`${URL}/${id}`, {
+                alvenApi.delete(`${URL}/${id}`, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -124,7 +124,7 @@ const TablaInventario = () => {
 
     const registrarPropiedad = () => {
 
-        axios.post(URL, null, {
+        alvenApi.post(URL, null, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -141,7 +141,7 @@ const TablaInventario = () => {
 
         // if (id == null) {
         //     console.log('entro al if')
-        //     axios.post(URL, null, {
+        //     alvenApi.post(URL, null, {
         //         headers: {
         //             'Authorization': 'Bearer ' + token
         //         }
@@ -171,7 +171,7 @@ const TablaInventario = () => {
         setModalPdf(!modalPdf)
         setIdAsesor(id)
         // const idUser = localStorage?.getItem('id');        
-        // window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id},${idUser}`)
+        // window.open(`http://127.0.0.1:8000/api/v1/exportar-propiedad/${id},${idUser}`)
     }
 
     const handleFilter = e => {
@@ -179,7 +179,7 @@ const TablaInventario = () => {
     }
 
     // useEffect(() => {
-    //     axios.get(URL, {
+    //     alvenApi.get(URL, {
     //         headers: {
     //             'Authorization': 'Bearer ' + token
     //         }
@@ -431,7 +431,7 @@ const TablaInventario = () => {
 
         if (nombreEstado == 'Todos' || estadoPropiedad == undefined) {
 
-            axios.get(URL, {
+            alvenApi.get(URL, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }

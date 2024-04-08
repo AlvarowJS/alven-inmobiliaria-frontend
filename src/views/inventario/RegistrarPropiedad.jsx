@@ -12,14 +12,14 @@ import BasicosForm from './registro-pasos/BasicosForm'
 import GeneralForm from './registro-pasos/GeneralForm'
 import DireccionForm from './registro-pasos/DireccionForm'
 import { Link, useParams } from 'react-router-dom'
-import axios from 'axios'
 import { Card, Label, Input } from 'reactstrap'
-const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/estado-propiedad'
-const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
-const URL_ASESOR = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
-const URL_ID = 'https://backend.alven-inmobiliaria.com.mx/api/v1/general-id'
+const URL_ESTADO = '/v1/estado-propiedad'
+const URL_PROPIEDAD = '/v1/propiedades'
+const URL_ASESOR = '/v1/asesor'
+const URL_ID = '/v1/general-id'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import alvenApi from '../../api/alvenApi';
 const MySwal = withReactContent(Swal)
 
 const RegistrarPropiedad = () => {
@@ -33,7 +33,7 @@ const RegistrarPropiedad = () => {
 
     // General
     useEffect(() => {
-        axios.get(URL_ID, {
+        alvenApi.get(URL_ID, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -47,7 +47,7 @@ const RegistrarPropiedad = () => {
     // Listar Asesores
     useEffect(() => {
 
-        axios.get(`${URL_ASESOR}`, {
+        alvenApi.get(`${URL_ASESOR}`, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -60,7 +60,7 @@ const RegistrarPropiedad = () => {
     // LLenara datos 
     useEffect(() => {
 
-        axios.get(`${URL_PROPIEDAD}/${id?.id}`, {
+        alvenApi.get(`${URL_PROPIEDAD}/${id?.id}`, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -77,7 +77,7 @@ const RegistrarPropiedad = () => {
         let estadoActual = e.target.checked                
         let actualizarEstado = {}
         actualizarEstado.estado = estadoActual
-        axios.put(`${URL_ESTADO}/${id?.id}`, actualizarEstado, {
+        alvenApi.put(`${URL_ESTADO}/${id?.id}`, actualizarEstado, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -104,7 +104,7 @@ const RegistrarPropiedad = () => {
             id: 'propietario',
             title: 'Propietario',
             icon: <User size={18} />,
-            content: <ClienteForm stepper={stepper} borrador={borrador} objectGlobal={objectGlobal} idPropiedad={id.id} type='wizard-modern' />
+            content: <ClienteForm stepper={stepper} borrador={borrador} asesorObj={asesorObj} objectGlobal={objectGlobal} idPropiedad={id.id} type='wizard-modern' />
         },
         {
             id: 'direccion',

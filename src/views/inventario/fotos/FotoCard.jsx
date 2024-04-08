@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React from 'react'
 import { Trash } from 'react-feather'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-const URL_FOTOS = 'https://backend.alven-inmobiliaria.com.mx/api/v1/fotos'
+import alvenApi from '../../../api/alvenApi';
+const URL_FOTOS = '/v1/fotos'
 const FotoCard = ({ foto, setEstado }) => {
 
     const {
@@ -25,7 +25,7 @@ const FotoCard = ({ foto, setEstado }) => {
     let img = `https://backend.alven-inmobiliaria.com.mx/storage/${foto?.propiedad_id}/${foto?.fotos}`
     const deleteFotoById = (id) => {
 
-        axios.delete(`${URL_FOTOS}/${id}`, {
+        alvenApi.delete(`${URL_FOTOS}/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

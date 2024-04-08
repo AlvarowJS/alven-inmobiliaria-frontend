@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row, InputGroup, InputGroupText } from 'reactstrap'
 import Select from 'react-select';
 import { useForm } from 'react-hook-form'
-const URL_ASESOR = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente'
-const URL_MEDIO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/medios'
-const URL_ID = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente-id'
-import axios from 'axios'
+const URL_ASESOR = '/v1/asesor'
+const URL = '/v1/cliente'
+const URL_MEDIO = '/v1/medios'
+const URL_ID = '/v1/cliente-id'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import alvenApi from '../../../api/alvenApi';
 const MySwal = withReactContent(Swal)
 
-const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
+const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj }) => {
   const token = localStorage.getItem('token');
   const [activar, setActivar] = useState(false)
   const role = localStorage?.getItem('role');
 
   const [options, setOptions] = useState()
-  const [optionsAsesor, setOptionsAsesor] = useState()
+  const [optionsAsesor, setOptionsAsesor] = useState([])
   const [optionsMedio, setOptionsMedio] = useState()
   const [objectCliente, setObjectCliente] = useState()
   const [idCliente, setIdCliente] = useState()
@@ -32,7 +32,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
 
   useEffect(() => {
     try {
-      axios.get(URL_MEDIO, {
+      alvenApi.get(URL_MEDIO, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -46,24 +46,24 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
   }, [])
 
 
+  // useEffect(() => {
+  //   try {
+  //     alvenApi.get(URL_ASESOR, {
+  //       headers: {
+  //         'Authorization': 'Bearer ' + token
+  //       }
+  //     })
+  //       .then(res => setOptionsAsesor(res?.data))
+  //       .catch(err => null)
+  //   } catch (error) {
+  //     null
+  //   }
+
+  // }, [])
+
   useEffect(() => {
     try {
-      axios.get(URL_ASESOR, {
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      })
-        .then(res => setOptionsAsesor(res.data))
-        .catch(err => null)
-    } catch (error) {
-      null
-    }
-
-  }, [])
-
-  useEffect(() => {
-    try {
-      axios.get(`${URL}`, {
+      alvenApi.get(`${URL}`, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -86,7 +86,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
   useEffect(() => {
 
     try {
-      axios.get(`${URL}/${idCliente}`, {
+      alvenApi.get(`${URL}/${idCliente}`, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -125,7 +125,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
       let actualizaCliente = {}
       actualizaCliente.cliente_id = idCliente
 
-      axios.put(`${URL_ID}/${idPropiedad}`, actualizaCliente, {
+      alvenApi.put(`${URL_ID}/${idPropiedad}`, actualizaCliente, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -144,7 +144,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
         .catch(err => null)
     } else {
       if (idCliente) {
-        axios.put(`${URL}/${idCliente}`, data, {
+        alvenApi.put(`${URL}/${idCliente}`, data, {
           headers: {
             'Authorization': 'Bearer ' + token
           }
@@ -162,7 +162,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
           .catch(err => null)
       } else {
         data.id_propiedad = idPropiedad
-        axios.post(URL, data, {
+        alvenApi.post(URL, data, {
           headers: {
             'Authorization': 'Bearer ' + token
           }
@@ -322,8 +322,8 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador }) => {
             <select className="form-select" id="asesor_id" {...register("asesor_id")} disabled={activar}>
               <option key="" value="">Sin asesor</option>
               {
-                optionsAsesor?.map(optionAsesor => (
-                  <option key={optionAsesor.id} value={optionAsesor.id}>{optionAsesor.nombre} {optionAsesor.apellidos}</option>
+                asesorObj?.map(optionAsesor => (
+                  <option key={optionAsesor?.id} value={optionAsesor?.id}>{optionAsesor?.nombre} {optionAsesor?.apellidos}</option>
                 ))
               }
             </select>

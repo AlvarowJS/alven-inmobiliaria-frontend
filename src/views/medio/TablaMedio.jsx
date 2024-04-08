@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/medios'
-import axios from 'axios'
+const URL = '/v1/medios'
 import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'reactstrap'
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
+import alvenApi from '../../api/alvenApi'
 const TablaMedio = ({ updateMedioById, deleteMedioById, estado }) => {
     const navigate = useNavigate()
     let token = localStorage.getItem('token');
@@ -63,7 +63,7 @@ const TablaMedio = ({ updateMedioById, deleteMedioById, estado }) => {
 
 
     useEffect(() => {
-        axios.get(URL, {
+        alvenApi.get(URL, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -76,7 +76,7 @@ const TablaMedio = ({ updateMedioById, deleteMedioById, estado }) => {
 
     useEffect(() => {
 
-        axios.get(URL, {
+        alvenApi.get(URL, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

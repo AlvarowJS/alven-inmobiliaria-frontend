@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import axios from 'axios'
 import { X, Plus } from 'react-feather'
 
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/publicidad'
-const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/actualizar-propiedad'
-const URL_PROPIEDAD = 'https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades'
+const URL = '/v1/publicidad'
+const URL_ESTADO = '/v1/actualizar-propiedad'
+const URL_PROPIEDAD = '/v1/propiedades'
 import Repeater from '@components/repeater'
 
-const URL_MAPA = 'https://backend.alven-inmobiliaria.com.mx/api/v1/publicidad-mapa'
+const URL_MAPA = '/v1/publicidad-mapa'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import alvenApi from '../../../api/alvenApi'
 const MySwal = withReactContent(Swal)
 
 // const idPropiedad = localStorage.getItem('id');
@@ -112,7 +112,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal, asesorObj }) => {
       const enlacesJson = JSON.stringify(formArray);
       f.append('enlaces', enlacesJson);
       f.append('id', idPublicidad)
-      axios.post(URL_MAPA, f, {
+      alvenApi.post(URL_MAPA, f, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -149,7 +149,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal, asesorObj }) => {
       const enlacesJson = JSON.stringify(formArray);
       f.append('enlaces', enlacesJson);
       f.append('id_propiedad', idPropiedad)
-      axios.post(URL, f, {
+      alvenApi.post(URL, f, {
         headers: {
           'Authorization': 'Bearer ' + token
         }

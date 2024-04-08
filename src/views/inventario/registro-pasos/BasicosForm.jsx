@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button, Label, Input, Form, Col, Row } from 'reactstrap'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import axios from 'axios'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/basicos'
+const URL = '/v1/basicos'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import alvenApi from '../../../api/alvenApi'
 const MySwal = withReactContent(Swal)
 
 const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
@@ -26,7 +26,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
   useEffect(() => {
     setObjectBasicos(objectGlobal?.basico)
     reset(objectGlobal?.basico)
-    // axios.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
+    // alvenApi.get(`${URL_PROPIEDAD}/${idPropiedad}`, {
     //   headers: {
     //     'Authorization': 'Bearer ' + token
     //   }
@@ -44,7 +44,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
     let idBasicos = objectBasicos?.id
 
     if (idBasicos) {
-      axios.put(`${URL}/${idBasicos}`, data, {
+      alvenApi.put(`${URL}/${idBasicos}`, data, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -63,7 +63,7 @@ const BasicosForm = ({ stepper, idPropiedad, objectGlobal }) => {
     } else {
       data.id_propiedad = idPropiedad
 
-      axios.post(URL, data, {
+      alvenApi.post(URL, data, {
         headers: {
           'Authorization': 'Bearer ' + token
         }

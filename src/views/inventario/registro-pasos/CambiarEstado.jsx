@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-const URL_ESTADO = 'https://backend.alven-inmobiliaria.com.mx/api/v1/estado-propiedad'
-import axios from 'axios'
+const URL_ESTADO = '/v1/estado-propiedad'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Input, Label } from 'reactstrap'
 const MySwal = withReactContent(Swal)
 import { CustomLabel } from './CustomLabel';
+import alvenApi from '../../../api/alvenApi'
 const CambiarEstado = ({ idPropiedad, borrador }) => {
     const token = localStorage.getItem('token');
     //Cambiar estado de borrador
@@ -14,7 +14,7 @@ const CambiarEstado = ({ idPropiedad, borrador }) => {
         let estadoActual = e.target.checked
         let actualizarEstado = {}
         actualizarEstado.estado = estadoActual
-        axios.put(`${URL_ESTADO}/${idPropiedad}`, actualizarEstado, {
+        alvenApi.put(`${URL_ESTADO}/${idPropiedad}`, actualizarEstado, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

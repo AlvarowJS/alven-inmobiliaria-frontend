@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Breadcrumb, Col, Card, Row, Button } from 'reactstrap'
-import axios from 'axios'
 import { useForm } from 'react-hook-form'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/cliente'
-const REG_URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/registrar-cliente'
+const URL = '/v1/cliente'
+const REG_URL = '/v1/registrar-cliente'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaCliente from './TablaCliente'
 import FormCliente from './FormCliente'
+import alvenApi from '../../api/alvenApi'
 const MySwal = withReactContent(Swal)
 
 const Clientes = () => {
@@ -37,14 +37,15 @@ const Clientes = () => {
   };
 
   const updateCliente = (id, data) => {
-    setEstado(false)
-    axios.patch(`${URL}/${id}`, data, {
+    setEstado(!estado)
+
+    alvenApi.patch(`${URL}/${id}`, data, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
     })
       .then(res => {
-        setEstado(true)
+        setEstado(!estado)
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -67,7 +68,7 @@ const Clientes = () => {
 
   const crearCliente = data => {
     setEstado(false)
-    axios.post(REG_URL, data, {
+    alvenApi.post(REG_URL, data, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -98,7 +99,7 @@ const Clientes = () => {
   const updateClienteById = (id) => {
     setEstado(false)
     toggle.call()
-    axios.get(`${URL}/${id}`, {
+    alvenApi.get(`${URL}/${id}`, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
@@ -131,7 +132,7 @@ const Clientes = () => {
       buttonsStyling: false
     }).then(function (result) {
       if (result.value) {
-        axios.delete(`${URL}/${id}`, {
+        alvenApi.delete(`${URL}/${id}`, {
           headers: {
             'Authorization': 'Bearer ' + token
           }
@@ -146,6 +147,9 @@ const Clientes = () => {
   }
 
   const submit = (data) => {
+    // console.log(estado)
+    setEstado(!estado)
+    console.log(estado)
     if (objUpdate !== undefined) {
 
       updateCliente(objUpdate?.id, data)
@@ -178,6 +182,7 @@ const Clientes = () => {
             updateClienteById={updateClienteById}
             deleteClienteById={deleteClienteById}
             estado={estado}
+            modal={modal}
           />
         </Col>
       </Row>

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
@@ -6,7 +5,8 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'rea
 import DataTable from 'react-data-table-component'
 import { ChevronDown, Delete, Edit, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/contacto/'
+import alvenApi from '../../api/alvenApi'
+const URL = '/v1/contacto/'
 
 const TablaMensajes = ({ deleteMensajeById, estado }) => {
     const token = localStorage.getItem('token');
@@ -112,7 +112,7 @@ const TablaMensajes = ({ deleteMensajeById, estado }) => {
         }
     ]
     useEffect(() => {
-        axios.get(URL, {
+        alvenApi.get(URL, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -125,7 +125,7 @@ const TablaMensajes = ({ deleteMensajeById, estado }) => {
 
     useEffect(() => {
 
-        axios.get(URL, {
+        alvenApi.get(URL, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Breadcrumb, Col, Card, Row, Button } from 'reactstrap'
-import axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaMensajes from './TablaMensajes'
+import alvenApi from '../../api/alvenApi'
 const MySwal = withReactContent(Swal)
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/contacto'
+const URL = '/v1/contacto'
 const Mensajes = () => {
   const token = localStorage.getItem('token');
 
@@ -27,7 +27,7 @@ const Mensajes = () => {
       buttonsStyling: false
     }).then(function (result) {
       if (result.value) {
-        axios.delete(`${URL}/${id}`, {
+        alvenApi.delete(`${URL}/${id}`, {
           headers: {
             'Authorization': 'Bearer ' + token
           }

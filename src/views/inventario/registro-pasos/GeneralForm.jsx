@@ -13,13 +13,12 @@ import {
 } from "reactstrap";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
-import axios from "axios";
 import Select from "react-select";
-const URL = "https://backend.alven-inmobiliaria.com.mx/api/v1/general";
-const URL_PROPIEDAD =
-  "https://backend.alven-inmobiliaria.com.mx/api/v1/propiedades";
+const URL = "/v1/general";
+const URL_PROPIEDAD = "/v1/propiedades";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import alvenApi from "../../../api/alvenApi";
 const MySwal = withReactContent(Swal);
 const GeneralForm = ({
   asesorObj,
@@ -44,7 +43,7 @@ const GeneralForm = ({
   const onSubmit = (data) => {
     let idGeneralForm = objectGeneral?.id;
     if (idGeneralForm) {
-      axios
+      alvenApi
         .put(`${URL}/${idGeneralForm}`, data, {
           headers: {
             Authorization: "Bearer " + token,
@@ -65,7 +64,7 @@ const GeneralForm = ({
       data.numero_ofna = idGeneral;
       data.id_propiedad = idPropiedad;
 
-      axios
+      alvenApi
         .post(URL, data, {
           headers: {
             Authorization: "Bearer " + token,

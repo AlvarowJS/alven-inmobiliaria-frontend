@@ -27,10 +27,10 @@ import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg";
 // ** Styles
 import "@styles/react/pages/page-authentication.scss";
 import './styles/style.css'
-import axios from "axios";
 import { useState } from "react";
+import alvenApi from "../../api/alvenApi";
 
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/login/'
+const URL = '/login'
 const Login = () => {
 
   const navigate = useNavigate()
@@ -42,7 +42,7 @@ const Login = () => {
   const [isError, setIsError] = useState(false)
 
   const submit = data => {
-    axios.post(URL, data)
+    alvenApi.post(URL, data)    
       .then(res => {
         localStorage.setItem('token', res?.data?.token)
         localStorage.setItem('nombre', res?.data?.name)

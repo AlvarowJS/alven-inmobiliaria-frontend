@@ -1,7 +1,7 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
-const URL = 'https://backend.alven-inmobiliaria.com.mx/api/v1/asesor'
+import alvenApi from '../../api/alvenApi'
+const URL = '/v1/asesor'
 
 
 const FormCliente = ({
@@ -12,7 +12,7 @@ const FormCliente = ({
   const [options, setOptions] = useState()
 
   useEffect(() => {
-    axios.get(URL, {
+    alvenApi.get(URL, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
