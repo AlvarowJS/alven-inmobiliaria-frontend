@@ -119,7 +119,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
   const submit = (data) => {
     // false = registrar cliente
     // true = buscar por cliente 
-
+    console.log(objectCliente.id,"xd")
     let idClienteActual = objectCliente?.id
     if (activar) {
       let actualizaCliente = {}
@@ -143,6 +143,8 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
         })
         .catch(err => null)
     } else {
+      console.log("entro al else")
+      console.log(idCliente, "entro al else")
       if (idCliente) {
         alvenApi.put(`${URL}/${idCliente}`, data, {
           headers: {
@@ -160,7 +162,25 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
             stepper.next()
           })
           .catch(err => null)
-      } else {
+      } else if(objectCliente?.id){
+        alvenApi.put(`${URL}/${objectCliente?.id}`, data, {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(res => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Guardado',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            stepper.next()
+          })
+          .catch(err => null)
+      }      
+      else {
         data.id_propiedad = idPropiedad
         alvenApi.post(URL, data, {
           headers: {
