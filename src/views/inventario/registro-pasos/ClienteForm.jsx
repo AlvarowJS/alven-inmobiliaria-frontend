@@ -115,11 +115,9 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
     }
 
   }
-  console.log(activar)
   const submit = (data) => {
     // false = registrar cliente
     // true = buscar por cliente 
-    console.log(objectCliente.id,"xd")
     let idClienteActual = objectCliente?.id
     if (activar) {
       let actualizaCliente = {}
@@ -143,8 +141,6 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
         })
         .catch(err => null)
     } else {
-      console.log("entro al else")
-      console.log(idCliente, "entro al else")
       if (idCliente) {
         alvenApi.put(`${URL}/${idCliente}`, data, {
           headers: {

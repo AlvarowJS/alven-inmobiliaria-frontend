@@ -171,7 +171,7 @@ const TablaInventario = () => {
         setModalPdf(!modalPdf)
         setIdAsesor(id)
         // const idUser = localStorage?.getItem('id');        
-        // window.open(`http://127.0.0.1:8000/api/v1/exportar-propiedad/${id},${idUser}`)
+        // window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id},${idUser}`)
     }
 
     const handleFilter = e => {
