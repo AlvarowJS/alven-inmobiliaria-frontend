@@ -71,7 +71,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
         .then(res => {
           const tranformarData = res?.data?.map(item => ({
             value: item.id,
-            label: item.nombre
+            label: item.celular+ ' | '+ item.nombre
           }))
           setOptions(tranformarData)
         })
@@ -250,7 +250,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
                 <label htmlFor="nombre">Nombre</label>
                 <input type="text" className="form-control" id="nombre"
                   {...register('nombre')}
-                  placeholder="Alvaro..."
+                  placeholder="Nombre"
                   disabled={activar}
                 />
               </div>
@@ -260,7 +260,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
                 <label htmlFor="apellido_paterno">Apellido Paterno</label>
                 <input type="text" className="form-control" id="apellido_paterno"
                   {...register('apellido_paterno')}
-                  placeholder="Rosas"
+                  placeholder="Apellido Paterno"
                   disabled={activar}
                 />
               </div>
@@ -270,7 +270,7 @@ const ClienteForm = ({ stepper, objectGlobal, idPropiedad, borrador,asesorObj })
                 <label htmlFor="apellido_materno">Apellido Materno</label>
                 <input type="text" className="form-control" id="apellido_materno"
                   {...register('apellido_materno')}
-                  placeholder="Perez"
+                  placeholder="Apellido Materno"
                   disabled={activar}
                 />
               </div>
