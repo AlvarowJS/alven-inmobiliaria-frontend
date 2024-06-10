@@ -300,11 +300,20 @@ const TablaInventario = () => {
             // minWidth: '250px',
             selector: row => row?.general?.tipo_operacion == undefined ? 'Sin asignar' : row?.general?.tipo_operacion
         },
-        // {
-        //     sortable: true,
-        //     name: 'Status',
-        //     selector: row => row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado
-        // },
+        {
+            sortable: true,
+            name: 'Status',
+            selector: row => row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado,
+            cell: row => {
+                return (
+                    <>
+                    {
+                    row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado
+                    }
+                    </>
+                )
+            }
+        },
         {
             sortable: true,
             name: 'Asignación',
@@ -339,7 +348,7 @@ const TablaInventario = () => {
                 return (
                     <>
 
-                        <img src={`https://backend.alven-inmobiliaria.com.mx/storage/${row?.id}/${row?.foto[0]?.fotos}`} alt="" style={{ width: "120px", height: "80px" }} />
+                        <img src={`https://backend.alven-inmobiliaria.com.mx/storage/${row?.id}/${row?.foto[0]?.fotos}`} alt="" style={{ width: "120px", height: "80px" }} loading='lazy' />
                     </>
                 )
             }
@@ -367,30 +376,29 @@ const TablaInventario = () => {
                 )
             }
         },
-        {
-            sortable: true,
-            name: 'Estado',
-            minWidth: '100px',
-            cell: row => {
-                return (
-                    <>
-                        {
-                            row?.estado == true ?
+        // {
+        //     sortable: true,
+        //     name: 'Estado',
+        //     minWidth: '100px',
+        //     cell: row => {
+        //         return (
+        //             <>
+        //                 {
+        //                     row?.estado == true ?
 
-                                <Badge color='light-success'>
-                                    Terminado
-                                </Badge>
-                                :
-                                <Badge color='light-danger'>
-                                    En Borrador
-                                </Badge>
+        //                         <Badge color='light-success'>
+        //                             Terminado
+        //                         </Badge>
+        //                         :
+        //                         <Badge color='light-danger'>
+        //                             En Borrador
+        //                         </Badge>
 
-                        }
-                    </>
-                )
-            }
-            // selector: row => row?.estado == 'false'
-        },
+        //                 }
+        //             </>
+        //         )
+        //     }            
+        // },
         {
             name: 'Acciones',
             sortable: true,
