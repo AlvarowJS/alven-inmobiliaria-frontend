@@ -195,7 +195,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal, asesorObj }) => {
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
             <Label className='form-label' for='precio_venta'>
-              Precio de venta
+              Precio
             </Label>
             <Controller
               defaultValue=''
