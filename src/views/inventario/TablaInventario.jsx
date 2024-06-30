@@ -296,6 +296,22 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
+            name: 'Sub Tipo',
+            // minWidth: '250px',
+            selector: row => row?.general?.sub_tipo_propiedad == undefined ? 'Sin asignar' : row?.general?.sub_tipo_propiedad,
+            cell: row => {
+                return (
+                    <>
+                        {
+                            row?.general?.sub_tipo_propiedad
+                        }
+                    </>
+                )
+            }
+
+        },
+        {
+            sortable: true,
             name: 'Tipo\nOperación',
             // minWidth: '250px',
             selector: row => row?.general?.tipo_operacion == undefined ? 'Sin asignar' : row?.general?.tipo_operacion

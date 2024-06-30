@@ -74,7 +74,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             cell: row => {
                 return (
                     <>
-                        <img src={`https://backend.alven-inmobiliaria.com.mx/storage/asesor/${row?.foto}`} alt="" style={{ width: "120px", height: "80px" }} />
+                        <img src={`https://backend.alven-inmobiliaria.com.mx/storage/asesor/${row?.foto}`} alt="" loading='lazy' style={{ width: "120px", height: "80px" }} />
                     </>
                 )
             }
@@ -127,69 +127,63 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
             }
         })
             .then(res => {
-
-                // Total de registros
-                let totalData = res?.data.length
-                setGetTotalData(totalData)
-
-                // Con la sigueinte logica evitara errores
-                if (totalData > (res?.data).slice(0, rowsPerPage).length) {
-
-                    //Cantidad enumaraciones
-                    let count = Math.ceil(totalData / rowsPerPage)
-                    let cantidadPag = Math.ceil(totalData / count)
-                    let limite = cantidadPag * currentPage
-                    let inicio = cantidadPag * (currentPage - 1)
+                // let totalData = res?.data.length
+                // setGetTotalData(totalData)
+                // if (totalData > (res?.data).slice(0, rowsPerPage).length) {                    
+                //     let count = Math.ceil(totalData / rowsPerPage)
+                //     let cantidadPag = Math.ceil(totalData / count)
+                //     let limite = cantidadPag * currentPage
+                //     let inicio = cantidadPag * (currentPage - 1)
 
 
-                    let data = (res?.data).slice(inicio, limite)
-                    setGetData(data)
-                } else {
-                    setGetData((res?.data).slice(0, rowsPerPage))
-                }
+                //     let data = (res?.data).slice(inicio, limite)
+                setGetData(res?.data)
+                // } else {
+                //     setGetData((res?.data).slice(0, rowsPerPage))
+                // }
 
             })
             .catch(err => { console.log(err) })
-    }, [rowsPerPage, currentPage, estado])
+    }, [estado])
 
-    const handlePerPage = e => {
-        setRowsPerPage(parseInt(e.target.value))
-    }
+    // const handlePerPage = e => {
+    //     setRowsPerPage(parseInt(e.target.value))
+    // }
 
-    const handlePagination = page => {
-        setCurrentPage(page.selected + 1)
-    }
+    // const handlePagination = page => {
+    //     setCurrentPage(page.selected + 1)
+    // }
 
 
-    const CustomPagination = () => {
+    // const CustomPagination = () => {
 
-        const count = Math.ceil(getTotalData / rowsPerPage)
+    //     const count = Math.ceil(getTotalData / rowsPerPage)
 
-        return (
-            <ReactPaginate
-                previousLabel={''}
-                nextLabel={''}
-                breakLabel='...'
-                pageCount={Math.ceil(count) || 1}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={2}
-                activeClassName='active'
-                forcePage={currentPage !== 0 ? currentPage - 1 : 0}
-                onPageChange={page => handlePagination(page)}
-                pageClassName='page-item'
-                breakClassName='page-item'
-                nextLinkClassName='page-link'
-                pageLinkClassName='page-link'
-                breakLinkClassName='page-link'
-                previousLinkClassName='page-link'
-                nextClassName='page-item next-item'
-                previousClassName='page-item prev-item'
-                containerClassName={
-                    'pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1'
-                }
-            />
-        )
-    }
+    //     return (
+    //         <ReactPaginate
+    //             previousLabel={''}
+    //             nextLabel={''}
+    //             breakLabel='...'
+    //             pageCount={Math.ceil(count) || 1}
+    //             marginPagesDisplayed={2}
+    //             pageRangeDisplayed={2}
+    //             activeClassName='active'
+    //             forcePage={currentPage !== 0 ? currentPage - 1 : 0}
+    //             onPageChange={page => handlePagination(page)}
+    //             pageClassName='page-item'
+    //             breakClassName='page-item'
+    //             nextLinkClassName='page-link'
+    //             pageLinkClassName='page-link'
+    //             breakLinkClassName='page-link'
+    //             previousLinkClassName='page-link'
+    //             nextClassName='page-item next-item'
+    //             previousClassName='page-item prev-item'
+    //             containerClassName={
+    //                 'pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1'
+    //             }
+    //         />
+    //     )
+    // }
     return (
         <Fragment>
 
@@ -199,7 +193,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
                 </CardHeader>
                 <Row className='mx-0 mt-1 mb-50'>
                     <Col sm='6'>
-                        <div className='d-flex align-items-center'>
+                        {/* <div className='d-flex align-items-center'>
                             <Label for='sort-select'>Mostrar</Label>
                             <Input
                                 className='dataTable-select'
@@ -217,7 +211,7 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
                                 <option value={100}>100</option>
                             </Input>
                             <Label for='sort-select'>entradas</Label>
-                        </div>
+                        </div> */}
                     </Col>
                     <Col className='d-flex align-items-center justify-content-sm-end mt-sm-0 mt-1' sm='6'>
                         <Label className='me-1' for='search-input'>
@@ -236,12 +230,12 @@ const TablaAsesor = ({ updateAsesorById, estado, deleteAsesorById }) => {
                 <div className='react-dataTable'>
                     <DataTable
                         noHeader
-                        pagination
-                        paginationServer
+                        // pagination
+                        // paginationServer
                         className='react-dataTable'
                         columns={serverSideColumns}
                         sortIcon={<ChevronDown size={10} />}
-                        paginationComponent={CustomPagination}
+                        // paginationComponent={CustomPagination}
                         data={searchValue ? filter : getData}
                     />
                 </div>

@@ -177,49 +177,6 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById,modal }) =>
     );
   }, [searchValue,modal, estado]);
 
-  const handlePerPage = (e) => {
-    setRowsPerPage(parseInt(e.target.value));
-  };
-
-  const handlePagination = (page) => {
-    setCurrentPage(page.selected + 1);
-  };
-
-  const paginationComponentOptions = {
-    rowsPerPageText: "Filas por página",
-    rangeSeparatorText: "de",
-    selectAllRowsItem: true,
-    selectAllRowsItemText: "Todos",
-  };
-
-  const CustomPagination = () => {
-    const count = Math.ceil(getTotalData / rowsPerPage);
-
-    return (
-      <ReactPaginate
-        previousLabel={""}
-        nextLabel={""}
-        breakLabel="..."
-        pageCount={Math.ceil(count) || 1}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={2}
-        activeClassName="active"
-        forcePage={currentPage !== 0 ? currentPage - 1 : 0}
-        onPageChange={(page) => handlePagination(page)}
-        pageClassName="page-item"
-        breakClassName="page-item"
-        nextLinkClassName="page-link"
-        pageLinkClassName="page-link"
-        breakLinkClassName="page-link"
-        previousLinkClassName="page-link"
-        nextClassName="page-item next-item"
-        previousClassName="page-item prev-item"
-        containerClassName={
-          "pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
-        }
-      />
-    );
-  };
   return (
     <Fragment>
       <Card>
@@ -228,24 +185,7 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById,modal }) =>
         </CardHeader>
         <Row className="mx-0 mt-1 mb-50">
           <Col sm="6">
-            {/* <div className="d-flex align-items-center">
-              <Label for="sort-select">Mostrar</Label>
-              <Input
-                className="dataTable-select"
-                type="select"
-                id="sort-select"
-                value={rowsPerPage}
-                onChange={(e) => handlePerPage(e)}
-              >
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-                <option value={75}>75</option>
-                <option value={100}>100</option>
-              </Input>
-              <Label for="sort-select">entradas</Label>
-            </div> */}
+           
           </Col>
           <Col
             className="d-flex align-items-center justify-content-sm-end mt-sm-0 mt-1"
@@ -266,14 +206,10 @@ const TablaCliente = ({ updateClienteById, estado, deleteClienteById,modal }) =>
         </Row>
         <div className="react-dataTable">
           <DataTable
-            noHeader
-            pagination
-            // paginationServer
-            paginationComponentOptions={paginationComponentOptions}
+            noHeader            
             className="react-dataTable"
             columns={serverSideColumns}
             sortIcon={<ChevronDown size={10} />}
-            // paginationComponent={CustomPagination}
             data={searchValue ? filter : getData}
           />
         </div>
