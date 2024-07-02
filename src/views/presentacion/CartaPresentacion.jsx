@@ -1,14 +1,17 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import logo from "../../assets/images/logo/logo2.png";
-const CartaPresentacion = () => {
+const CartaPresentacion = forwardRef(({
+  imagenFondo, telefono, nombrecompleto, frase
+}, ref) => {
+  
   return (
     <div>
       <div
-        // ref={imgRef}
+        ref={ref}
         style={{ position: "relative", display: "inline-block" }}
       >
         <img
-          src="https://alven-inmobiliaria.com.mx/assets/portada1-d674c4a8.png"
+          src={`http://127.0.0.1:8000/storage/fotoPresentacion/${imagenFondo}`}
           alt="Imagen"
           style={{ width: "1200px", height: "700px" }}
         />
@@ -67,8 +70,7 @@ const CartaPresentacion = () => {
             borderRadius: 4,
           }}
         >
-          SI DESEAS VENDER, COMPRAR O RENTAR, NO DUDES EN CONTACTARNOS SOMOS
-          PROFESIONALES INMOBILIARIOS
+          {frase}
         </p>
 
         {/* Second paragraph in the bottom-right corner */}
@@ -85,16 +87,16 @@ const CartaPresentacion = () => {
             marginRight: "20px",
           }}
         >
-          Enrique Costa Murillo AnastacioBunger
+          {nombrecompleto}
           <br />
           <br />
           <br />
-          Tel: 55 555 555
+          {telefono}
         </p>
       </div>
       {/* <button onClick={handleDownload}>Descargar imagen</button> */}
     </div>
   );
-};
+});
 
 export default CartaPresentacion;

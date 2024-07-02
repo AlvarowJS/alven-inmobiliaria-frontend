@@ -9,15 +9,21 @@ import alvenApi from "../../api/alvenApi";
 import TablaPresentacion from "./TablaPresentacion";
 import FormPresentacion from "./FormPresentacion";
 import CartaPresentacion from "./CartaPresentacion";
+import FormGenerador from "./FormGenerador";
 const MySwal = withReactContent(Swal);
 
 const Presentacion = () => {
   const token = localStorage.getItem("token");
+  const nombrecompleto = localStorage.getItem("nombre");
+  const telefono = localStorage.getItem("numero");
   const [data, setData] = useState();
   const [modal, setModal] = useState(false);
+  const [modalGenerador, setModalGenerador] = useState(false)
   const [refresh, setRefresh] = useState(false);
   const [actualizacion, setActualizacion] = useState(false);
   const [fotos, setFotos] = useState();
+  const [frase, setFrase] = useState()
+  const [imagenFondo, setImagenFondo] = useState()
   const {
     handleSubmit,
     control,
@@ -44,6 +50,9 @@ const Presentacion = () => {
       .catch((err) => {});
   }, [refresh]);
 
+  const generadorPresentacion = (imagen, ) => {
+
+  }
   const toggle = () => {
     setActualizacion(false);
     reset(defaultValuesForm);
@@ -53,6 +62,15 @@ const Presentacion = () => {
   const toggleActualizacion = () => {
     setModal(!modal);
   };
+
+  const toggleGenerador = (imagen) =>{    
+    debugger
+    setImagenFondo(imagen)
+    setModalGenerador(!modalGenerador)
+
+  }
+
+  console.log(frase, "frasetica")
 
   const updatePresentacion = (id, data) => {
     const f = new FormData();
@@ -177,6 +195,8 @@ const Presentacion = () => {
           <TablaPresentacion
             updatePresentacionById={updatePresentacionById}
             deletePresentacionId={deletePresentacionId}
+            toggleGenerador={toggleGenerador}
+            modalGenerador={modalGenerador}            
             data={data}
           />
         </Col>
@@ -194,6 +214,16 @@ const Presentacion = () => {
         register={register}
         reset={reset}
         errors={errors}
+      />
+
+      <FormGenerador 
+        toggleGenerador={toggleGenerador}
+        modalGenerador={modalGenerador}        
+        setFrase={setFrase}
+        frase={frase}
+        imagenFondo={imagenFondo}
+        nombrecompleto={nombrecompleto}
+        telefono={telefono}
       />
 
       <CartaPresentacion />

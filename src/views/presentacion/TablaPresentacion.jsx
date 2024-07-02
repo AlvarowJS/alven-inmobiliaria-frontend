@@ -1,10 +1,10 @@
 import React from 'react'
 import DataTable from 'react-data-table-component'
-import { Edit, Trash } from 'react-feather'
+import { Aperture, Edit, Trash } from 'react-feather'
 import { Card } from 'reactstrap'
 
 const TablaPresentacion = ({
-  updatePresentacionById, deletePresentacionId, estado, data
+  updatePresentacionById, deletePresentacionId, toggleGenerador, data, modalGenerador
 }) => {
   // columnas
   const columns = [
@@ -45,7 +45,9 @@ const TablaPresentacion = ({
             <button className='btn btn-danger mx-1' onClick={() => deletePresentacionId(row?.id)}>
               <Trash />
             </button>
-
+            <button className='btn btn-danger mx-1' onClick={() => toggleGenerador(row?.foto)}>
+              <Aperture />
+            </button>
           </div>
         )
       }

@@ -46,6 +46,7 @@ const Login = () => {
       .then(res => {
         localStorage.setItem('token', res?.data?.token)
         localStorage.setItem('nombre', res?.data?.name)
+        localStorage.setItem('numero', res?.data?.asesor?.celular)
         localStorage.setItem('id', res?.data?.id_user)
         localStorage.setItem('role', res?.data?.role_id)
         navigate('/inventario')
