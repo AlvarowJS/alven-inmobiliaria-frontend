@@ -11,18 +11,15 @@ const FormGenerador = ({
         setFrase(e.target.value)
     }
 
-    const generarImagen = async (e) => {
+    const generarImagen = (e) => {
         e.preventDefault();
-        toggleGenerador()
-        if (cartaRef.current) {
-            const canvas = await html2canvas(cartaRef.current);
-            const dataUrl = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = 'carta-presentacion.png';
-            link.click();
-        }
-    }
+        html2canvas(cartaRef.current).then((canvas) => {
+          const link = document.createElement("a");
+          link.download = "carta_presentacion.png";
+          link.href = canvas.toDataURL();
+          link.click();
+        });
+      };
     return (
         <Modal isOpen={modalGenerador} toggle={toggleGenerador} size='lg'>
             <ModalHeader toggle={toggleGenerador}>

@@ -64,7 +64,7 @@ const Presentacion = () => {
   };
 
   const toggleGenerador = (imagen) =>{    
-    debugger
+    
     setImagenFondo(imagen)
     setModalGenerador(!modalGenerador)
 
@@ -226,7 +226,6 @@ const Presentacion = () => {
         telefono={telefono}
       />
 
-      <CartaPresentacion />
     </Fragment>
   );
 };
