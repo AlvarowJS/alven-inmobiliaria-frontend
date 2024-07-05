@@ -3,8 +3,7 @@ import { Button, Col, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'r
 import CartaPresentacion from './CartaPresentacion'
 import html2canvas from 'html2canvas';
 import alvenApi from '../../api/alvenApi';
-// const URL = "http://https://backend.alven-inmobiliaria.com.mx/api/v1/foto-generador?frase=Si%20deseas%20vender%20o%20comprar%20o%20rentar%20no%20dudes%20en%20contactarnos%20somos%20profesionales%20inmobiliarios&imagen=https://s1.significados.com/foto/paisaje-natural.jpg?class=article&nombre=Enrique%20Javier%20Costa%20Murillo&telefono=5550683301"
-const URL = "http://https://backend.alven-inmobiliaria.com.mx/api/v1/foto-generador"
+const URL = "https://backend.alven-inmobiliaria.com.mx/api/v1/foto-generador"
 
 const FormGenerador = ({
     modalGenerador, toggleGenerador, setFrase, frase, imagenFondo, telefono, nombrecompleto
