@@ -150,25 +150,7 @@ const TablaMedio = ({ updateMedioById, deleteMedioById, estado }) => {
                 <CardTitle tag='h4'>Administrar Medios de Contacto</CardTitle>
             </CardHeader>
             <Row className='mx-0 mt-1 mb-50'>
-                <Col sm='6'>
-                    {/* <div className='d-flex align-items-center'>
-                        <Label for='sort-select'>Mostrar</Label>
-                        <Input
-                            className='dataTable-select'
-                            type='select'
-                            id='sort-select'
-                            value={rowsPerPage}
-                            onChange={e => handlePerPage(e)}
-                        >                                                    
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={25}>25</option>
-                            <option value={50}>50</option>
-                            <option value={75}>75</option>
-                            <option value={100}>100</option>
-                        </Input>
-                        <Label for='sort-select'>entradas</Label>
-                    </div> */}
+                <Col sm='6'>                    
                 </Col>
                 <Col className='d-flex align-items-center justify-content-sm-end mt-sm-0 mt-1' sm='6'>
                     <Label className='me-1' for='search-input'>
