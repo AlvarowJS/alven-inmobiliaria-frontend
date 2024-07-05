@@ -137,10 +137,8 @@ const TablaInventario = () => {
             })
             .catch(err => { console.log(err) })
         // let id = localStorage.getItem('id');
-        // console.log(id, "id ")
 
         // if (id == null) {
-        //     console.log('entro al if')
         //     alvenApi.post(URL, null, {
         //         headers: {
         //             'Authorization': 'Bearer ' + token

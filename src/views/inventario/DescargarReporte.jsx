@@ -19,11 +19,10 @@ const DescargarReporte = ({
     const statusList = ['todos', 'En Promocion', 'Con manifestacion', 'Cancelada', 'Suspendida', 'Cerrada']
 
     // const descargarReporteExcel = () => {
-    //     console.log(first)
+    
     // }
 
-    const onSubmit = data => {
-        console.log(data)
+    const onSubmit = data => {        
         window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportexcel/${data.status}/${data.asesor}/${data.fecha_inicio}/${data.fecha_fin}`)
     }
     return (

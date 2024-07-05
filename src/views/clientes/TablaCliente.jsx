@@ -18,8 +18,6 @@ import alvenApi from "../../api/alvenApi";
 const URL = "/v1/cliente/";
 
 const TablaCliente = ({ updateClienteById, estado, deleteClienteById,modal }) => {
-  console.log(estado, "asdasda");
-
   const navigate = useNavigate();
   let token = localStorage.getItem("token");
   const role = localStorage?.getItem("role");

@@ -53,9 +53,7 @@ const PublicidadForm = ({ stepper, idPropiedad, objectGlobal, asesorObj }) => {
   } = useForm()
 
 
-  useEffect(() => {
-
-    // console.log(objectGlobal?.publicidad?.ligas.length == undefined ? 0 : objectGlobal?.publicidad?.ligas, "asafsf")
+  useEffect(() => {    
     setSelectedImage(`https://backend.alven-inmobiliaria.com.mx/storage/${idPropiedad}/mapa/${objectGlobal?.publicidad?.mapa}`)
     setObjectPublicidad(objectGlobal?.publicidad)
     setEstadoPropiedad(objectGlobal?.publicidad?.estado)

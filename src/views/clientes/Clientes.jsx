@@ -147,9 +147,7 @@ const Clientes = () => {
   }
 
   const submit = (data) => {
-    // console.log(estado)
     setEstado(!estado)
-    console.log(estado)
     if (objUpdate !== undefined) {
 
       updateCliente(objUpdate?.id, data)

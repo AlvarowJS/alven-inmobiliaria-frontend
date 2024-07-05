@@ -6,7 +6,6 @@ import { Card } from 'reactstrap'
 const TablaPresentacion = ({
   updatePresentacionById, deletePresentacionId, toggleGenerador, data, modalGenerador,filteredData,searchValue
 }) => {
-console.log(filteredData, "das")
   // columnas
   const columns = [
     {
