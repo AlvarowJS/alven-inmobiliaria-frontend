@@ -4,8 +4,9 @@ import { Aperture, Edit, Trash } from 'react-feather'
 import { Card } from 'reactstrap'
 
 const TablaPresentacion = ({
-  updatePresentacionById, deletePresentacionId, toggleGenerador, data, modalGenerador
+  updatePresentacionById, deletePresentacionId, toggleGenerador, data, modalGenerador,filteredData,searchValue
 }) => {
+console.log(filteredData, "das")
   // columnas
   const columns = [
     {
@@ -27,7 +28,7 @@ const TablaPresentacion = ({
       selector: row => {
         return (
           <>
-            <img src={`http://127.0.0.1:8000/storage/fotoPresentacion/${row?.foto}`} alt={row?.nombre} width="300px" height="200px"/>
+            <img src={`https://backend.alven-inmobiliaria.com.mx/storage/fotoPresentacion/${row?.foto}`} alt={row?.nombre} width="300px" height="200px" loading='lazy' />
           </>
         )
       }
@@ -38,14 +39,14 @@ const TablaPresentacion = ({
       allowOverflow: true,
       cell: row => {
         return (
-          <div className='my-1'>
-            <button className='btn btn-warning' onClick={() => updatePresentacionById(row?.id)}>
+          <div className='d-flex gap-1'>
+            <button className='btn btn-warning my-1' onClick={() => updatePresentacionById(row?.id)}>
               <Edit />
             </button>
-            <button className='btn btn-danger mx-1' onClick={() => deletePresentacionId(row?.id)}>
+            <button className='btn btn-danger my-1' onClick={() => deletePresentacionId(row?.id)}>
               <Trash />
             </button>
-            <button className='btn btn-danger mx-1' onClick={() => toggleGenerador(row?.foto)}>
+            <button className='btn btn-success my-1' onClick={() => toggleGenerador(row?.foto)}>
               <Aperture />
             </button>
           </div>
@@ -55,13 +56,13 @@ const TablaPresentacion = ({
   ]
   return (
     <Card className='mt-2'>
+      
       <DataTable
         noHeader
         // pagination
         className='react-datatable'
-        columns={columns}
-        // data={search ? filter : data}
-        data={data}
+        columns={columns}      
+        data={filteredData}
 
       />
     </Card>

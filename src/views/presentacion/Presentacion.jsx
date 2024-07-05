@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Breadcrumb, Col, Card, Row, Button } from "reactstrap";
+import { Breadcrumb, Col, Card, Row, Button, Label, Input } from "reactstrap";
 import { useForm } from "react-hook-form";
 const URL = "/v1/presentacion";
 const URLUPDATE = "/v1/presentacion-foto";
@@ -24,6 +24,10 @@ const Presentacion = () => {
   const [fotos, setFotos] = useState();
   const [frase, setFrase] = useState()
   const [imagenFondo, setImagenFondo] = useState()
+
+  const [searchValue, setSearchValue] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+
   const {
     handleSubmit,
     control,
@@ -41,16 +45,32 @@ const Presentacion = () => {
     nombre: "",
     foto: "",
   };
+
+  const handleFilter = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    if (value === '') {
+      setFilteredData(data); // Si no hay valor de búsqueda, mostrar todos los datos
+    } else {
+      const filtered = data.filter((item) =>
+        item.nombre.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }
+  };
+
   useEffect(() => {
     alvenApi
       .get(`${URL}`, getAuthHeaders())
       .then((res) => {
         setData(res.data);
+        setFilteredData(res.data);
+
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }, [refresh]);
 
-  const generadorPresentacion = (imagen, ) => {
+  const generadorPresentacion = (imagen,) => {
 
   }
   const toggle = () => {
@@ -63,14 +83,12 @@ const Presentacion = () => {
     setModal(!modal);
   };
 
-  const toggleGenerador = (imagen) =>{    
-    debugger
+  const toggleGenerador = (imagen) => {
     setImagenFondo(imagen)
     setModalGenerador(!modalGenerador)
 
   }
 
-  console.log(frase, "frasetica")
 
   const updatePresentacion = (id, data) => {
     const f = new FormData();
@@ -179,10 +197,23 @@ const Presentacion = () => {
     <Fragment>
       <Card className="p-4">
         <Row>
-          <Col lg="6" className="d-flex align-items-center px-0 px-lg-1">
+          <Col sm="6" className="d-flex align-items-center px-0 px-lg-1">
             <Button className="mt-sm-0 mt-1" color="primary" onClick={toggle}>
               Subir nueva imagen
             </Button>
+          </Col>
+          <Col sm="6" className="d-flex align-items-center px-0 px-lg-1">
+            <Label className='me-1' for='search-input'>
+              Buscar
+            </Label>
+            <Input
+              className='dataTable-filter'
+              type='text'
+              bsSize='sm'
+              id='search-input'
+              value={searchValue}
+              onChange={handleFilter}
+            />
           </Col>
         </Row>
       </Card>
@@ -196,8 +227,10 @@ const Presentacion = () => {
             updatePresentacionById={updatePresentacionById}
             deletePresentacionId={deletePresentacionId}
             toggleGenerador={toggleGenerador}
-            modalGenerador={modalGenerador}            
+            modalGenerador={modalGenerador}
             data={data}
+            filteredData={filteredData}
+            searchValue={searchValue}
           />
         </Col>
       </Row>
@@ -216,9 +249,9 @@ const Presentacion = () => {
         errors={errors}
       />
 
-      <FormGenerador 
+      <FormGenerador
         toggleGenerador={toggleGenerador}
-        modalGenerador={modalGenerador}        
+        modalGenerador={modalGenerador}
         setFrase={setFrase}
         frase={frase}
         imagenFondo={imagenFondo}
@@ -226,7 +259,6 @@ const Presentacion = () => {
         telefono={telefono}
       />
 
-      <CartaPresentacion />
     </Fragment>
   );
 };

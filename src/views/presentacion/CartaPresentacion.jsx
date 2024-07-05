@@ -11,8 +11,9 @@ const CartaPresentacion = forwardRef(({
         style={{ position: "relative", display: "inline-block" }}
       >
         <img
-          src={`http://127.0.0.1:8000/storage/fotoPresentacion/${imagenFondo}`}
+          src={`http://backend.alven-inmobiliaria.com.mx/storage/fotoPresentacion/${imagenFondo}`}
           alt="Imagen"
+          // crossOrigin="anonymous"
           style={{ width: "1200px", height: "700px" }}
         />
         <div
