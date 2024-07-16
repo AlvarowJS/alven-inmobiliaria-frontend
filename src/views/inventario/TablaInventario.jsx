@@ -3,7 +3,7 @@ import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } from 'reactstrap'
 import DataTable from 'react-data-table-component'
-import { ChevronDown, Delete, Edit, Eye, File, FileText, Trash } from 'react-feather'
+import { ChevronDown, Delete, Edit, ExternalLink, Eye, File, FileText, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = '/v1/propiedades'
 const URL_FILTER = '/v1/propiedad-filtrado'
@@ -75,6 +75,10 @@ const TablaInventario = () => {
 
     const verInventarioById = (id) => {
         navigate(`/ver-propiedad/${id}`)
+    }
+
+    const abrirEnlace = (enlace) => {
+        window.open(enlace, '_blank')
     }
 
     const deleteInventarioById = (id) => {
@@ -321,9 +325,9 @@ const TablaInventario = () => {
             cell: row => {
                 return (
                     <>
-                    {
-                    row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado
-                    }
+                        {
+                            row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado
+                        }
                     </>
                 )
             }
@@ -377,11 +381,19 @@ const TablaInventario = () => {
                         {
                             row?.publicidad?.ligas?.map(liga => (
                                 // <div className='d-flex flex-column'>
-                                    <>
-                                        {liga.red_social} :
-                                        <a className='text-info'> {liga.enlace}</a>
-                                        <br />
-                                    </>
+                                <>
+                                    {liga.red_social} :
+                                    {/* <a className='text-info'> {liga.enlace}</a> */}
+                                    <div>
+                                        <Button
+                                            onClick={() => abrirEnlace(liga?.enlace)}
+                                        >
+                                            <ExternalLink
+                                            />
+                                        </Button>
+                                    </div>
+                                    <br />
+                                </>
                                 // </div>
 
                             ))
