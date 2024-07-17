@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import NavbarUser from "./NavbarUser";
 
 // ** Third Party Components
-import { Sun, Moon, Menu } from "react-feather";
+import { Sun, Moon, Menu, Folder } from "react-feather";
 
 // ** Reactstrap Imports
 import { NavItem, NavLink } from "reactstrap";
@@ -22,7 +22,10 @@ const ThemeNavbar = (props) => {
       return <Moon className="ficon" onClick={() => setSkin("dark")} />;
     }
   };
+  const archivosLink = () => {
 
+    window.open('http://docs.alven-inmobiliaria.com.mx', '_blank')
+  };
   return (
     <Fragment>
       <div className="bookmark-wrapper d-flex align-items-center">
@@ -41,6 +44,12 @@ const ThemeNavbar = (props) => {
             <ThemeToggler />
           </NavLink>
         </NavItem>
+      </div>
+      <div className="bookmark-wrapper d-flex align-items-center" style={{ marginLeft: 10, cursor: 'pointer', color: '#ED8178' }}
+        onClick={archivosLink}
+      >
+        <Folder />
+        Documentos
       </div>
       <NavbarUser skin={skin} setSkin={setSkin} />
     </Fragment>
