@@ -3,7 +3,7 @@ import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } from 'reactstrap'
 import DataTable from 'react-data-table-component'
-import { ChevronDown, Delete, Edit, ExternalLink, Eye, File, FileText, Trash } from 'react-feather'
+import { ChevronDown, Delete, Edit, ExternalLink, Eye, File, FileText, Globe, Trash } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = '/v1/propiedades'
 const URL_FILTER = '/v1/propiedad-filtrado'
@@ -382,15 +382,9 @@ const TablaInventario = () => {
                             row?.publicidad?.ligas?.map(liga => (
                                 // <div className='d-flex flex-column'>
                                 <>
-                                    {liga.red_social} :
-                                    {/* <a className='text-info'> {liga.enlace}</a> */}
-                                    <div>
-                                        <Button
-                                            onClick={() => abrirEnlace(liga?.enlace)}
-                                        >
-                                            <ExternalLink
-                                            />
-                                        </Button>
+                                    <div className='d-flex gap-1'>
+                                            {liga.red_social} :                                        
+                                            <Globe onClick={() => abrirEnlace(liga?.enlace)} style={{cursor: "pointer"}}/>
                                     </div>
                                     <br />
                                 </>

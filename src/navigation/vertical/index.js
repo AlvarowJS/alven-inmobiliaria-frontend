@@ -37,5 +37,11 @@ export default [
     icon: <MessageCircle size={20} />,
     navLink: "/mensajes",
   },
+  {
+    id: "documentos",
+    title: "Documentos",
+    icon: <Folder size={20} />,
+    navLink: "/documentos",
+  },
 ];
 

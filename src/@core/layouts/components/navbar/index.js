@@ -45,12 +45,12 @@ const ThemeNavbar = (props) => {
           </NavLink>
         </NavItem>
       </div>
-      <div className="bookmark-wrapper d-flex align-items-center" style={{ marginLeft: 10, cursor: 'pointer', color: '#ED8178' }}
+      {/* <div className="bookmark-wrapper d-flex align-items-center" style={{ marginLeft: 10, cursor: 'pointer', color: '#ED8178' }}
         onClick={archivosLink}
       >
         <Folder />
         Documentos
-      </div>
+      </div> */}
       <NavbarUser skin={skin} setSkin={setSkin} />
     </Fragment>
   );
