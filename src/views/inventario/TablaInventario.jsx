@@ -13,7 +13,7 @@ import withReactContent from 'sweetalert2-react-content'
 import DescargarReporte from './DescargarReporte'
 import ExportarPdfAsesor from './ExportarPdfAsesor'
 import alvenApi from '../../api/alvenApi'
-
+import iconWorld from '../../assets/images/logo/iconWorld.png'
 const MySwal = withReactContent(Swal)
 
 const TablaInventario = () => {
@@ -383,8 +383,10 @@ const TablaInventario = () => {
                                 // <div className='d-flex flex-column'>
                                 <>
                                     <div className='d-flex gap-1'>
-                                            {liga.red_social} :                                        
-                                            <Globe onClick={() => abrirEnlace(liga?.enlace)} style={{cursor: "pointer"}}/>
+                                        {liga.red_social} :
+                                        {/* <Globe onClick={() => abrirEnlace(liga?.enlace)} style={{ cursor: "pointer" }} /> */}
+                                        <img src={iconWorld} width={30} height={30} onClick={() => abrirEnlace(liga?.enlace)} style={{ cursor: "pointer" }}/>
+
                                     </div>
                                     <br />
                                 </>
