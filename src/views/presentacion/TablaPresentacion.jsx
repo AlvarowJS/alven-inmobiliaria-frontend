@@ -4,7 +4,7 @@ import { Aperture, Edit, Trash } from 'react-feather'
 import { Card } from 'reactstrap'
 
 const TablaPresentacion = ({
-  updatePresentacionById, deletePresentacionId, toggleGenerador, data, modalGenerador,filteredData,searchValue
+  updatePresentacionById, deletePresentacionId, toggleGenerador, data, modalGenerador, filteredData, searchValue
 }) => {
   // columnas
   const columns = [
@@ -55,15 +55,16 @@ const TablaPresentacion = ({
   ]
   return (
     <Card className='mt-2'>
-      
-      <DataTable
-        noHeader
-        // pagination
-        className='react-datatable'
-        columns={columns}      
-        data={filteredData}
+      <div className="react-dataTable">
+        <DataTable
+          noHeader
+          // pagination
+          className='react-datatable'
+          columns={columns}
+          data={filteredData}
 
-      />
+        />
+      </div>
     </Card>
   )
 }

@@ -14,6 +14,8 @@ import DescargarReporte from './DescargarReporte'
 import ExportarPdfAsesor from './ExportarPdfAsesor'
 import alvenApi from '../../api/alvenApi'
 import iconWorld from '../../assets/images/logo/iconWorld.png'
+import '@styles/react/apps/app-invoice.scss'
+import '@styles/react/libs/tables/react-dataTable-component.scss'
 const MySwal = withReactContent(Swal)
 
 const TablaInventario = () => {
@@ -38,6 +40,28 @@ const TablaInventario = () => {
     const [asesorObj, setAsesorObj] = useState()
 
     const dispatch = useDispatch()
+
+    const customStyles = {
+        rows: {
+            style: {
+                minHeight: 'auto', // Esto permite que las filas se ajusten al contenido
+                '&:not(:last-of-type)': {
+                    borderBottomStyle: 'solid',
+                    borderBottomWidth: '1px',
+                },
+            }
+        },
+        cells: {
+            style: {
+                paddingTop: '8px',
+                paddingBottom: '8px',
+                whiteSpace: 'normal', // Permite el salto de línea
+                wordBreak: 'break-word', // Rompe palabras largas
+                overflow: 'visible', // Asegura que el contenido no se corte
+                textOverflow: 'unset', // Evita el recorte de texto
+            }
+        }
+    };
 
     useEffect(() => {
 
@@ -140,24 +164,6 @@ const TablaInventario = () => {
 
             })
             .catch(err => { console.log(err) })
-        // let id = localStorage.getItem('id');
-
-        // if (id == null) {
-        //     alvenApi.post(URL, null, {
-        //         headers: {
-        //             'Authorization': 'Bearer ' + token
-        //         }
-        //     })
-        //         .then(res => {
-        //             localStorage.setItem('id', res.data.id)
-        //             navigate('/registrar-propiedad')
-
-        //         })
-        //         .catch(err => { console.log(err) })
-        // } else {
-        //     console.log('entro al else')
-        //     navigate('/registrar-propiedad')
-        // }
     }
 
     const descargarReporte = () => {
@@ -172,30 +178,12 @@ const TablaInventario = () => {
     const descargarPdf = (id) => {
         setModalPdf(!modalPdf)
         setIdAsesor(id)
-        // const idUser = localStorage?.getItem('id');        
-        // window.open(`https://backend.alven-inmobiliaria.com.mx/api/v1/exportar-propiedad/${id},${idUser}`)
     }
 
     const handleFilter = e => {
         setSearchValue(e.target.value)
     }
 
-    // useEffect(() => {
-    //     alvenApi.get(URL, {
-    //         headers: {
-    //             'Authorization': 'Bearer ' + token
-    //         }
-    //     })
-    //         .then(res => {
-
-    //             // setFilter(res.data.filter(e =>
-    //             //     e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1
-    //             // ));
-
-
-    //         })
-    //         .catch(err => { console.log(err) })
-    // }, [searchValue])
     useEffect(() => {
         setFilter(getData?.filter(e =>
             (e.publicidad?.encabezado && e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
@@ -226,15 +214,24 @@ const TablaInventario = () => {
         {
             sortable: true,
             name: 'ID',
-            minWidth: '25px',
-            maxWidth: '75px',
-            selector: row => row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna
+            minWidth: '30px',
+            maxWidth: '80px',
+            selector: row => row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna,
+            cell: row => {
+                return (
+                    <>
+                        {row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna}
+                    </>
+                )
+            }
         },
         {
             sortable: true,
             name: 'Dirección',
             minWidth: '250px',
-            // selector: row => row.direccion_id
+            wrap: true,
+            grow: 1,
+            selector: row => row?.direccion?.calle,
             cell: row => {
                 return (
                     <>
@@ -261,12 +258,7 @@ const TablaInventario = () => {
                 )
             }
         },
-        // {
-        //     sortable: true,
-        //     name: 'SubTipo',
-        //     minWidth: '250px',
-        //     selector: row => row?.general?.tipo_propiedad == undefined ? 'Sin asignar' : row?.general?.tipo_propiedad
-        // },
+
         {
             sortable: true,
             name: 'Precio',
@@ -279,7 +271,7 @@ const TablaInventario = () => {
                     </>
                 )
             }
-            // selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : '$ ' + row?.publicidad?.precio_venta.toLocaleString()
+
         },
         {
             sortable: true,
@@ -294,7 +286,6 @@ const TablaInventario = () => {
                     </>
                 )
             }
-            // selector: row => row?.publicidad?.precio_venta == undefined ? '00.00' : '$ ' + row?.publicidad?.precio_venta.toLocaleString()
         },
         {
             sortable: true,
@@ -337,6 +328,7 @@ const TablaInventario = () => {
             name: 'Asignación',
             // minWidth: '250px',
             selector: row => row?.cliente?.asesor?.nombre,
+            wrap: true,
             cell: row => {
                 return (
                     <>
@@ -375,6 +367,8 @@ const TablaInventario = () => {
             sortable: false,
             name: 'Ligas',
             minWidth: '250px',
+            grow: 1,
+            wrap: true,
             cell: row => {
                 return (
                     <div className='d-flex flex-column'>
@@ -385,7 +379,7 @@ const TablaInventario = () => {
                                     <div className='d-flex gap-1'>
                                         {liga.red_social} :
                                         {/* <Globe onClick={() => abrirEnlace(liga?.enlace)} style={{ cursor: "pointer" }} /> */}
-                                        <img src={iconWorld} width={30} height={30} onClick={() => abrirEnlace(liga?.enlace)} style={{ cursor: "pointer" }}/>
+                                        <img src={iconWorld} width={30} height={30} onClick={() => abrirEnlace(liga?.enlace)} style={{ cursor: "pointer" }} />
 
                                     </div>
                                     <br />
@@ -398,32 +392,11 @@ const TablaInventario = () => {
                 )
             }
         },
-        // {
-        //     sortable: true,
-        //     name: 'Estado',
-        //     minWidth: '100px',
-        //     cell: row => {
-        //         return (
-        //             <>
-        //                 {
-        //                     row?.estado == true ?
 
-        //                         <Badge color='light-success'>
-        //                             Terminado
-        //                         </Badge>
-        //                         :
-        //                         <Badge color='light-danger'>
-        //                             En Borrador
-        //                         </Badge>
-
-        //                 }
-        //             </>
-        //         )
-        //     }            
-        // },
         {
             name: 'Acciones',
             sortable: true,
+            wrap: true,
             allowOverflow: true,
             cell: row => {
                 return (
@@ -473,18 +446,7 @@ const TablaInventario = () => {
                     let allData = res?.data
                     setGetTotalData(totalData)
                     setGetData(allData)
-                    // if (totalData > (allData).slice(0, rowsPerPage).length) {
 
-                    //     let count = Math.ceil(totalData / rowsPerPage)
-                    //     let cantidadPag = Math.ceil(totalData / count)
-                    //     let limite = cantidadPag * currentPage
-                    //     let inicio = cantidadPag * (currentPage - 1)
-
-                    //     let data = (allData).slice(inicio, limite)
-                    //     setGetData(data)
-                    // } else {
-                    //     setGetData((allData).slice(0, rowsPerPage))
-                    // }
 
                 })
                 .catch(err => { console.log(err) })
@@ -493,18 +455,7 @@ const TablaInventario = () => {
             let allData = estadoPropiedad
             setGetTotalData(totalData)
             setGetData(allData)
-            // if (totalData > (allData).slice(0, rowsPerPage).length) {
 
-            //     let count = Math.ceil(totalData / rowsPerPage)
-            //     let cantidadPag = Math.ceil(totalData / count)
-            //     let limite = cantidadPag * currentPage
-            //     let inicio = cantidadPag * (currentPage - 1)
-
-            //     let data = (allData).slice(inicio, limite)
-            //     setGetData(data)
-            // } else {
-            //     setGetData((allData).slice(0, rowsPerPage))
-            // }
         }
 
     }, [
@@ -520,36 +471,6 @@ const TablaInventario = () => {
         setCurrentPage(page.selected + 1)
     }
 
-
-    // const CustomPagination = () => {
-
-    //     const count = Math.ceil(getTotalData / rowsPerPage)
-
-    //     return (
-    //         <ReactPaginate
-    //             previousLabel={''}
-    //             nextLabel={''}
-    //             breakLabel='...'
-    //             pageCount={Math.ceil(count) || 1}
-    //             marginPagesDisplayed={2}
-    //             pageRangeDisplayed={2}
-    //             activeClassName='active'
-    //             forcePage={currentPage !== 0 ? currentPage - 1 : 0}
-    //             onPageChange={page => handlePagination(page)}
-    //             pageClassName='page-item'
-    //             breakClassName='page-item'
-    //             nextLinkClassName='page-link'
-    //             pageLinkClassName='page-link'
-    //             breakLinkClassName='page-link'
-    //             previousLinkClassName='page-link'
-    //             nextClassName='page-item next-item'
-    //             previousClassName='page-item prev-item'
-    //             containerClassName={
-    //                 'pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1'
-    //             }
-    //         />
-    //     )
-    // }
     return (
         <>
             <Fragment>
@@ -635,25 +556,7 @@ const TablaInventario = () => {
                     </CardHeader>
                     <Row className='mx-0 mt-1 mb-50'>
                         <Col sm='6'>
-                            {/* <div className='d-flex align-items-center'>
-                                <Label for='sort-select'>Mostrar</Label>
-                                <Input
-                                    className='dataTable-select'
-                                    type='select'
-                                    id='sort-select'
-                                    value={rowsPerPage}
-                                    onChange={e => handlePerPage(e)}
-                                >
 
-                                    <option value={5}>5</option>
-                                    <option value={10}>10</option>
-                                    <option value={25}>25</option>
-                                    <option value={50}>50</option>
-                                    <option value={75}>75</option>
-                                    <option value={100}>100</option>
-                                </Input>
-                                <Label for='sort-select'>entradas</Label>
-                            </div> */}
                         </Col>
                         <Col className='d-flex align-items-center justify-content-sm-end mt-sm-0 mt-1' sm='6'>
                             <Label className='me-1' for='search-input'>
@@ -669,19 +572,26 @@ const TablaInventario = () => {
                             />
                         </Col>
                     </Row>
-                    <div className='react-dataTable'>
-                        <DataTable
-                            noHeader
-                            // pagination
-                            // paginationServer
-                            className='react-dataTable'
-                            columns={serverSideColumns}
-                            sortIcon={<ChevronDown size={10} />}
-                            // paginationComponent={CustomPagination}
-                            // data={getData}
-                            data={searchValue ? filter : getData}
-                        />
+
+                    <div className='invoice-list-wrapper'>
+                        <Card>
+                            <div className='invoice-list-dataTable react-dataTable'>
+                                <DataTable
+                                    noHeader
+                                    className='react-dataTable'
+                                    columns={serverSideColumns}
+                                    sortIcon={<ChevronDown size={10} />}
+                                    data={searchValue ? filter : getData}
+                                    customStyles={customStyles}
+                                    dense
+                                    fixedHeader={false}
+                                    responsive
+                                    persistTableHead
+                                />
+                            </div>
+                        </Card>
                     </div>
+
                 </Card>
 
                 <DescargarReporte

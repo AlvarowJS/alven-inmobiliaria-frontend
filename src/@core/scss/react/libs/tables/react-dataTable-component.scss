@@ -3,6 +3,8 @@
 
 .react-dataTable {
   border-radius: 0;
+  table-layout: auto !important;
+  
   .rdt_TableHead {
     .rdt_TableHeadRow {
       background-color: $table-head-bg;
@@ -39,8 +41,14 @@
     .rdt_TableRow {
       color: $body-color;
       .rdt_TableCell {
-        height: 53px;
+        min-height: 53px;
+        height: auto !important;
         padding: 0.72rem 1.5rem;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        vertical-align: top;
 
         .column-action {
           svg {
