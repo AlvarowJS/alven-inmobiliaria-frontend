@@ -169,7 +169,6 @@ const Fotos = ({ idPropiedad, stepper }) => {
     }
     dataInput.idPropiedad = idPropiedad
     dataInput.fotos = datosOrden
-    console.log(datosOrden, "?")
     alvenApi.post(URL_ORDER, dataInput, {
       headers: {
         'Authorization': 'Bearer ' + token
