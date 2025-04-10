@@ -160,13 +160,17 @@ const Fotos = ({ idPropiedad, stepper }) => {
 
   const ordernar = () => {
     let datosOrden = []
+    let dataInput = {}
     for (let i = 0; i < fotos.length; i++) {
       datosOrden.push({
         id: fotos[i].id,
         orden: i
       })
     }
-    alvenApi.post(URL_ORDER, datosOrden, {
+    dataInput.idPropiedad = idPropiedad
+    dataInput.fotos = datosOrden
+    console.log(datosOrden, "?")
+    alvenApi.post(URL_ORDER, dataInput, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
