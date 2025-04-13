@@ -53,7 +53,7 @@ const RegistrarPropiedad = () => {
             }
         })
             .then(res => {
-                setAsesorObj(res?.data)                
+                setAsesorObj(res?.data)
             })
             .catch(err => null)
     }, [])
@@ -74,7 +74,7 @@ const RegistrarPropiedad = () => {
 
     // Cambiar estado
     const cambiarEstado = e => {
-        let estadoActual = e.target.checked                
+        let estadoActual = e.target.checked
         let actualizarEstado = {}
         actualizarEstado.estado = estadoActual
         alvenApi.put(`${URL_ESTADO}/${id?.id}`, actualizarEstado, {
@@ -155,13 +155,24 @@ const RegistrarPropiedad = () => {
                         En Borrador
                     </Label>
                     <div className='form-switch form-check-success'>
-                        <Input type='switch' onClick={cambiarEstado} id='icon-success' name='icon-success' defaultChecked={borrador}/>
+                        <Input type='switch' onClick={cambiarEstado} id='icon-success' name='icon-success' defaultChecked={borrador} />
                         <CustomLabel htmlFor='icon-success' />
                     </div>
                     <Label for='switch-primary' className='form-check-label mb-50'>
                         Terminado
                     </Label>
                 </div>
+                <Card className='p-2 mt-1'>
+                    <div>
+                        {
+                            objectGlobal?.direccion ?
+                                <h3>{objectGlobal?.direccion?.calle} - {objectGlobal?.direccion?.colonia} - {objectGlobal?.direccion?.numero} - {objectGlobal?.direccion?.municipio} - {objectGlobal?.direccion?.estado} </h3>
+                                :
+                                <h3>Sin dirección</h3>
+                        }
+                        
+                    </div>
+                </Card>
                 {
                     objectGlobal ?
                         <Wizard

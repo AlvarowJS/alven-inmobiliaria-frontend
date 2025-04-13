@@ -186,6 +186,7 @@ const TablaInventario = () => {
 
     useEffect(() => {
         setFilter(getData?.filter(e =>
+            (e.general?.numero_ofna && e.general?.numero_ofna?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
             (e.publicidad?.encabezado && e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
             (e.cliente?.asesor?.nombre && e.cliente?.asesor?.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
             (e.cliente?.asesor?.apellidos && e.cliente?.asesor?.apellidos.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
