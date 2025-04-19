@@ -215,8 +215,8 @@ const TablaInventario = () => {
         {
             sortable: true,
             name: 'ID',
-            minWidth: '30px',
-            maxWidth: '80px',
+            minWidth: '50px',
+            maxWidth: '90px',
             selector: row => row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna,
             cell: row => {
                 return (
@@ -406,7 +406,7 @@ const TablaInventario = () => {
                         {
                             role === "1" ?
                                 <button className='btn btn-warning my-1' onClick={() => updateInventarioById(row?.id)}>
-                                    <Edit />
+                                    <Edit className='text-secondary' />
                                 </button> : null
                         }
 
@@ -417,12 +417,14 @@ const TablaInventario = () => {
                             role === "2" ?
                                 // <button className='btn btn-warning mb-1 mt-1' onClick={() => updateInventarioById(row?.id)}>
                                 <button className='btn btn-warning mb-1 mt-1' onClick={() => verInventarioExterno(row?.id)}>
-                                    <Eye />
+                                    <Eye className='text-secondary' />
                                 </button>
                                 : null
                         }
                         <button className='btn btn-success mb-1' onClick={() => descargarPdf(row?.id)}>
-                            <FileText />
+                            <FileText 
+                                className='text-secondary'                                 
+                            />
                         </button>
 
                     </div >
@@ -575,7 +577,7 @@ const TablaInventario = () => {
                     </Row>
 
                     <div className='invoice-list-wrapper'>
-                        <Card>
+                        <Card>                            
                             <div className='invoice-list-dataTable react-dataTable'>
                                 <DataTable
                                     noHeader
