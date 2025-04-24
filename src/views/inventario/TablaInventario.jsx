@@ -215,13 +215,41 @@ const TablaInventario = () => {
         {
             sortable: true,
             name: 'ID',
-            minWidth: '50px',
+            minWidth: '80px',
             maxWidth: '90px',
             selector: row => row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna,
             cell: row => {
                 return (
                     <>
-                        {row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna}
+                        <div className='d-flex flex-column'>
+                            <div>
+                                {row?.general?.numero_ofna == undefined ? 'Sin asignar' : row?.general?.numero_ofna}
+                            </div>
+
+
+                            <div className='d-flex gap-1 flex-column'>
+                                {
+                                    role === "1" ?
+                                        <button className='btn btn-warning btn-sm' onClick={() => updateInventarioById(row?.id)}>
+                                            <Edit className='text-secondary' />
+                                        </button> : null
+                                }
+
+                                {
+                                    role === "2" ?
+                                        // <button className='btn btn-warning mb-1 mt-1' onClick={() => updateInventarioById(row?.id)}>
+                                        <button className='btn btn-warning btn-sm' onClick={() => verInventarioExterno(row?.id)}>
+                                            <Eye className='text-secondary' />
+                                        </button>
+                                        : null
+                                }
+                                <button className='btn btn-success btn-sm' onClick={() => descargarPdf(row?.id)}>
+                                    <FileText
+                                        className='text-secondary'
+                                    />
+                                </button>
+                            </div>
+                        </div>
                     </>
                 )
             }
@@ -262,8 +290,13 @@ const TablaInventario = () => {
 
         {
             sortable: true,
-            name: 'Precio',
-            // minWidth: '120px',
+            name: (
+                <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', textAlign: 'center' }}>
+                    Precio
+                </div>
+            ),
+            minWidth: '130px',
+            maxWidth: '190px',
             selector: row => row?.publicidad?.precio_venta,
             cell: row => {
                 return (
@@ -276,9 +309,13 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
-            name: 'Días',
-            minWidth: '10px',
-            maxWidth: '80px',
+            name: (
+                <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', textAlign: 'center' }}>
+                    Días
+                </div>
+            ),
+            minWidth: '80px',
+            maxWidth: '100px',
             selector: row => row?.general?.fecha_alta,
             cell: row => {
                 return (
@@ -290,7 +327,11 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
-            name: 'Sub Tipo',
+            name: (
+                <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', textAlign: 'center' }}>
+                    Sub Tipo
+                </div>
+            ),
             // minWidth: '250px',
             selector: row => row?.general?.sub_tipo_propiedad == undefined ? 'Sin asignar' : row?.general?.sub_tipo_propiedad,
             cell: row => {
@@ -306,13 +347,24 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
-            name: 'Tipo\nOperación',
-            // minWidth: '250px',
+            name: (
+                <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', textAlign: 'center' }}>
+                    Tipo Operación
+                </div>
+            ),
+            minWidth: '120px',
+            maxWidth: '140px',
             selector: row => row?.general?.tipo_operacion == undefined ? 'Sin asignar' : row?.general?.tipo_operacion
         },
         {
             sortable: true,
-            name: 'Status',
+            name: (
+                <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', textAlign: 'center' }}>
+                    Status
+                </div>
+            ),
+            minWidth: '120px',
+            maxWidth: '140px',
             selector: row => row?.publicidad?.estado == undefined ? 'Sin asignar' : row?.publicidad?.estado,
             cell: row => {
                 return (
@@ -326,7 +378,13 @@ const TablaInventario = () => {
         },
         {
             sortable: true,
-            name: 'Asignación',
+            name: (
+                <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', textAlign: 'center' }}>
+                    Asignación
+                </div>
+            ),
+            minWidth: '120px',
+            maxWidth: '140px',
             // minWidth: '250px',
             selector: row => row?.cliente?.asesor?.nombre,
             wrap: true,
@@ -367,7 +425,8 @@ const TablaInventario = () => {
         {
             sortable: false,
             name: 'Ligas',
-            minWidth: '250px',
+            minWidth: '180px',
+            maxWidth: '240px',
             grow: 1,
             wrap: true,
             cell: row => {
@@ -377,8 +436,10 @@ const TablaInventario = () => {
                             row?.publicidad?.ligas?.map(liga => (
                                 // <div className='d-flex flex-column'>
                                 <>
-                                    <div className='d-flex gap-1'>
-                                        {liga.red_social} :
+                                    <div className='d-flex flex-column'>
+                                        <p>
+                                            {liga.red_social} :
+                                        </p>
                                         {/* <Globe onClick={() => abrirEnlace(liga?.enlace)} style={{ cursor: "pointer" }} /> */}
                                         <img src={iconWorld} width={30} height={30} onClick={() => abrirEnlace(liga?.enlace)} style={{ cursor: "pointer" }} />
 
@@ -394,43 +455,39 @@ const TablaInventario = () => {
             }
         },
 
-        {
-            name: 'Acciones',
-            sortable: true,
-            wrap: true,
-            allowOverflow: true,
-            cell: row => {
-                return (
-                    <div className='local_buttons'>
+        // {
+        //     name: 'Acciones',
+        //     sortable: true,
+        //     wrap: true,
+        //     allowOverflow: true,
+        //     cell: row => {
+        //         return (
+        //             <div className='local_buttons'>
 
-                        {
-                            role === "1" ?
-                                <button className='btn btn-warning my-1' onClick={() => updateInventarioById(row?.id)}>
-                                    <Edit className='text-secondary' />
-                                </button> : null
-                        }
+        //                 {
+        //                     role === "1" ?
+        //                         <button className='btn btn-warning my-1' onClick={() => updateInventarioById(row?.id)}>
+        //                             <Edit className='text-secondary' />
+        //                         </button> : null
+        //                 }
+        //                 {
+        //                     role === "2" ?
+        //                         // <button className='btn btn-warning mb-1 mt-1' onClick={() => updateInventarioById(row?.id)}>
+        //                         <button className='btn btn-warning mb-1 mt-1' onClick={() => verInventarioExterno(row?.id)}>
+        //                             <Eye className='text-secondary' />
+        //                         </button>
+        //                         : null
+        //                 }
+        //                 <button className='btn btn-success mb-1' onClick={() => descargarPdf(row?.id)}>
+        //                     <FileText
+        //                         className='text-secondary'
+        //                     />
+        //                 </button>
 
-                        {/* <button className='btn btn-danger mb-1' onClick={() => deleteInventarioById(row?.id)}>
-                            <Trash />
-                        </button> */}
-                        {
-                            role === "2" ?
-                                // <button className='btn btn-warning mb-1 mt-1' onClick={() => updateInventarioById(row?.id)}>
-                                <button className='btn btn-warning mb-1 mt-1' onClick={() => verInventarioExterno(row?.id)}>
-                                    <Eye className='text-secondary' />
-                                </button>
-                                : null
-                        }
-                        <button className='btn btn-success mb-1' onClick={() => descargarPdf(row?.id)}>
-                            <FileText 
-                                className='text-secondary'                                 
-                            />
-                        </button>
-
-                    </div >
-                )
-            }
-        }
+        //             </div >
+        //         )
+        //     }
+        // }
     ]
     useEffect(() => {
 
@@ -577,7 +634,7 @@ const TablaInventario = () => {
                     </Row>
 
                     <div className='invoice-list-wrapper'>
-                        <Card>                            
+                        <Card>
                             <div className='invoice-list-dataTable react-dataTable'>
                                 <DataTable
                                     noHeader
