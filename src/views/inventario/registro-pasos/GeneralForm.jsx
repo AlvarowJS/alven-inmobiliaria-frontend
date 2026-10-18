@@ -105,6 +105,7 @@ const GeneralForm = ({
       operacion: "",
       requisito_arrendamiento: "",
       comision: "",
+      observaciones: ""
     });
   };
 
@@ -336,6 +337,26 @@ const GeneralForm = ({
                   type="textarea"
                   placeholder=""
                   invalid={errors.requisito_arrendamiento && true}
+                  {...field}
+                />
+              )}
+            />
+          </div>
+
+          <div className="mb-1">
+            <Label className="form-label" for="observaciones">
+              Observaciones
+            </Label>
+            <Controller
+              defaultValue=""
+              control={control}
+              id="observaciones"
+              name="observaciones"
+              render={({ field }) => (
+                <Input
+                  type="textarea"
+                  placeholder=""
+                  invalid={errors.observaciones && true}
                   {...field}
                 />
               )}

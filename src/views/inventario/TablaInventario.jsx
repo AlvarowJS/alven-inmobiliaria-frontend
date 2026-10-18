@@ -3,7 +3,7 @@ import ReactPaginate from 'react-paginate'
 import { useDispatch } from 'react-redux'
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button, Badge } from 'reactstrap'
 import DataTable from 'react-data-table-component'
-import { ChevronDown, Delete, Edit, ExternalLink, Eye, File, FileText, Globe, Trash } from 'react-feather'
+import { ChevronDown, Delete, Edit, ExternalLink, Eye, File, FileText, Globe, Trash, HelpCircle } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 const URL = '/v1/propiedades'
 const URL_FILTER = '/v1/propiedad-filtrado'
@@ -16,15 +16,18 @@ import alvenApi from '../../api/alvenApi'
 import iconWorld from '../../assets/images/logo/iconWorld.png'
 import '@styles/react/apps/app-invoice.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
+import ModalObservacionComision from './ModalObservacionComision'
 const MySwal = withReactContent(Swal)
 
-const TablaInventario = () => {
+const TablaInventario = () => {    
     const token = localStorage?.getItem('token');
     const role = localStorage?.getItem('role');
     const navigate = useNavigate()
+    const [dataGeneral, setDataGeneral] = useState()
     const [estado, setEstado] = useState(false)
     const [modal, setModal] = useState(false)
     const [modalPdf, setModalPdf] = useState(false)
+    const [modalObservacion, setModalObservacion] = useState(false)
     const [idPropiedad, setIdPropiedad] = useState()
     const [idAsesor, setIdAsesor] = useState()
     // const [currentPage, setCurrentPage] = useState(1)
@@ -62,6 +65,16 @@ const TablaInventario = () => {
             }
         }
     };
+
+    const buscarDatosGeneralPorPropiedad = (id) => {
+        alvenApi.get(`${URL}/general/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(res => setDataGeneral(res?.data))
+        .catch(err => null)
+    }
 
     useEffect(() => {
 
@@ -180,16 +193,32 @@ const TablaInventario = () => {
         setIdAsesor(id)
     }
 
+    const mostrarObservacion = (id) => {
+        buscarDatosGeneralPorPropiedad(id)
+        setModalObservacion(true)
+    }
+
+    const cerrarObservacion = () => {
+        setModalObservacion(false)
+    }
+
+    const normalizar = texto =>
+        texto
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+
     const handleFilter = e => {
         setSearchValue(e.target.value)
     }
 
     useEffect(() => {
+        const busqueda = normalizar(searchValue ?? '')
         const dataFilter = getData?.filter(e =>
-            (e.general?.numero_ofna && e.general?.numero_ofna?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
-            (e.publicidad?.encabezado && e.publicidad?.encabezado?.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
-            (e.cliente?.asesor?.nombre && e.cliente?.asesor?.nombre.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
-            (e.cliente?.asesor?.apellidos && e.cliente?.asesor?.apellidos.toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1) ||
+            (e.general?.numero_ofna && normalizar(e.general.numero_ofna).indexOf(busqueda) !== -1) ||
+            (e.publicidad?.encabezado && normalizar(e.publicidad.encabezado).indexOf(busqueda) !== -1) ||
+            (e.cliente?.asesor?.nombre && normalizar(e.cliente.asesor.nombre).indexOf(busqueda) !== -1) ||
+            (e.cliente?.asesor?.apellidos && normalizar(e.cliente.asesor.apellidos).indexOf(busqueda) !== -1) ||
             (
                 (e.direccion?.calle ?? '') +
                 ' ' +
@@ -202,7 +231,10 @@ const TablaInventario = () => {
                 (e.direccion?.estado ?? '') +
                 ' ' +
                 (e.direccion?.pais ?? '')
-            ).toLowerCase().indexOf(searchValue?.toLowerCase()) !== -1)
+            ).normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .indexOf(busqueda) !== -1)
         setFilter(dataFilter)
         setContador(dataFilter?.length);
 
@@ -242,6 +274,12 @@ const TablaInventario = () => {
                                 }
                                 <button className='btn btn-success btn-sm' onClick={() => descargarPdf(row?.id)}>
                                     <FileText
+                                        className='text-secondary'
+                                    />
+                                </button>
+
+                                <button className='btn btn-info btn-sm' onClick={() => mostrarObservacion(row?.id)}>
+                                    <HelpCircle
                                         className='text-secondary'
                                     />
                                 </button>
@@ -664,6 +702,13 @@ const TablaInventario = () => {
                     modalPdf={modalPdf}
                     setModalPdf={setModalPdf}
 
+                />
+
+                <ModalObservacionComision
+                    mostrarObservacion={mostrarObservacion}
+                    cerrarObservacion={cerrarObservacion}
+                    modalObservacion={modalObservacion}
+                    dataGeneral={dataGeneral}
                 />
             </Fragment>
         </>
