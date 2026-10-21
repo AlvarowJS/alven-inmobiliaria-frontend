@@ -7,13 +7,25 @@ const ModalObservacionComision = ({
     return (
         <Modal isOpen={modalObservacion} toggle={cerrarObservacion} size='lg'>
             <ModalHeader toggle={cerrarObservacion}>
-                Información importante
+                {
+                (dataGeneral?.direccion?.calle ?? '') +
+                ' ' +
+                (dataGeneral?.direccion?.numero ?? '') +
+                ' ' +
+                (dataGeneral?.direccion?.colonia ?? '') +
+                ' ' +
+                (dataGeneral?.direccion?.municipio ?? '') +
+                ' ' +
+                (dataGeneral?.direccion?.estado ?? '') +
+                ' ' +
+                (dataGeneral?.direccion?.pais ?? '')
+                }
             </ModalHeader>
             <ModalBody>
                 {dataGeneral && (
                     <div>
-                        <p><strong>Observación:</strong> {dataGeneral.observaciones}</p>
-                        <p><strong>Porcentaje de Comisión:</strong> {dataGeneral.comision}</p>
+                        <p><strong>Porcentaje de Comisión:</strong> {dataGeneral?.general?.comision}</p>
+                        <p><strong>Observación:</strong> {dataGeneral?.general?.observaciones}</p>
                     </div>
                 )}
             </ModalBody>
